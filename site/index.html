@@ -1,6 +1,20 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Nepal Dashboard</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nepal in 1</title>
+<meta name="description" content="All of Nepal in one place: news, NEPSE, business, investment options, the economy and national projects.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nepal in 1">
+<meta property="og:title" content="Nepal in 1">
+<meta property="og:description" content="All of Nepal in one place: news, NEPSE, business, investment options, the economy and national projects.">
+<meta name="theme-color" content="#13203f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-3 0 32 32'%3E%3Cpath d='M2 1 L24 14 H9 L24 30 H2 Z' fill='%23c8102e' stroke='%232f5bd3' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+/* Base reset. The [hidden] rule matters: tabs are shown and hidden with the hidden attribute. */
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600&display=swap">
@@ -116,7 +130,7 @@ h2.sec { font-family: var(--display); font-weight: 400; font-size: 22px; margin:
 .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); font-size: 12px; color: var(--fg); white-space: nowrap; }
 .prio-High { color: var(--bad); } .prio-Medium { color: var(--warn); } .prio-Low { color: var(--muted); }
 .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.adv { border: 1px solid var(--line); background: transparent; border-radius: 6px; font-size: 12px; padding: 3px 8px; color: var(--muted); }
+.adv { border: 1px solid var(--line); background: transparent; border-radius: 6px; font-size: 12px; padding: 3px 8px; color: var(--muted); white-space: nowrap; flex: none; }
 .adv:hover { color: var(--fg); border-color: var(--line-strong); }
 .mini { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; width: 54px; display: inline-block; vertical-align: middle; }
 .mini i { display: block; height: 100%; background: var(--ok); }
@@ -255,6 +269,24 @@ th.r, td.r { text-align: right; }
 tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bottom: 0; }
 .place-card ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); display: grid; gap: 4px; }
 .sym { font-weight: 600; letter-spacing: .02em; }
+.mgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin: 0; }
+.mgrid div { min-width: 0; }
+.mgrid dt { font-size: 12px; color: var(--muted); }
+.mgrid dd { margin: 0; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.mgrid dd small { display: block; font-size: 12px; font-weight: 400; color: var(--faint); }
+.idea .fine { font-size: 13px; color: var(--muted); }
+.idea details { border-top: 1px solid var(--line); padding-top: 10px; }
+.idea summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.idea details > * + * { margin-top: 8px; }
+.idea details ol, .idea details ul { margin-bottom: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; }
+.idea details .k { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--muted); }
+.idea .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+#mentor-body { align-items: start; }
+.wrow { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.wrow:first-child { border-top: 0; padding-top: 0; }
+.wrow b { font-weight: 600; }
+.wrow p { margin: 0; color: var(--muted); }
+.wrow .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; }
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
 .toast { position: fixed; z-index: 50; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100% - 32px); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
@@ -273,23 +305,24 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 }
 @media (prefers-reduced-motion: reduce) { .sheet, .scrim, .toast { transition: none; } }
 </style>
-
+</head>
+<body>
 <header class="bar">
   <div class="wrap">
     <div class="bar-top">
       <div class="brand">
         <svg width="26" height="32" viewBox="0 0 26 32" aria-hidden="true"><path d="M2 1 L24 14 H9 L24 30 H2 Z" fill="#c8102e" stroke="#2f5bd3" stroke-width="2" stroke-linejoin="round"/></svg>
         <div style="min-width:0">
-          <div class="brand-name">Nepal Dashboard</div>
-          <div class="brand-sub">Key builds, business, NEPSE and the economy</div>
+          <div class="brand-name">Nepal in 1</div>
+          <div class="brand-sub">News, markets, money and the economy in one place</div>
         </div>
       </div>
       <div class="when" id="when"><b id="when-date">Today</b><span id="when-fy">Fiscal year</span><span class="upd" id="when-upd"></span></div>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
-      <button class="tab" role="tab" id="tab-builds" data-tab="builds" aria-selected="true">Key builds<span class="n" id="n-builds">0</span></button>
       <button class="tab" role="tab" id="tab-today" data-tab="today" aria-selected="false">Today in Nepal<span class="n" id="n-today">0</span></button>
-      <button class="tab" role="tab" id="tab-ideas" data-tab="ideas" aria-selected="false">Ideas<span class="n" id="n-ideas">0</span></button>
+      <button class="tab" role="tab" id="tab-builds" data-tab="builds" aria-selected="false">My builds<span class="n" id="n-builds">0</span></button>
+      <button class="tab" role="tab" id="tab-mentor" data-tab="mentor" aria-selected="false">Mentor</button>
       <button class="tab" role="tab" id="tab-business" data-tab="business" aria-selected="false">Business</button>
       <button class="tab" role="tab" id="tab-nepse" data-tab="nepse" aria-selected="false">NEPSE<span class="n" id="n-nepse">–</span></button>
       <button class="tab" role="tab" id="tab-invest" data-tab="invest" aria-selected="false">Invest</button>
@@ -300,14 +333,26 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 </header>
 
 <main class="wrap">
-  <div id="offline" class="banner" role="status" hidden style="margin-bottom:18px">Saving is not available in this view. You can browse everything, but changes need the artifact opened on claude.ai while signed in.</div>
+  <div id="asof" class="banner" role="status" hidden style="margin-bottom:18px"></div>
 
-  <section class="view" id="v-builds" aria-labelledby="tab-builds">
+  <section class="view" id="v-today" aria-labelledby="tab-today" hidden>
     <div class="head">
       <div>
-        <p class="eyebrow" id="builds-eyebrow">Your portfolio</p>
-        <h1>Key builds</h1>
-        <p id="builds-desc">Every project you have chosen for your school and community. Claude adds a fresh news signal to each one every morning.</p>
+        <p class="eyebrow" id="today-eyebrow">Daily brief</p>
+        <h1>Today in Nepal</h1>
+        <p id="today-desc">The stories that matter across Nepal, from every province, with why each one matters.</p>
+      </div>
+    </div>
+    <div class="chips" id="news-chips" role="group" aria-label="Filter stories"></div>
+    <div id="news-body" class="grid"></div>
+  </section>
+
+  <section class="view" id="v-builds" aria-labelledby="tab-builds" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow">Saved on this device</p>
+        <h1>My builds</h1>
+        <p>Track your own projects from first idea to launch: add a build, move it through the stages and tick off tasks. Builds are saved only in this browser, so clearing its data removes them.</p>
       </div>
       <button class="btn primary" id="new-build" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>New build</button>
     </div>
@@ -329,27 +374,27 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     <div id="builds-body"></div>
   </section>
 
-  <section class="view" id="v-today" aria-labelledby="tab-today" hidden>
+  <section class="view" id="v-mentor" aria-labelledby="tab-mentor" hidden>
     <div class="head">
       <div>
-        <p class="eyebrow" id="today-eyebrow">Daily brief</p>
-        <h1>Today in Nepal</h1>
-        <p id="today-desc">The stories that matter for your school, your province and your plans, refreshed every morning at about 6:34.</p>
+        <p class="eyebrow" id="mentor-eyebrow">Business mentor</p>
+        <h1>What could you build?</h1>
+        <p>Businesses with published cost and profit studies from Nepal, sized to the money you have. Each one shows what it costs to start, what it could earn, and what to do first. Add one to My builds to start tracking it.</p>
       </div>
     </div>
-    <div class="chips" id="news-chips" role="group" aria-label="Filter stories"></div>
-    <div id="news-body" class="grid"></div>
-  </section>
-
-  <section class="view" id="v-ideas" aria-labelledby="tab-ideas" hidden>
-    <div class="head">
-      <div>
-        <p class="eyebrow" id="ideas-eyebrow">What we can build</p>
-        <h1>Today's ideas</h1>
-        <p>Opportunities drawn from the day's news, sized for a school and community in Kanchanpur. Claude marks one as today's pick. Add any idea to your key builds with one tap.</p>
-      </div>
+    <div class="panel calc">
+      <div class="fld"><label for="mentor-budget">Money you can put in (Rs)</label><input id="mentor-budget" type="number" min="0" step="50000" inputmode="numeric"></div>
+      <div class="fld"><span class="lbl" id="mentor-where-l">Where</span><div class="seg" role="group" aria-labelledby="mentor-where-l" id="mentor-where"><button type="button" data-where="all">Anywhere</button><button type="button" data-where="terai">Terai</button><button type="button" data-where="hills">Hills</button></div></div>
+      <div class="fld"><label for="mentor-sort">Show first</label><select id="mentor-sort"><option value="return">Best return on your money</option><option value="profit">Most profit a month</option><option value="start">Lowest money to start</option></select></div>
     </div>
-    <div id="ideas-body" class="grid"></div>
+    <div class="tiles" id="mentor-tiles"></div>
+    <div class="grid" id="mentor-body"></div>
+    <div class="panel" id="mentor-watch-panel" hidden>
+      <h3>Looked at, but no numbers yet</h3>
+      <p class="note">Businesses people often ask about, where the published figures are too thin to size to your budget.</p>
+      <div id="mentor-watch"></div>
+    </div>
+    <p class="foot" id="mentor-foot"></p>
   </section>
 
   <section class="view" id="v-business" aria-labelledby="tab-business" hidden>
@@ -357,7 +402,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       <div>
         <p class="eyebrow" id="biz-eyebrow">Nepal business</p>
         <h1>Business pulse</h1>
-        <p>Company results, deals, prices and the dates that matter for Nepali business, refreshed every morning.</p>
+        <p>Company results, deals, prices and the dates that matter for Nepali business.</p>
       </div>
     </div>
     <div class="tiles" id="biz-tiles"></div>
@@ -379,7 +424,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       <div>
         <p class="eyebrow" id="nepse-eyebrow">Nepal Stock Exchange</p>
         <h1>NEPSE</h1>
-        <p>Closing figures from the last trading session, refreshed every trading day at 4 pm, an hour after the 3 pm close. For information only, not investment advice.</p>
+        <p>Closing figures from the latest trading session. For information only, not investment advice.</p>
       </div>
     </div>
     <div class="tiles" id="nepse-tiles"></div>
@@ -450,18 +495,6 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       <div class="chart" id="inv-chart"></div>
       <div class="readout" id="inv-read">Hover or tap the chart to read a year.</div>
     </div>
-    <h2 class="sec">Your investment plan</h2>
-    <p class="sec-note">Split one total across the options and see what the whole plan could be worth. Rs 5 crore is only a starting figure; change the total or any share at any time. Years and inflation come from the calculator above.</p>
-    <div class="panel" style="display:grid;gap:14px">
-      <div class="calc">
-        <div class="fld"><label for="plan-total">Total to invest (Rs)</label><input id="plan-total" type="number" min="0" step="100000" inputmode="numeric"></div>
-        <div class="fld"><span class="lbl">Shares used</span><div id="plan-sum" class="plan-sum">100%</div></div>
-        <div class="fld"><span class="lbl" aria-hidden="true">&nbsp;</span><button class="btn" id="plan-reset" type="button">Reset to model split</button></div>
-      </div>
-      <div class="tablewrap flat"><table aria-label="Investment plan"><thead><tr><th>Option</th><th class="r">Share</th><th class="r hide-sm">Amount</th><th class="r hide-sm">Low</th><th class="r" id="plan-col">Expected</th><th class="r hide-sm">High</th></tr></thead><tbody id="plan-body"></tbody><tfoot id="plan-foot"></tfoot></table></div>
-      <p class="saved" id="plan-saved"></p>
-    </div>
-    <div class="tiles" id="plan-tiles"></div>
     <h2 class="sec">How each figure is worked out</h2>
     <div class="grid narrow" id="inv-cards"></div>
     <h2 class="sec">Places to watch for property</h2>
@@ -474,7 +507,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     <div class="head">
       <div>
         <p class="eyebrow">Nepal to 2036</p>
-        <h1>The economy you are building in</h1>
+        <h1>Where the economy is heading</h1>
         <p>Growth is slow today and the next decade could land anywhere from about $62 billion to $99 billion. Execution decides which.</p>
       </div>
     </div>
@@ -519,7 +552,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       <div>
         <p class="eyebrow">National pride projects</p>
         <h1>Projects that decide the decade</h1>
-        <p>Only 4 of Nepal's 27 national pride projects are finished. Here is where the big bets stand, with Sudurpashchim highlighted.</p>
+        <p>Only 4 of Nepal's 27 national pride projects are finished. Here is where the big bets stand.</p>
       </div>
     </div>
     <div class="tiles" id="proj-tiles"></div>
@@ -539,11 +572,11 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 
 <script>
 (() => {
+
 const STAGES = ['Idea', 'Exploring', 'Planning', 'Building', 'Launched'];
 const STAGE_VAR = { Idea: '--st-idea', Exploring: '--st-exploring', Planning: '--st-planning', Building: '--st-building', Launched: '--st-launched' };
 const PRIOS = ['High', 'Medium', 'Low'];
 const SECTORS = ['Education & tech', 'Skills', 'Community & business', 'Agriculture', 'Health', 'Tourism', 'Energy', 'Other'];
-const LOCAL = 'Sudurpashchim';
 
 const ECON = {
   gdp: 45.8, perCapita: 1548, growth: 3.6, remit: 33.0, consumption: 90.3, mw: 1179, mwTarget: 10000,
@@ -588,13 +621,8 @@ const PROJECTS = [
   ['Nijgadh International Airport', 'Airports', 'Madhesh', 0, null, 'Not started']
 ].map(([name, sector, province, progress, cost, status]) => ({ name, sector, province, progress, cost, status }));
 
-const S = { builds: [], feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, loadedInvest: false, loadedBiz: false, loadedNepse: false, bizf: 'all', range: 66, loadedBuilds: false, loadedFeed: false, tab: 'builds', stage: null, q: '', sort: 'stage', view: 'board', news: 'all', proj: 'all', open: null, canWrite: true, live: false, local: false };
-let db = null;
-/* Device mode: only when the shared database is unreachable (signed out, or opened outside claude.ai, e.g. from X).
-   Builds then live in this browser's storage; nothing in this mode ever touches the shared database. */
-const LKEY = 'nd-device-builds';
-const canEdit = () => S.local || (S.canWrite && !!db);
-const liveNote = (dflt) => S.local ? 'Daily updates appear when the dashboard is opened signed in to Claude.' : dflt;
+const S = { builds: [], stage: null, q: '', sort: 'stage', view: 'board', open: null, feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, mentor: null, loaded: false, bizf: 'all', range: 66, tab: 'today', news: 'all', proj: 'all' };
+const liveNote = () => 'Not in this update yet.';
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -622,23 +650,31 @@ function header() {
   $('when-fy').textContent = fiscalYear(t);
   const r = lastRefresh();
   $('when-upd').textContent = r ? 'Updated ' + stamp(r) : '';
-  $('builds-eyebrow').textContent = S.local ? 'Saved on this device' : r ? 'Your portfolio · refreshed ' + stamp(r) : 'Your portfolio';
+  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = S.tab === 'builds' || S.tab === 'mentor'; }
 }
 
 let toastT;
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2200); }
 
-const chains = {};
-function queue(key, fn) {
-  const p = (chains[key] || Promise.resolve()).then(fn).catch((e) => {
-    if (e && e.code === 'invalid_argument') { S.canWrite = false; $('offline').hidden = false; toast('You can view this desk but not change it.'); }
-    else if (e && e.code === 'quota_exceeded') toast('Storage is full. Delete a build to make room.');
-    else toast('That change did not save. Check your connection and try again.');
-    throw e;
-  });
-  chains[key] = p.catch(() => {});
-  return p;
+const asObj = (x) => x && typeof x === 'object' && !Array.isArray(x) ? x : null;
+function loadData() {
+  const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+  const t = setTimeout(() => { if (ctl) ctl.abort(); }, 10000);
+  fetch('data.json?t=' + Date.now(), { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+    .then((r) => r.ok ? r.json() : null).catch(() => null)
+    .then((d) => {
+      clearTimeout(t);
+      if (asObj(d)) { S.feed = asObj(d.feed); S.biz = asObj(d.business); S.nepse = asObj(d.nepse); S.watch = asObj(d.watch); S.invest = asObj(d.invest); S.places = asObj(d.places); S.mentor = asObj(d.mentor); }
+      S.loaded = true;
+      const ix = S.nepse && S.nepse.index; $('n-nepse').textContent = ix ? Math.round(ix.close).toLocaleString('en') : '\u2013';
+      $('n-today').textContent = S.feed && Array.isArray(S.feed.news) ? S.feed.news.length : 0;
+      header(); show(S.tab, false);
+    });
 }
+
+/* ---------- Builds: storage ----------
+   Builds belong to the visitor and live only in this browser's storage. Nothing is sent anywhere. */
+const LKEY = 'n1-builds';
 let localWarned = false;
 function loadLocal() {
   try { const a = JSON.parse(localStorage.getItem(LKEY) || '[]'); return Array.isArray(a) ? a.filter((x) => x && typeof x === 'object' && typeof x.id === 'string') : []; } catch (e) { return []; }
@@ -647,50 +683,26 @@ function localWrite(fn) {
   return Promise.resolve().then(() => {
     fn();
     try { localStorage.setItem(LKEY, JSON.stringify(S.builds)); }
-    catch (e) { if (!localWarned) { localWarned = true; setTimeout(() => toast('This browser won’t keep changes after you close the page.'), 2300); } }
-    renderBuilds(); renderIdeas(); if (S.open) renderSheet(false);
+    catch (e) { if (!localWarned) { localWarned = true; setTimeout(() => toast('This browser won\u2019t keep changes after you close the page.'), 2300); } }
+    renderBuilds(); if (S.open) renderSheet(false); if (S.tab === 'mentor') renderMentor();
   });
 }
-function deviceMode() {
-  S.local = true; S.canWrite = true; db = null;
-  S.builds = loadLocal();
-  S.loadedBuilds = true; S.loadedFeed = S.loadedBiz = S.loadedNepse = S.loadedInvest = false;
-  const o = $('offline');
-  o.textContent = 'Public view. News, ideas, business, NEPSE and investment rates refresh every day. Builds you add here are saved only on this device. If this is your dashboard, open it signed in to Claude to edit it.';
-  o.hidden = false;
-  $('builds-desc').textContent = 'Track your own projects here: add a build, move it through the stages and tick off tasks. Everything stays in this browser only.';
-  $('today-desc').textContent = 'The stories that matter for Nepal and Sudurpashchim, refreshed every morning.';
-  header(); renderLive();
-  if (!location.hash && S.tab === 'builds' && !S.builds.length) show('today', false);
-  loadPublic();
-}
-const asObj = (x) => x && typeof x === 'object' && !Array.isArray(x) ? x : null;
-function loadPublic() {
-  const ctl = typeof AbortController === 'function' ? new AbortController() : null;
-  const t = setTimeout(() => { if (ctl) ctl.abort(); }, 10000);
-  fetch('public.json?t=' + Date.now(), { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
-    .then((r) => r.ok ? r.json() : null).catch(() => null)
-    .then((d) => {
-      clearTimeout(t);
-      if (asObj(d)) { S.feed = asObj(d.feed); S.biz = asObj(d.business); S.nepse = asObj(d.nepse); S.watch = asObj(d.watch); S.invest = asObj(d.invest); S.places = asObj(d.places); }
-      S.loadedFeed = S.loadedBiz = S.loadedNepse = S.loadedInvest = true;
-      header(); renderLive(); if (S.tab === 'invest') renderInvest();
-    });
-}
 function patchBuild(id, patch) {
-  if (S.local) return localWrite(() => { const b = S.builds.find((x) => x.id === id); if (b) Object.assign(b, patch, { updated_at: new Date().toISOString() }); });
-  if (!db || !S.canWrite) return Promise.reject();
-  return queue(id, () => db.doc('builds/' + id).update(Object.assign({}, patch, { updated_at: new Date().toISOString() })));
+  return localWrite(() => { const b = S.builds.find((x) => x.id === id); if (b) Object.assign(b, patch, { updated_at: new Date().toISOString() }); });
 }
 function createBuild(data) {
-  if (!S.local && (!db || !S.canWrite)) return Promise.reject();
-  const body = Object.assign({ build: 'Untitled build', sector: 'Other', vision: '', stage: 'Idea', priority: 'Medium', target: '', signal: '', signal_date: '', signal_source: '', signal_url: '', next_step: '', notes: '', tasks: [], added: today() }, data, { updated_at: new Date().toISOString() });
-  if (S.local) return localWrite(() => { S.builds.push(Object.assign({ id: 'dev-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7) }, body)); });
-  return queue('new', () => db.collection('builds').add(body));
+  const body = Object.assign({ build: 'Untitled build', sector: 'Other', vision: '', stage: 'Idea', priority: 'Medium', target: '', next_step: '', notes: '', tasks: [], added: today() }, data, { updated_at: new Date().toISOString() });
+  return localWrite(() => { S.builds.push(Object.assign({ id: 'b-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7) }, body)); });
 }
 function removeBuild(id) {
-  if (S.local) return localWrite(() => { S.builds = S.builds.filter((x) => x.id !== id); });
-  return queue(id, () => db.doc('builds/' + id).delete());
+  return localWrite(() => { S.builds = S.builds.filter((x) => x.id !== id); });
+}
+function addExample() {
+  return createBuild({ build: 'Example: village homestay', sector: 'Tourism', stage: 'Exploring', priority: 'Medium',
+    vision: 'Three guest rooms run by local families, bringing visitors and income to the village.',
+    next_step: 'Visit two working homestays and note what they charge and what guests ask for.',
+    tasks: [{ text: 'Ask the ward office how to register a homestay', done: true }, { text: 'List the repairs each room needs', done: false }, { text: 'Work out a price per night', done: false }],
+    notes: 'This is an example. Edit it to make it yours, or delete it.' });
 }
 
 /* ---------- Builds ---------- */
@@ -737,7 +749,7 @@ function buildCard(b) {
   if (b.target) left.append(el('span', null, 'Target ' + niceMonth(b.target)));
   foot.append(left);
   const i = STAGES.indexOf(stageOf(b));
-  if (i < STAGES.length - 1 && canEdit()) {
+  if (i < STAGES.length - 1) {
     const adv = el('button', 'adv', 'Move to ' + STAGES[i + 1] + ' →'); adv.type = 'button';
     adv.addEventListener('click', (e) => { e.stopPropagation(); adv.disabled = true; patchBuild(b.id, { stage: STAGES[i + 1] }).then(() => toast('Moved to ' + STAGES[i + 1])).catch(() => { adv.disabled = false; }); });
     foot.append(adv);
@@ -751,13 +763,14 @@ function renderBuilds() {
   renderPipeline();
   $('vw-board').setAttribute('aria-pressed', S.view === 'board' ? 'true' : 'false');
   $('vw-list').setAttribute('aria-pressed', S.view === 'list' ? 'true' : 'false');
-  $('new-build').disabled = !canEdit();
   const body = $('builds-body'); body.replaceChildren();
-  if (!S.loadedBuilds) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading your builds')); body.append(e); return; }
   if (!S.builds.length) {
-    const e = el('div', 'empty'); e.append(el('h3', null, 'No key builds yet'), el('p', null, 'Add your first project, or open Ideas and adopt one with a tap.'));
-    const b = el('button', 'btn primary', 'New build'); b.type = 'button'; b.addEventListener('click', () => openSheet(null)); b.disabled = !canEdit();
-    e.append(b); body.append(e); return;
+    const e = el('div', 'empty'); e.append(el('h3', null, 'No builds yet'), el('p', null, 'A build is any project you want to make happen: a business, a school programme, a farm, an app. Add one and track it from idea to launch. Not sure what to build? The mentor has businesses with the numbers worked out.'));
+    const row = el('div', 'toolbar'); row.style.justifyContent = 'center';
+    const b = el('button', 'btn primary', 'New build'); b.type = 'button'; b.addEventListener('click', () => openSheet(null));
+    const x = el('button', 'btn', 'Add an example'); x.type = 'button'; x.addEventListener('click', () => addExample().then(() => toast('Example added. Open it to edit or delete it.')));
+    const m = el('button', 'btn', 'Ask the mentor'); m.type = 'button'; m.addEventListener('click', () => show('mentor', true));
+    row.append(b, m, x); e.append(row); body.append(e); return;
   }
   const rows = filtered();
   if (!rows.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'Nothing matches'), el('p', null, 'Clear the search or pick another stage.')); body.append(e); return; }
@@ -824,7 +837,6 @@ function renderSheet(force) {
   const ae = document.activeElement;
   const keepFocus = !force && ae && ae.id && $('sheet').contains(ae) ? { id: ae.id, value: ae.value, a: ae.selectionStart, z: ae.selectionEnd } : null;
   const scroll = force ? 0 : body.scrollTop;
-  const ro = !canEdit();
   body.replaceChildren(); foot.replaceChildren();
   queueMicrotask(() => {
     body.scrollTop = scroll;
@@ -839,13 +851,13 @@ function renderSheet(force) {
     const name = el('input', 'big'); name.id = 'f-name'; name.placeholder = 'Name your build'; name.maxLength = 80;
     const sector = selectOf('f-sector', SECTORS, 'Education & tech');
     const prio = selectOf('f-prio', PRIOS, 'Medium');
-    const vision = el('textarea'); vision.id = 'f-vision'; vision.placeholder = 'What will this achieve for the school and community?';
+    const vision = el('textarea'); vision.id = 'f-vision'; vision.placeholder = 'What will this achieve, and for whom?';
     const next = el('input'); next.id = 'f-next'; next.placeholder = 'The first concrete action';
     const target = el('input'); target.id = 'f-target'; target.type = 'month';
     const msg = el('div', 'err');
     const row = el('div', 'row2'); row.append(field('Sector', sector), field('Priority', prio));
     body.append(field('Build', name), row, field('Vision', vision), field('Next step', next), field('Target month', target), msg);
-    const save = el('button', 'btn primary', 'Add build'); save.type = 'button'; save.disabled = ro;
+    const save = el('button', 'btn primary', 'Add build'); save.type = 'button';
     save.addEventListener('click', () => {
       if (!name.value.trim()) { msg.textContent = 'Give the build a name first.'; name.focus(); return; }
       save.disabled = true;
@@ -859,15 +871,15 @@ function renderSheet(force) {
   }
   const b = S.builds.find((x) => x.id === S.open);
   if (!b) { $('sheet-title').textContent = 'Build'; body.append(el('p', 'note', 'This build was removed.')); return; }
-  $('sheet-title').textContent = 'Key build';
-  const name = el('input', 'big'); name.id = 'e-name'; name.value = b.build || ''; name.maxLength = 80; name.disabled = ro;
+  $('sheet-title').textContent = 'Build';
+  const name = el('input', 'big'); name.id = 'e-name'; name.value = b.build || ''; name.maxLength = 80;
   name.addEventListener('change', () => { const v = name.value.trim(); if (v && v !== b.build) patchBuild(b.id, { build: v }).then(() => toast('Renamed')).catch(() => {}); });
   body.append(field('Build', name));
 
   const stWrap = el('div', 'fld'); stWrap.append(el('span', 'lbl', 'Stage'));
   const st = el('div', 'stages'); st.setAttribute('role', 'group'); st.setAttribute('aria-label', 'Stage');
   for (const s of STAGES) {
-    const x = el('button', null, s); x.type = 'button'; x.disabled = ro;
+    const x = el('button', null, s); x.type = 'button';
     x.style.setProperty('--pc', 'var(' + STAGE_VAR[s] + ')');
     x.setAttribute('aria-pressed', stageOf(b) === s ? 'true' : 'false');
     x.addEventListener('click', () => { if (stageOf(b) !== s) patchBuild(b.id, { stage: s }).then(() => toast('Stage: ' + s)).catch(() => {}); });
@@ -875,26 +887,24 @@ function renderSheet(force) {
   }
   stWrap.append(st); body.append(stWrap);
 
-  const sector = selectOf('e-sector', SECTORS.includes(b.sector) ? SECTORS : [b.sector].concat(SECTORS), b.sector || 'Other'); sector.disabled = ro;
+  const sector = selectOf('e-sector', SECTORS.includes(b.sector) ? SECTORS : [b.sector].concat(SECTORS), b.sector || 'Other');
   sector.addEventListener('change', () => patchBuild(b.id, { sector: sector.value }).catch(() => {}));
-  const prio = selectOf('e-prio', PRIOS, b.priority || 'Medium'); prio.disabled = ro;
+  const prio = selectOf('e-prio', PRIOS, b.priority || 'Medium');
   prio.addEventListener('change', () => patchBuild(b.id, { priority: prio.value }).catch(() => {}));
   const row = el('div', 'row2'); row.append(field('Sector', sector), field('Priority', prio)); body.append(row);
 
-  const target = el('input'); target.type = 'month'; target.id = 'e-target'; target.value = b.target || ''; target.disabled = ro;
+  const target = el('input'); target.type = 'month'; target.id = 'e-target'; target.value = b.target || '';
   target.addEventListener('change', () => patchBuild(b.id, { target: target.value || '' }).catch(() => {}));
   const added = el('input'); added.id = 'e-added'; added.value = niceDate(b.added); added.disabled = true;
   const row2 = el('div', 'row2'); row2.append(field('Target month', target), field('Added', added)); body.append(row2);
 
-  const vision = el('textarea'); vision.id = 'e-vision'; vision.value = b.vision || ''; vision.disabled = ro;
+  const vision = el('textarea'); vision.id = 'e-vision'; vision.value = b.vision || '';
   vision.addEventListener('change', () => patchBuild(b.id, { vision: vision.value.trim() }).catch(() => {}));
   body.append(field('Vision', vision));
 
-  const next = el('textarea'); next.id = 'e-next'; next.value = b.next_step || ''; next.disabled = ro; next.style.minHeight = '60px';
+  const next = el('textarea'); next.id = 'e-next'; next.value = b.next_step || ''; next.style.minHeight = '60px';
   next.addEventListener('change', () => patchBuild(b.id, { next_step: next.value.trim() }).catch(() => {}));
   body.append(field('Next step', next));
-
-  const sig = el('div', 'signal'); sig.id = 'e-signal'; body.append(sig); fillSignal(sig, b);
 
   const tw = el('div', 'fld'); const ts = taskStats(b);
   tw.append(el('span', 'lbl', 'Tasks' + (ts.n ? ' · ' + ts.d + ' of ' + ts.n + ' done' : '')));
@@ -902,20 +912,20 @@ function renderSheet(force) {
   const tasks = Array.isArray(b.tasks) ? b.tasks.map((t) => ({ text: String(t.text || ''), done: !!t.done })) : [];
   tasks.forEach((t, i) => {
     const r = el('div', 'task' + (t.done ? ' done' : ''));
-    const cb = el('input'); cb.type = 'checkbox'; cb.checked = t.done; cb.id = 'e-task-' + i; cb.disabled = ro;
+    const cb = el('input'); cb.type = 'checkbox'; cb.checked = t.done; cb.id = 'e-task-' + i;
     cb.addEventListener('change', () => { const nt = tasks.map((x, j) => j === i ? { text: x.text, done: cb.checked } : x); patchBuild(b.id, { tasks: nt }).catch(() => {}); });
-    const tx = el('span', null, t.text); tx.addEventListener('click', () => { if (!ro) cb.click(); });
-    const del = el('button', null, '✕'); del.type = 'button'; del.setAttribute('aria-label', 'Remove task'); del.disabled = ro;
+    const tx = el('span', null, t.text); tx.addEventListener('click', () => { cb.click(); });
+    const del = el('button', null, '✕'); del.type = 'button'; del.setAttribute('aria-label', 'Remove task');
     del.addEventListener('click', () => { patchBuild(b.id, { tasks: tasks.filter((x, j) => j !== i) }).catch(() => {}); });
     r.append(cb, tx, del); list.append(r);
   });
-  const add = el('div', 'addtask'); const ti = el('input'); ti.id = 'e-newtask'; ti.placeholder = 'Add a task'; ti.maxLength = 140; ti.disabled = ro;
-  const ab = el('button', 'btn', 'Add'); ab.type = 'button'; ab.disabled = ro;
+  const add = el('div', 'addtask'); const ti = el('input'); ti.id = 'e-newtask'; ti.placeholder = 'Add a task'; ti.maxLength = 140;
+  const ab = el('button', 'btn', 'Add'); ab.type = 'button';
   const doAdd = () => { const v = ti.value.trim(); if (!v) { ti.focus(); return; } ti.value = ''; patchBuild(b.id, { tasks: tasks.concat([{ text: v, done: false }]) }).then(() => { const n = $('e-newtask'); if (n) n.focus(); }).catch(() => {}); };
   ab.addEventListener('click', doAdd); ti.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doAdd(); } });
   add.append(ti, ab); tw.append(list, add); body.append(tw);
 
-  const notes = el('textarea'); notes.id = 'e-notes'; notes.value = b.notes || ''; notes.placeholder = 'Contacts, costs, decisions, anything to remember'; notes.disabled = ro; notes.style.minHeight = '110px';
+  const notes = el('textarea'); notes.id = 'e-notes'; notes.value = b.notes || ''; notes.placeholder = 'Contacts, costs, decisions, anything to remember'; notes.style.minHeight = '110px';
   const savedLbl = el('span', 'saved', b.updated_at ? 'Saved ' + new Date(b.updated_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '');
   notes.addEventListener('input', () => {
     if (notesT) clearTimeout(notesT.t);
@@ -926,7 +936,7 @@ function renderSheet(force) {
   notes.addEventListener('blur', flushNotes);
   body.append(field('Notes', notes));
 
-  const del = el('button', 'btn danger', 'Delete build'); del.type = 'button'; del.disabled = ro;
+  const del = el('button', 'btn danger', 'Delete build'); del.type = 'button';
   let armed = false;
   del.addEventListener('click', () => {
     if (!armed) { armed = true; del.textContent = 'Tap again to delete'; setTimeout(() => { armed = false; del.textContent = 'Delete build'; }, 4000); return; }
@@ -934,22 +944,14 @@ function renderSheet(force) {
   });
   foot.append(del, savedLbl);
 }
-function fillSignal(sig, b) {
-  sig.replaceChildren();
-  sig.append(el('span', 'k', 'Latest signal' + (b.signal_date ? ' · ' + niceDate(b.signal_date) : '')));
-  sig.append(el('div', null, b.signal || (S.local ? 'No news signal yet.' : 'Claude will add a news signal for this build at the next morning update.')));
-  const u = safeUrl(b.signal_url);
-  if (u) { const a = el('a', 'src', (b.signal_source || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; sig.append(a); }
-}
-function refreshSignal() { const b = S.builds.find((x) => x.id === S.open); const s = $('e-signal'); if (b && s) fillSignal(s, b); }
 
 /* ---------- Today ---------- */
 function renderToday() {
   const items = (S.feed && Array.isArray(S.feed.news)) ? S.feed.news : [];
   $('n-today').textContent = items.length;
-  $('today-eyebrow').textContent = S.feed && S.feed.updated_at ? 'Updated ' + stamp(S.feed.updated_at) : 'Daily brief';
+  $('today-eyebrow').textContent = S.feed && S.feed.updated_at ? 'Updated ' + stamp(S.feed.updated_at) : 'News brief';
   const chips = $('news-chips'); chips.replaceChildren();
-  const cats = ['all', LOCAL, 'Education'].concat([...new Set(items.map((x) => x.category))].filter((c) => c && c !== LOCAL && c !== 'Education').sort());
+  const cats = ['all'].concat([...new Set(items.map((x) => x.category))].filter(Boolean).sort());
   for (const c of cats) {
     const n = c === 'all' ? items.length : items.filter((x) => x.category === c).length;
     if (c !== 'all' && !n) continue;
@@ -959,50 +961,15 @@ function renderToday() {
     chips.append(b);
   }
   const body = $('news-body'); body.replaceChildren();
-  if (!S.loadedFeed) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading the brief')); body.append(e); return; }
+  if (!S.loaded) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading the brief')); body.append(e); return; }
   if (!items.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'No brief yet'), el('p', null, liveNote('The morning update fills this page at about 6:34 every day.'))); body.append(e); return; }
-  const rows = items.filter((r) => S.news === 'all' || r.category === S.news).slice().sort((a, b) => (b.category === LOCAL) - (a.category === LOCAL) || String(b.date).localeCompare(String(a.date)));
+  const rows = items.filter((r) => S.news === 'all' || r.category === S.news).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
   for (const r of rows) {
-    const c = el('article', 'story' + (r.category === LOCAL ? ' local' : ''));
+    const c = el('article', 'story');
     const m = el('div', 'meta'); m.append(el('span', 'chip', r.category || 'News'), el('span', null, niceDate(r.date)));
     c.append(m, el('h3', null, r.headline), el('p', null, r.why_it_matters));
     const u = safeUrl(r.source_url); if (u) { const a = el('a', null, (r.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; c.append(a); }
     body.append(c);
-  }
-}
-
-/* ---------- Ideas ---------- */
-function isBuild(name) { const n = norm(name); return S.builds.some((b) => { const k = norm(b.build); return k && (k === n || k.startsWith(n) || n.startsWith(k)); }); }
-function renderIdeas() {
-  const items = (S.feed && Array.isArray(S.feed.ideas)) ? S.feed.ideas : [];
-  $('n-ideas').textContent = items.length;
-  $('ideas-eyebrow').textContent = S.feed && S.feed.updated_at ? 'Updated ' + stamp(S.feed.updated_at) : 'What we can build';
-  const body = $('ideas-body'); body.replaceChildren();
-  if (!S.loadedFeed) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading ideas')); body.append(e); return; }
-  if (!items.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'No ideas yet'), el('p', null, liveNote('New ideas arrive with the morning update.'))); body.append(e); return; }
-  const rows = items.slice().sort((a, b) => (b.pick === true) - (a.pick === true) || (Number(a.number) || 99) - (Number(b.number) || 99));
-  for (const r of rows) {
-    const c = el('article', 'idea' + (r.pick === true ? ' pick' : ''));
-    const m = el('div', 'meta');
-    if (r.number != null) m.append(el('span', 'num-badge', '#' + r.number));
-    m.append(el('span', 'chip', r.sector || ''));
-    if (r.pick === true) m.append(el('span', 'pick-badge', "Today's pick"));
-    c.append(m, el('h3', null, r.idea), el('p', 'trend', 'Trend: ' + (r.trend || '')), el('p', null, r.build || ''));
-    if (r.pick === true && r.pick_reason) c.append(el('p', 'why', r.pick_reason));
-    const act = el('div', 'act');
-    act.append(el('span', 'meta', 'For ' + (r.fit || '') + ' · ' + (r.effort || '') + ' effort'));
-    if (isBuild(r.idea)) act.append(el('span', 'added', '✓ In your builds'));
-    else {
-      const b = el('button', 'btn' + (r.pick === true ? ' primary' : ''), 'Add to key builds'); b.type = 'button'; b.disabled = !canEdit();
-      b.addEventListener('click', () => {
-        b.disabled = true;
-        const story = (S.feed.news || []).find((n) => norm(n.headline).length && r.trend && norm(r.trend).split(' ').filter((w) => w.length > 4).some((w) => norm(n.headline).includes(w)));
-        createBuild({ build: r.idea, sector: SECTORS.includes(r.sector) ? r.sector : (r.sector || 'Other'), vision: r.build || '', stage: 'Exploring', priority: 'Medium', signal: r.trend || '', signal_date: story ? story.date : (S.feed.date || today()), signal_source: story ? story.source_name : '', signal_url: story ? story.source_url : '', next_step: '', from_idea: true })
-          .then(() => toast('Added to your key builds')).catch(() => { b.disabled = false; });
-      });
-      act.append(b);
-    }
-    c.append(act); body.append(c);
   }
 }
 
@@ -1097,22 +1064,20 @@ function drawStructure() {
 function renderProjects() {
   const tiles = $('proj-tiles'); tiles.replaceChildren();
   const p = PROJECTS.map((x) => x.progress).sort((a, b) => a - b); const mid = (p[(p.length - 1) >> 1] + p[p.length >> 1]) / 2;
-  const sud = PROJECTS.filter((x) => x.province === LOCAL);
   const cost = PROJECTS.reduce((s, x) => s + (x.cost || 0), 0);
-  for (const [k, v, s] of [['Projects tracked', String(PROJECTS.length), 'Pride projects plus Arun-3, Pancheshwar'], ['Complete or nearly', String(PROJECTS.filter((x) => x.progress >= 98).length), '98% or more built'], ['Median progress', fmt1(mid) + '%', 'Physical progress'], ['Sudurpashchim average', Math.round(sud.reduce((s, x) => s + x.progress, 0) / sud.length) + '%', sud.length + ' projects in your province'], ['Known cost', 'Rs ' + fmt0(cost) + 'B', 'Where an estimate is published']]) {
+  for (const [k, v, s] of [['Projects tracked', String(PROJECTS.length), 'Pride projects plus Arun-3, Pancheshwar'], ['Complete or nearly', String(PROJECTS.filter((x) => x.progress >= 98).length), '98% or more built'], ['Median progress', fmt1(mid) + '%', 'Physical progress'], ['Known cost', 'Rs ' + fmt0(cost) + 'B', 'Where an estimate is published']]) {
     const t = el('div', 'tile'); t.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(t);
   }
   const chips = $('proj-chips'); chips.replaceChildren();
-  for (const [k, l] of [['all', 'All'], [LOCAL, LOCAL], ['Energy', 'Energy'], ['Roads', 'Roads'], ['Irrigation', 'Irrigation'], ['other', 'Airports, water & other']]) {
+  for (const [k, l] of [['all', 'All'], ['Energy', 'Energy'], ['Roads', 'Roads'], ['Irrigation', 'Irrigation'], ['other', 'Airports, water & other']]) {
     const b = el('button', 'fchip', l); b.type = 'button'; b.setAttribute('aria-pressed', S.proj === k ? 'true' : 'false');
     b.addEventListener('click', () => { S.proj = k; renderProjects(); }); chips.append(b);
   }
-  const keep = (x) => S.proj === 'all' || (S.proj === LOCAL ? x.province === LOCAL : S.proj === 'other' ? !['Energy', 'Roads', 'Irrigation'].includes(x.sector) : x.sector === S.proj);
+  const keep = (x) => S.proj === 'all' || (S.proj === 'other' ? !['Energy', 'Roads', 'Irrigation'].includes(x.sector) : x.sector === S.proj);
   const tb = $('proj-body'); tb.replaceChildren();
   for (const x of PROJECTS.filter(keep).sort((a, b) => b.progress - a.progress)) {
     const tr = el('tr');
     const n = el('td'); n.append(el('div', null, x.name)); const sm = el('div', 'meta', x.sector); n.append(sm);
-    if (x.province === LOCAL) { const c = el('span', 'chip', 'Your province'); c.style.borderColor = css('--accent'); sm.append(' ', c); }
     const pr = el('td', 'num'); const bar = el('span', 'pbar'); const f = el('i'); f.style.width = Math.min(100, x.progress) + '%';
     f.style.background = x.progress >= 98 ? css('--ok') : x.progress >= 50 ? css('--st-exploring') : x.progress >= 20 ? css('--warn') : css('--bad');
     bar.append(f); pr.append(bar, fmt1(x.progress) + '%');
@@ -1131,7 +1096,7 @@ function renderBusiness() {
   const body = $('biz-body'); body.replaceChildren();
   const evs = $('biz-events'); evs.replaceChildren();
   const chips = $('biz-chips'); chips.replaceChildren();
-  if (!S.loadedBiz) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading business news')); body.append(e); return; }
+  if (!S.loaded) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading business news')); body.append(e); return; }
   if (!b) { const e = el('div', 'empty'); e.append(el('h3', null, 'No business brief yet'), el('p', null, liveNote('The morning update fills this page every day.'))); body.append(e); return; }
   for (const t of (b.indicators || [])) {
     const x = el('div', 'tile'); x.append(el('div', 'k', t.label), el('div', 'v', t.value));
@@ -1173,9 +1138,9 @@ function renderNepse() {
   const m = S.nepse;
   const tiles = $('nepse-tiles'); tiles.replaceChildren();
   for (const id of ['nepse-chart', 'nepse-sectors', 'nepse-turnover', 't-gain', 't-lose', 't-turn', 't-issues']) $(id).replaceChildren();
-  if (!S.loadedNepse || !m || !m.index) {
+  if (!S.loaded || !m || !m.index) {
     $('n-nepse').textContent = '–';
-    const e = el('div', 'empty'); e.append(el('h3', null, S.loadedNepse ? 'No market data yet' : 'Loading market data'), el('p', null, liveNote('The morning update brings the last session’s close.')));
+    const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No market data yet' : 'Loading market data'), el('p', null, liveNote('The morning update brings the last session’s close.')));
     tiles.append(e); return;
   }
   const ix = m.index;
@@ -1294,8 +1259,8 @@ function drawHBars(box, rows, fmtV) {
 
 /* ---------- Invest ---------- */
 const INV = { amount: 1000000, monthly: 0, years: 10, infl: null, scen: 'mid' };
-try { const s = JSON.parse(localStorage.getItem('nd-invest') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(INV)) if (k in s) INV[k] = s[k]; } catch (e) {}
-const saveInv = () => { try { localStorage.setItem('nd-invest', JSON.stringify(INV)); } catch (e) {} };
+try { const s = JSON.parse(localStorage.getItem('n1-invest') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(INV)) if (k in s) INV[k] = s[k]; } catch (e) {}
+const saveInv = () => { try { localStorage.setItem('n1-invest', JSON.stringify(INV)); } catch (e) {} };
 const rs = (n) => 'Rs ' + Math.round(Number(n) || 0).toLocaleString('en-IN');
 const lakh = (n) => (Number(n) / 1e5).toLocaleString('en-IN', { maximumFractionDigits: 1 }) + ' lakh';
 const INV_COLORS = ['--st-exploring', '--st-launched', '--st-planning', '--accent', '--faint', '--c6'];
@@ -1355,7 +1320,7 @@ function renderInvest() {
   $('inv-chart').replaceChildren(); $('inv-legend').replaceChildren();
   const opts = d && Array.isArray(d.options) ? d.options : [];
   $('inv-eyebrow').textContent = d && d.as_of ? 'Compare and project · rates as of ' + niceDate(d.as_of) : 'Compare and project';
-  if (!opts.length) { const tr = el('tr'); const td = el('td', 'dim', S.loadedInvest ? liveNote('No rates yet. The morning update fills these in.') : 'Loading rates…'); td.colSpan = 4; tr.append(td); tb.append(tr); $('inv-foot').textContent = ''; return; }
+  if (!opts.length) { const tr = el('tr'); const td = el('td', 'dim', S.loaded ? liveNote('No rates yet. The morning update fills these in.') : 'Loading rates…'); td.colSpan = 4; tr.append(td); tb.append(tr); $('inv-foot').textContent = ''; return; }
   const P = Math.max(0, Number(INV.amount) || 0), M = Math.max(0, Number(INV.monthly) || 0), Y = Math.min(30, Math.max(1, Math.round(Number(INV.years) || 1)));
   const infl = (INV.infl != null && INV.infl !== '' ? Number(INV.infl) : Number(d.inflation && d.inflation.rate)) || 0;
   const defl = Math.pow(1 + infl / 100, Y);
@@ -1382,7 +1347,6 @@ function renderInvest() {
     tr.append(c, rc, vc, pc); tb.append(tr);
   }
   drawInvest(res, Y);
-  renderPlan(opts, Y, defl);
   for (const x of res) {
     const c = el('article', 'story opt-card');
     const h = el('h3'); h.append(el('span', null, x.o.name), riskPill(x.o.risk)); c.append(h);
@@ -1401,87 +1365,20 @@ function renderInvest() {
   foot.append((d.disclaimer || '') + ' Interest is taxed each year and reinvested; share gains are taxed once when sold at the end; monthly additions go in at the end of each month. ');
   if (d.inflation) { foot.append('Inflation default: ' + (d.inflation.note || '') + ' '); const u = safeUrl(d.inflation.source_url); if (u) { const a = el('a', 'src', (d.inflation.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; foot.append(a); } }
 }
-const PLAN_DEFAULT = { total: 50000000, alloc: { fd: 10, bond: 20, febond: 0, nepse: 20, gold: 10, realestate: 40, rental: 0 } };
-const PLAN = JSON.parse(JSON.stringify(PLAN_DEFAULT));
-let planFromDb = false, planT = null, planRows = {}, planKey = '';
-try { const s = JSON.parse(localStorage.getItem('nd-plan') || 'null'); if (s && s.alloc) { PLAN.total = Number(s.total) || PLAN.total; PLAN.alloc = Object.assign({}, PLAN.alloc, s.alloc); } } catch (e) {}
-function savePlan() {
-  try { localStorage.setItem('nd-plan', JSON.stringify(PLAN)); } catch (e) {}
-  clearTimeout(planT);
-  planT = setTimeout(() => {
-    if (!db || !S.canWrite) { $('plan-saved').textContent = 'Saved on this device.'; return; }
-    db.doc('invest/plan').set({ total: PLAN.total, alloc: PLAN.alloc, updated_at: new Date().toISOString() })
-      .then(() => { $('plan-saved').textContent = 'Plan saved. It opens the same way on your other devices.'; })
-      .catch(() => { $('plan-saved').textContent = 'Saved on this device only; the shared copy did not save.'; });
-  }, 900);
-}
-function applyPlanDoc(d) {
-  if (!d || typeof d !== 'object' || !d.alloc) return;
-  const box = $('v-invest'); if (box && box.contains(document.activeElement) && document.activeElement.closest('#plan-body, #plan-total')) return;
-  PLAN.total = Number(d.total) || PLAN.total; PLAN.alloc = Object.assign({}, PLAN.alloc, d.alloc); planFromDb = true;
-}
-function renderPlan(opts, Y, defl) {
-  const tb = $('plan-body'), ft = $('plan-foot');
-  const key = opts.map((o) => o.id).join('|');
-  if (key !== planKey) {
-    planKey = key; planRows = {}; tb.replaceChildren();
-    for (const o of opts) {
-      const tr = el('tr'); const c = el('td');
-      const nm = el('div'); const dot = el('i', 'dot'); dot.style.setProperty('--pc', 'var(' + INV_COLORS[opts.indexOf(o) % INV_COLORS.length] + ')'); nm.append(dot, ' ', el('span', 'opt-name', o.name));
-      const meta = el('div', 'meta'); meta.style.marginTop = '4px'; meta.append(riskPill(o.risk)); const amt = el('span', 'only-sm'); meta.append(amt);
-      c.append(nm, meta);
-      const pc = el('td', 'r'); const inp = el('input', 'pct'); inp.type = 'number'; inp.min = '0'; inp.max = '100'; inp.step = '5'; inp.inputMode = 'decimal'; inp.id = 'plan-pct-' + o.id; inp.setAttribute('aria-label', 'Share for ' + o.name + ', percent');
-      inp.addEventListener('input', () => { PLAN.alloc[o.id] = inp.value === '' ? 0 : Math.max(0, Math.min(100, Number(inp.value) || 0)); savePlan(); renderInvest(); });
-      pc.append(inp);
-      const cA = el('td', 'r num hide-sm'), cL = el('td', 'r num hide-sm'), cM = el('td', 'r num'), cH = el('td', 'r num hide-sm');
-      tr.append(c, pc, cA, cL, cM, cH); tb.append(tr);
-      planRows[o.id] = { inp, amt, cA, cL, cM, cH };
-    }
-  }
-  const tot = $('plan-total'); if (document.activeElement !== tot) tot.value = String(PLAN.total);
-  const T = Math.max(0, Number(PLAN.total) || 0);
-  let sum = 0; const sums = { low: 0, mid: 0, high: 0 }; let usedAmt = 0;
-  for (const o of opts) {
-    const pct = Number(PLAN.alloc[o.id]) || 0; sum += pct;
-    const a = T * pct / 100; usedAmt += a;
-    const row = planRows[o.id]; if (document.activeElement !== row.inp) row.inp.value = String(pct);
-    const v = {}; for (const s of ['low', 'mid', 'high']) { const p = project(o, a, 0, Y, s); v[s] = p[p.length - 1].v; sums[s] += v[s]; }
-    row.amt.textContent = a ? rs(a) : '';
-    row.cA.textContent = a ? rs(a) : '–'; row.cL.textContent = a ? rs(v.low) : '–'; row.cM.textContent = a ? rs(v.mid) : '–'; row.cH.textContent = a ? rs(v.high) : '–';
-  }
-  const ps = $('plan-sum'); ps.textContent = fmt1(sum) + '%' + (Math.abs(sum - 100) > 0.01 ? (sum < 100 ? ' · ' + fmt1(100 - sum) + '% not placed' : ' · over by ' + fmt1(sum - 100) + '%') : '');
-  ps.classList.toggle('off', Math.abs(sum - 100) > 0.01);
-  $('plan-col').textContent = 'Expected after ' + Y + (Y === 1 ? ' yr' : ' yrs');
-  ft.replaceChildren(); const fr = el('tr');
-  fr.append(el('td', null, 'Whole plan'), el('td', 'r num', fmt1(sum) + '%'), el('td', 'r num hide-sm', rs(usedAmt)), el('td', 'r num hide-sm', rs(sums.low)), el('td', 'r num', rs(sums.mid)), el('td', 'r num hide-sm', rs(sums.high)));
-  ft.append(fr);
-  const tiles = $('plan-tiles'); tiles.replaceChildren();
-  const tile = (k, v, s) => { const t = el('div', 'tile'); t.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(t); };
-  const crore = (n) => (n / 1e7).toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' cr';
-  const big = (n) => Math.abs(n) >= 1e7 ? 'Rs ' + crore(n) : lakh(n);
-  if (usedAmt > 0) {
-    const cagr = (Math.pow(sums.mid / usedAmt, 1 / Y) - 1) * 100;
-    tile('Expected value', big(sums.mid), 'After ' + Y + ' years · ' + fmt1(cagr) + '% a year');
-    tile('Expected profit', (sums.mid >= usedAmt ? '+' : '−') + big(Math.abs(sums.mid - usedAmt)).replace('Rs ', ''), 'On ' + big(usedAmt) + ' put in');
-    tile("In today's money", big(sums.mid / defl), 'Keeping up needs ' + big(usedAmt * defl));
-    tile('Range', big(sums.low) + ' – ' + big(sums.high), 'All options low vs all high');
-  }
-}
 function renderPlaces() {
   const box = $('pl-cards'); box.replaceChildren();
   const d = S.places; const list = d && Array.isArray(d.places) ? d.places.slice() : [];
   $('pl-note').textContent = d && d.note ? d.note + (d.as_of ? ' Updated ' + niceDate(d.as_of) + '.' : '') : 'Where published data or big projects point to rising demand for land.';
-  if (!list.length) { box.append(el('p', 'note', S.loadedInvest ? 'No places listed yet.' : 'Loading places…')); return; }
+  if (!list.length) { box.append(el('p', 'note', S.loaded ? 'No places listed yet.' : 'Loading places…')); return; }
   const good = ['Strong drivers', 'Recovering fastest'], weak = ['Mixed', 'Weak signals'];
   const rankO = (o) => good.includes(o) ? 0 : weak.includes(o) ? 2 : 1;
-  list.sort((a, b) => (b.local === true) - (a.local === true) || rankO(a.outlook) - rankO(b.outlook));
+  list.sort((a, b) => rankO(a.outlook) - rankO(b.outlook));
   for (const pl of list) {
-    const c = el('article', 'story place-card' + (pl.local === true ? ' local' : ''));
+    const c = el('article', 'story place-card');
     const h = el('h3'); h.append(el('span', null, pl.name || ''));
     if (pl.outlook) h.append(el('span', 'status ' + (good.includes(pl.outlook) ? 'open' : weak.includes(pl.outlook) ? 'bad' : 'warn'), pl.outlook));
     c.append(h);
     const meta = el('div', 'meta'); meta.append(el('span', 'chip', [pl.area, pl.province].filter(Boolean).join(' · ')));
-    if (pl.local === true) { const y = el('span', 'chip', 'Your province'); y.style.borderColor = css('--accent'); meta.append(y); }
     c.append(meta);
     if (pl.signal) c.append(el('p', 'sig', pl.signal));
     const list2 = (label, items) => { if (!Array.isArray(items) || !items.length) return; c.append(el('div', 'k', label)); const ul = el('ul'); for (const t of items) ul.append(el('li', null, t)); c.append(ul); };
@@ -1524,73 +1421,187 @@ for (const [id, key, int] of [['inv-amount', 'amount', true], ['inv-monthly', 'm
   $(id).addEventListener('input', (e) => { const v = e.target.value; INV[key] = v === '' ? (key === 'infl' ? null : 0) : (int ? Math.round(Number(v)) : Number(v)); saveInv(); renderInvest(); });
 }
 document.querySelectorAll('#inv-scen [data-scen]').forEach((b) => b.addEventListener('click', () => { INV.scen = b.dataset.scen; saveInv(); renderInvest(); }));
-$('plan-total').addEventListener('input', (e) => { PLAN.total = Math.max(0, Math.round(Number(e.target.value) || 0)); savePlan(); renderInvest(); });
-$('plan-reset').addEventListener('click', () => { PLAN.total = PLAN_DEFAULT.total; PLAN.alloc = Object.assign({}, PLAN_DEFAULT.alloc); savePlan(); renderInvest(); toast('Plan reset to the Rs 5 crore model split'); });
+
+/* ---------- Mentor ----------
+   Sizes each business to the visitor's budget. All figures come from data.json (mentor.ideas):
+   setup and first_cycle are rupees per unit, cost_year and profit are rupees per unit a year. */
+const MEN = { budget: 500000, where: 'all', sort: 'return' };
+try { const s = JSON.parse(localStorage.getItem('n1-mentor') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(MEN)) if (k in s) MEN[k] = s[k]; } catch (e) {}
+const saveMen = () => { try { localStorage.setItem('n1-mentor', JSON.stringify(MEN)); } catch (e) {} };
+const menFold = new Map();
+const about = (n) => rs(Math.round(Number(n) / 100) * 100);
+function mentorCalc(o, budget) {
+  const per = Number(o.setup) + Number(o.first_cycle), sc = o.scale || { min: 1, max: 1, step: 1 }, p = o.profit || {};
+  let n = Math.floor(Math.max(0, budget) / per / sc.step) * sc.step;
+  const fits = n >= sc.min;
+  n = fits ? Math.min(n, sc.max) : sc.min;
+  const start = n * per, setup = n * Number(o.setup), mid = n * Number(p.mid);
+  return { n, fits, minStart: sc.min * per, capped: fits && n === sc.max && budget >= (sc.max + sc.step) * per, start, setup, mid, month: mid / 12,
+    low: p.low == null ? null : n * p.low, high: p.high == null ? null : n * p.high,
+    ret: start ? mid / start * 100 : 0, payback: setup > 0 && mid > 0 ? setup / mid : 0,
+    back: (Number(o.cost_year) + Number(p.mid)) / Number(o.cost_year) * 100 };
+}
+function sizeText(o, n) {
+  const s = Array.isArray(o.size) ? o.size[n === 1 ? 0 : 1] : '{n} units';
+  return String(s).replace('{n}', Number(n).toLocaleString('en-IN'));
+}
+function landText(o, n) {
+  if (!o.land) return '';
+  const a = n * (Number(o.area_factor) || 0);
+  return String(o.land).replace('{n}', Number(n).toLocaleString('en-IN')).replace('{a}', a.toLocaleString('en-IN', { maximumFractionDigits: 1 }));
+}
+const spanText = (y) => y < 1 ? Math.max(1, Math.round(y * 12)) + ' months' : fmt1(y) + ' years';
+function adoptIdea(o, c) {
+  const size = sizeText(o, c.n), steps = Array.isArray(o.steps) ? o.steps : [];
+  const notes = ['Mentor estimate, ' + niceDate(S.mentor.as_of) + '.', 'Size: ' + size + '.', 'Money to start: ' + rs(c.start) + '.',
+    'Expected profit: about ' + about(c.month) + ' a month (' + about(c.mid) + ' a year).'];
+  if (c.low != null && c.high != null) notes.push('Studies range from ' + about(c.low / 12) + ' to ' + about(c.high / 12) + ' a month.');
+  if (Array.isArray(o.watch) && o.watch.length) notes.push('Watch out: ' + o.watch.join(' '));
+  notes.push('These are estimates. Check local prices before spending money.');
+  return createBuild({ build: o.name, sector: SECTORS.includes(o.sector) ? o.sector : 'Other', stage: 'Exploring', priority: 'Medium',
+    vision: 'Run ' + size + ' and earn about ' + about(c.month) + ' a month once it is running.',
+    next_step: steps[0] || '', tasks: steps.map((x) => ({ text: String(x), done: false })), notes: notes.join('\n'), from_mentor: o.id });
+}
+function mentorCard(o, c, pick) {
+  const card = el('article', 'idea' + (pick ? ' pick' : ''));
+  const meta = el('div', 'meta'); meta.append(el('span', 'chip', o.sector || 'Business'), riskPill(o.risk));
+  if (pick) meta.append(el('span', 'pick-badge', "Mentor's pick"));
+  if (!c.fits) meta.append(el('span', 'status bad', 'Above your budget'));
+  card.append(meta, el('h3', null, o.name));
+  const size = sizeText(o, c.n);
+  card.append(el('p', null, !c.fits ? 'Needs about ' + rs(c.start) + ' for the smallest sensible size: ' + size + '.'
+    : c.capped ? 'Your money covers more than the largest size we plan for: ' + size + '. That uses ' + rs(c.start) + '.'
+    : 'With ' + rs(MEN.budget) + ' you could run ' + size + '.'));
+  if (pick) card.append(el('p', 'why', 'Best return on your money among the lower-risk options that fit your budget and place.'));
+  const dl = el('dl', 'mgrid');
+  const row = (k, v, sub) => { const d = el('div'); const dd = el('dd', null, v); if (sub) dd.append(el('small', null, sub)); d.append(el('dt', null, k), dd); dl.append(d); };
+  row('Money to start', rs(c.start), c.setup > 0 ? rs(c.setup) + ' set-up, the rest runs the first ' + (o.cycle || 'year') : 'Runs the first ' + (o.cycle || 'year') + '. No set-up cost.');
+  row('Profit a month', about(c.month), about(c.mid) + ' a year, expected');
+  row('Set-up paid back in', c.setup > 0 ? spanText(c.payback) : 'First harvest', c.setup > 0 ? 'from expected profit' : 'nothing to build');
+  row('For every Rs 100 spent', 'Rs ' + Math.round(c.back) + ' back', 'on running costs');
+  card.append(dl);
+  card.append(el('p', 'fine', c.low != null && c.high != null ? 'Studies range from ' + about(c.low / 12) + ' to ' + about(c.high / 12) + ' a month at this size.' : 'Only one study gives a profit figure, so there is no range.'));
+  const land = landText(o, c.n); if (land) card.append(el('p', 'fine', 'You need: ' + land));
+  const fold = (key, title, fill) => {
+    const d = el('details'), k = o.id + key, s = el('summary', null, title);
+    d.open = menFold.has(k) ? menFold.get(k) : (pick && key === ':advice');
+    s.addEventListener('click', () => menFold.set(k, !d.open));
+    d.append(s); fill(d); card.append(d);
+  };
+  fold(':advice', "Mentor's advice", (d) => {
+    if (o.why) d.append(el('p', null, o.why));
+    if (o.where) d.append(el('p', 'fine', 'Where it fits: ' + o.where));
+    const list = (label, items, tag) => { if (!Array.isArray(items) || !items.length) return; d.append(el('div', 'k', label)); const l = el(tag); for (const x of items) l.append(el('li', null, x)); d.append(l); };
+    list('First steps', o.steps, 'ol'); list('Watch out', o.watch, 'ul');
+  });
+  fold(':how', 'How these numbers are worked out', (d) => {
+    d.append(el('p', null, 'For ' + sizeText(o, 1) + ': ' + (Number(o.setup) > 0 ? 'set-up ' + rs(o.setup) + ', ' : 'no set-up cost, ') + 'running cost ' + rs(o.cost_year) + ' a year, expected profit ' + rs(o.profit.mid) + ' a year.'));
+    if (o.basis) d.append(el('p', null, o.basis));
+    if (o.evidence) d.append(el('p', 'fine', 'Evidence: ' + o.evidence + '.'));
+    const srcs = el('div', 'srcs');
+    for (const s of (Array.isArray(o.sources) ? o.sources : [])) { const u = safeUrl(s.url); if (u) { const a = el('a', 'src', (s.name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; srcs.append(a); } }
+    d.append(srcs);
+  });
+  const act = el('div', 'act');
+  act.append(el('span', 'meta', Math.round(c.ret) + '% a year on the money to start'));
+  if (S.builds.some((b) => b.from_mentor === o.id)) act.append(el('span', 'added', '✓ In My builds'));
+  else {
+    const b = el('button', 'btn' + (pick ? ' primary' : ''), 'Add to My builds'); b.type = 'button';
+    b.addEventListener('click', () => { b.disabled = true; adoptIdea(o, c).then(() => toast('Added to My builds with its first steps as tasks')); });
+    act.append(b);
+  }
+  card.append(act);
+  return card;
+}
+function renderMentor() {
+  const d = S.mentor, body = $('mentor-body'), tiles = $('mentor-tiles'), foot = $('mentor-foot'), wp = $('mentor-watch-panel');
+  body.replaceChildren(); tiles.replaceChildren(); foot.replaceChildren(); wp.hidden = true;
+  const bi = $('mentor-budget'); if (document.activeElement !== bi) bi.value = String(MEN.budget);
+  $('mentor-sort').value = MEN.sort;
+  document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.where === MEN.where)));
+  $('mentor-eyebrow').textContent = d && d.as_of ? 'Business mentor · figures gathered ' + niceDate(d.as_of) : 'Business mentor';
+  const ideas = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
+  if (!ideas.length) { const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No businesses listed yet' : 'Loading the mentor')); body.append(e); return; }
+  const budget = Math.max(0, Number(MEN.budget) || 0);
+  let rows = ideas.filter((o) => MEN.where === 'all' || (Array.isArray(o.regions) && o.regions.includes(MEN.where))).map((o) => ({ o, c: mentorCalc(o, budget) }));
+  const by = { profit: (a, b) => b.c.month - a.c.month, return: (a, b) => b.c.ret - a.c.ret, start: (a, b) => a.c.minStart - b.c.minStart }[MEN.sort] || ((a, b) => b.c.ret - a.c.ret);
+  rows.sort((a, b) => (b.c.fits - a.c.fits) || by(a, b));
+  const fit = rows.filter((x) => x.c.fits);
+  const pick = fit.filter((x) => x.o.risk !== 'High').sort((a, b) => b.c.ret - a.c.ret)[0];
+  if (pick) rows = [pick].concat(rows.filter((x) => x !== pick));
+  const tile = (k, v, s) => { const x = el('div', 'tile'); x.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(x); };
+  if (fit.length) {
+    const top = fit.slice().sort((a, b) => b.c.month - a.c.month)[0], best = fit.slice().sort((a, b) => b.c.ret - a.c.ret)[0], cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
+    tile('Most profit a month', about(top.c.month), top.o.name + ' · ' + (top.o.risk || '') + ' risk');
+    tile('Best return a year', Math.round(best.c.ret) + '%', best.o.name + ' · ' + (best.o.risk || '') + ' risk');
+    tile('Smallest way to start', rs(cheap.c.minStart), cheap.o.name + ' · ' + sizeText(cheap.o, cheap.o.scale.min));
+  } else if (rows.length) {
+    const cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
+    tile('Nothing fits this budget yet', rs(cheap.c.minStart), 'is the least you need: ' + cheap.o.name + ', ' + sizeText(cheap.o, cheap.o.scale.min));
+  }
+  if (!rows.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'Nothing listed for this place yet'), el('p', null, 'Choose Anywhere to see every business.')); body.append(e); }
+  for (const x of rows) body.append(mentorCard(x.o, x.c, x === pick));
+  const watch = d && Array.isArray(d.watch) ? d.watch : [];
+  if (watch.length) {
+    wp.hidden = false; const box = $('mentor-watch'); box.replaceChildren();
+    for (const w of watch) {
+      const r = el('div', 'wrow'); r.append(el('b', null, w.name || ''), el('p', null, w.finding || ''));
+      const srcs = el('div', 'srcs');
+      for (const s of (Array.isArray(w.sources) ? w.sources : [])) { const u = safeUrl(s.url); if (u) { const a = el('a', 'src', (s.name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; srcs.append(a); } }
+      r.append(srcs); box.append(r);
+    }
+  }
+  foot.textContent = (d.disclaimer || '') + ' Money to start is the set-up cost plus the running costs of the first batch or year. Sizes stay between a smallest sensible size and a largest size for each business.';
+}
+$('mentor-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderMentor(); });
+$('mentor-sort').addEventListener('change', (e) => { MEN.sort = e.target.value; saveMen(); renderMentor(); });
+document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderMentor(); }));
 
 /* ---------- Routing ---------- */
-const TABS = ['builds', 'today', 'ideas', 'business', 'nepse', 'invest', 'economy', 'projects'];
+const TABS = ['today', 'builds', 'mentor', 'business', 'nepse', 'invest', 'economy', 'projects'];
 function show(tab, push) {
-  if (!TABS.includes(tab)) tab = 'builds';
+  if (!TABS.includes(tab)) tab = 'today';
   S.tab = tab;
   for (const t of TABS) { $('v-' + t).hidden = t !== tab; $('tab-' + t).setAttribute('aria-selected', t === tab ? 'true' : 'false'); }
   if (push && location.hash.slice(1) !== tab) location.hash = tab;
   if (tab === 'economy') renderEconomy();
   if (tab === 'projects') renderProjects();
   if (tab === 'today') renderToday();
-  if (tab === 'ideas') renderIdeas();
   if (tab === 'business') renderBusiness();
   if (tab === 'nepse') renderNepse();
   if (tab === 'invest') renderInvest();
   if (tab === 'builds') renderBuilds();
+  if (tab === 'mentor') renderMentor();
+  const asof = $('asof'); asof.hidden = tab === 'builds' || tab === 'mentor' || !asof.textContent;
   window.scrollTo(0, 0);
 }
-function renderLive() { renderBuilds(); renderToday(); renderIdeas(); renderBusiness(); renderNepse(); if (S.open) renderSheet(false); }
 
 document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => show(b.dataset.tab, true)));
 window.addEventListener('hashchange', () => show(location.hash.slice(1), false));
 $('new-build').addEventListener('click', () => openSheet(null));
 $('q').addEventListener('input', (e) => { S.q = e.target.value; renderBuilds(); });
 $('sort').addEventListener('change', (e) => { S.sort = e.target.value; renderBuilds(); });
-$('vw-board').addEventListener('click', () => { S.view = 'board'; try { localStorage.setItem('vd-view', 'board'); } catch (e) {} renderBuilds(); });
-$('vw-list').addEventListener('click', () => { S.view = 'list'; try { localStorage.setItem('vd-view', 'list'); } catch (e) {} renderBuilds(); });
+$('vw-board').addEventListener('click', () => { S.view = 'board'; try { localStorage.setItem('n1-view', 'board'); } catch (e) {} renderBuilds(); });
+$('vw-list').addEventListener('click', () => { S.view = 'list'; try { localStorage.setItem('n1-view', 'list'); } catch (e) {} renderBuilds(); });
 $('sheet-close').addEventListener('click', closeSheet);
 $('scrim').addEventListener('click', closeSheet);
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && S.open) closeSheet(); });
+/* Keep two open tabs of the site in step. */
+window.addEventListener('storage', (e) => { if (e.key === LKEY) { S.builds = loadLocal(); renderBuilds(); if (S.open) renderSheet(false); } });
+try { const v = localStorage.getItem('n1-view'); if (v === 'list' || v === 'board') S.view = v; } catch (e) {}
+S.builds = loadLocal(); renderBuilds();
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (S.tab === 'economy') renderEconomy(); if (S.tab === 'projects') renderProjects(); if (S.tab === 'nepse') renderNepse(); if (S.tab === 'invest') renderInvest(); }); } catch (e) {}
 let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (S.tab === 'economy') { drawScenarios(); drawGrowth(); drawStructure(); } if (S.tab === 'nepse') renderNepse(); if (S.tab === 'invest') renderInvest(); }, 150); });
 document.querySelectorAll('[data-range]').forEach((b) => b.addEventListener('click', () => { S.range = Number(b.dataset.range); renderNepse(); }));
-try { const v = localStorage.getItem('vd-view'); if (v === 'list' || v === 'board') S.view = v; } catch (e) {}
 
 header();
 setInterval(header, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) header(); });
-show(location.hash.slice(1) || 'builds', false);
+S.tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'today';
+show(S.tab, false);
 
-async function connect() {
-  if (!window.claude || !window.claude.use) { deviceMode(); return; }
-  db = await window.claude.use('db');
-  const user = await window.claude.use('user');
-  if (user) { try { const c = await user.can('data.write'); if (c === false) S.canWrite = false; } catch (e) {} }
-  if (!db) { deviceMode(); return; }
-  if (!S.canWrite) $('offline').hidden = false;
-  db.collection('builds').onSnapshot((snap) => {
-    S.builds = snap.docs.map((d) => Object.assign({ id: d.id }, d.data()));
-    S.loadedBuilds = true; renderBuilds(); renderIdeas(); if (S.open) renderSheet(false);
-  }, () => { S.loadedBuilds = true; renderBuilds(); toast('Your builds could not load. Reopen the page to retry.'); });
-  db.doc('feed/today').onSnapshot((snap) => {
-    S.feed = snap.exists ? snap.data() : null; S.loadedFeed = true; header(); renderToday(); renderIdeas();
-  }, () => { S.loadedFeed = true; renderToday(); renderIdeas(); });
-  db.doc('business/today').onSnapshot((snap) => { S.biz = snap.exists ? snap.data() : null; S.loadedBiz = true; header(); if (S.tab === 'business') renderBusiness(); },
-    () => { S.loadedBiz = true; if (S.tab === 'business') renderBusiness(); });
-  db.doc('market/nepse').onSnapshot((snap) => { S.nepse = snap.exists ? snap.data() : null; S.loadedNepse = true; header(); const ix = S.nepse && S.nepse.index; $('n-nepse').textContent = ix ? Math.round(ix.close).toLocaleString('en') : '\u2013'; if (S.tab === 'nepse') renderNepse(); },
-    () => { S.loadedNepse = true; if (S.tab === 'nepse') renderNepse(); });
-  db.doc('invest/options').onSnapshot((snap) => { S.invest = snap.exists ? snap.data() : null; S.loadedInvest = true; if (S.tab === 'invest') renderInvest(); }, () => { S.loadedInvest = true; if (S.tab === 'invest') renderInvest(); });
-  db.doc('invest/plan').onSnapshot((snap) => { if (snap.exists) { applyPlanDoc(snap.data()); if (S.tab === 'invest') renderInvest(); } }, () => {});
-  db.doc('invest/places').onSnapshot((snap) => { S.places = snap.exists ? snap.data() : null; if (S.tab === 'invest') renderInvest(); }, () => {});
-  db.doc('market/watchlist').onSnapshot((snap) => { S.watch = snap.exists ? snap.data() : null; if (S.tab === 'nepse') renderNepse(); }, () => {});
-}
-connect();
+loadData();
 })();
 </script>
-
-</body></html>
+</body>
+</html>

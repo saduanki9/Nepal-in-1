@@ -1,4 +1,4 @@
-// Quick health check for the dashboard. Runs locally (`node scripts/check.mjs`) and in CI.
+// Quick health check for the Nepal in 1 site. Runs locally (`node scripts/check.mjs`) and in CI.
 // Catches the mistakes that would break the page: bad JSON, a JavaScript syntax error,
 // or a missing section in the data snapshot.
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
@@ -11,17 +11,28 @@ const ok = (msg) => console.log('ok   ' + msg);
 
 // 1. Data snapshot is valid JSON and has every section the page reads.
 let data;
-try { data = JSON.parse(readFileSync('dashboard/public.json', 'utf8')); ok('public.json is valid JSON'); }
-catch (e) { fail('public.json is not valid JSON: ' + e.message); }
+try { data = JSON.parse(readFileSync('site/data.json', 'utf8')); ok('data.json is valid JSON'); }
+catch (e) { fail('data.json is not valid JSON: ' + e.message); }
 if (data) {
-  for (const key of ['feed', 'business', 'nepse', 'watch', 'invest', 'places']) {
-    if (data[key] && typeof data[key] === 'object') ok('public.json has "' + key + '"');
-    else fail('public.json is missing the "' + key + '" section');
+  for (const key of ['feed', 'business', 'nepse', 'watch', 'invest', 'places', 'mentor']) {
+    if (data[key] && typeof data[key] === 'object') ok('data.json has "' + key + '"');
+    else fail('data.json is missing the "' + key + '" section');
+  }
+  // Mentor businesses: every figure the calculator multiplies must be a real number, and every source a real link.
+  const ideas = data.mentor && Array.isArray(data.mentor.ideas) ? data.mentor.ideas : [];
+  if (!ideas.length) fail('mentor has no businesses');
+  for (const o of ideas) {
+    const nums = [o.setup, o.first_cycle, o.cost_year, o.profit && o.profit.mid, o.scale && o.scale.min, o.scale && o.scale.max, o.scale && o.scale.step];
+    const bad = nums.some((n) => typeof n !== 'number' || !isFinite(n) || n < 0) || !(o.first_cycle > 0) || !(o.cost_year > 0) || !(o.scale.step > 0) || o.scale.min > o.scale.max;
+    const srcs = Array.isArray(o.sources) ? o.sources : [];
+    if (!o.id || !o.name || bad) fail('mentor business "' + (o.id || o.name || '?') + '" has a missing or invalid number');
+    else if (!srcs.length || srcs.some((s) => !/^https:\/\//.test(String(s.url || '')))) fail('mentor business "' + o.id + '" needs https source links');
+    else ok('mentor business "' + o.id + '" is complete');
   }
 }
 
 // 2. Page has a title and every tab has a matching section.
-const html = readFileSync('dashboard/index.html', 'utf8');
+const html = readFileSync('site/index.html', 'utf8');
 if (/<title>[^<]+<\/title>/.test(html)) ok('index.html has a <title>'); else fail('index.html has no <title>');
 const tabs = [...html.matchAll(/data-tab="([a-z]+)"/g)].map((m) => m[1]);
 for (const t of tabs) {
@@ -39,4 +50,4 @@ scripts.forEach((src, i) => {
   catch (e) { fail('inline script ' + (i + 1) + ' has a syntax error:\n' + e.stderr); }
 });
 
-if (process.exitCode) console.error('\nDashboard check failed.'); else console.log('\nDashboard check passed.');
+if (process.exitCode) console.error('\nSite check failed.'); else console.log('\nSite check passed.');

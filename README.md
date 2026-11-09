@@ -27,6 +27,7 @@ No framework and no build step: just two files.
 | `site/data.json` | The data: news, business, NEPSE, investment rates, places |
 | `scripts/check.mjs` | Health check: valid data, every tab wired up, script has no syntax errors |
 | `.github/workflows/check.yml` | Runs the check on GitHub every time the site changes |
+| `.github/workflows/deploy.yml` | Publishes `site/` to GitHub Pages every time it changes on `main` |
 | `docs/slsa-generic-generator.yml` | Parked workflow for signing downloadable releases (not active) |
 
 The economy and national-project figures live inside `index.html`. Everything that changes daily lives in `data.json`.
@@ -48,10 +49,21 @@ node scripts/check.mjs   # should end with "Site check passed."
 
 Commit and push. GitHub runs the same check.
 
+## Hosting
+
+The site is published with GitHub Pages at **https://saduanki9.github.io/Nepal-in-1/**
+
+One-time setup, in the repo's settings on GitHub:
+
+1. **Settings → General → Danger Zone → Change visibility → Public.** Free GitHub accounts can only publish Pages sites from public repos.
+2. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+
+After that, every change to `site/` on `main` goes live by itself within a minute or two. The deploy runs the health check first and stops if it fails. To publish again by hand, open the **Actions** tab, pick **Deploy site** and tap **Run workflow**.
+
 ## Roadmap
 
-1. **Go live.** Publish `site/` on GitHub Pages (needs a public repo or a paid plan), Netlify or Cloudflare Pages. All are free for a site this size.
-2. **Automatic data refresh.** A scheduled GitHub workflow that rebuilds `data.json` every morning and after each NEPSE close.
+1. **Automatic data refresh.** A scheduled GitHub workflow that rebuilds `data.json` every morning and after each NEPSE close.
+2. **A custom domain,** such as a `.com.np` address, in place of the `github.io` one.
 3. **Nepali language.** A नेपाली / English switch.
 4. **More of Nepal:** weather and air quality by city, exchange rates, gold and silver prices, a festival and holiday calendar, a province-by-province view.
 5. **Share cards.** A one-tap image of the day's NEPSE close or top story, for Facebook, Viber and X.

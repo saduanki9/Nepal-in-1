@@ -10,6 +10,7 @@ Nepal in 1 is a public website, kept separate from any personal dashboard. Every
 |---|---|
 | **Today in Nepal** | The day's key stories from across the country, filterable by topic, each with why it matters |
 | **My builds** | A personal project board for each visitor: add a build, move it from Idea to Launched, track tasks, notes and a target month |
+| **Mentor** | Businesses with published Nepal cost and profit studies, sized to the visitor's budget: money to start, profit a month, payback, first steps and what to watch out for. One tap adds a business to My builds with its first steps as tasks |
 | **Business** | Key indicators, company news and upcoming business dates |
 | **NEPSE** | Index chart (1M / 3M / all), sector moves, top gainers, losers and most traded, a fundamentals watchlist for banks, IPOs and share issues |
 | **Invest** | A calculator comparing fixed deposits, savings bonds, NEPSE, gold and land: lump sum or monthly, low / expected / high, after tax and inflation; plus places to watch for property |
@@ -27,7 +28,7 @@ No framework and no build step: just two files.
 | Path | What it is |
 |---|---|
 | `site/index.html` | The whole site: layout, styles and script in one file |
-| `site/data.json` | The data: news, business, NEPSE, investment rates, places |
+| `site/data.json` | The data: news, business, NEPSE, investment rates, places, mentor businesses |
 | `scripts/check.mjs` | Health check: valid data, every tab wired up, script has no syntax errors |
 | `.github/workflows/check.yml` | Runs the check on GitHub every time the site changes |
 | `.github/workflows/deploy.yml` | Publishes `site/` to GitHub Pages every time it changes on `main` |
@@ -52,6 +53,19 @@ node scripts/check.mjs   # should end with "Site check passed."
 
 Commit and push. GitHub runs the same check.
 
+### How the mentor's numbers work
+
+Each business in `data.json` under `mentor.ideas` has four figures per unit (one hive, one tunnel, one kattha, one bird):
+
+- `setup`: the one-off cost to build or buy it
+- `first_cycle`: running costs until the first sale (a batch for chickens, a year for the others)
+- `cost_year`: running costs for a year
+- `profit`: profit a year in a cautious, expected and good case, each taken from a named study
+
+The page works out how many units the visitor's budget covers, then multiplies. Every business lists its sources and explains its sums under "How these numbers are worked out".
+
+**These figures are estimates and need checking before the site is promoted.** They were gathered in November 2026 from search summaries of the studies, not from the full papers. Some conversions (per hectare to per tunnel or per kattha) and a few assumptions (five chicken batches a year, a 1.5 metre deep pond) are ours and are stated on the page. Businesses without solid figures (dairy, goats, mushrooms, homestays) are listed without numbers.
+
 ## Hosting
 
 The site is published with GitHub Pages at **https://saduanki9.github.io/Nepal-in-1/**
@@ -65,12 +79,13 @@ After that, every change to `site/` on `main` goes live by itself within a minut
 
 ## Roadmap
 
-1. **Back up and move builds.** Export builds to a file and import them on another device.
-2. **Automatic data refresh.** A scheduled GitHub workflow that rebuilds `data.json` every morning and after each NEPSE close.
-3. **A custom domain,** such as a `.com.np` address, in place of the `github.io` one.
-4. **Nepali language.** A नेपाली / English switch.
-5. **More of Nepal:** weather and air quality by city, exchange rates, gold and silver prices, a festival and holiday calendar, a province-by-province view.
-6. **Share cards.** A one-tap image of the day's NEPSE close or top story, for Facebook, Viber and X.
+1. **Check the mentor's figures** against the full papers and current local prices, and add more businesses.
+2. **Back up and move builds.** Export builds to a file and import them on another device.
+3. **Automatic data refresh.** A scheduled GitHub workflow that rebuilds `data.json` every morning and after each NEPSE close.
+4. **A custom domain,** such as a `.com.np` address, in place of the `github.io` one.
+5. **Nepali language.** A नेपाली / English switch.
+6. **More of Nepal:** weather and air quality by city, exchange rates, gold and silver prices, a festival and holiday calendar, a province-by-province view.
+7. **Share cards.** A one-tap image of the day's NEPSE close or top story, for Facebook, Viber and X.
 
 ## Disclaimer
 

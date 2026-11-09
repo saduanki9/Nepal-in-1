@@ -269,6 +269,24 @@ th.r, td.r { text-align: right; }
 tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bottom: 0; }
 .place-card ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); display: grid; gap: 4px; }
 .sym { font-weight: 600; letter-spacing: .02em; }
+.mgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin: 0; }
+.mgrid div { min-width: 0; }
+.mgrid dt { font-size: 12px; color: var(--muted); }
+.mgrid dd { margin: 0; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.mgrid dd small { display: block; font-size: 12px; font-weight: 400; color: var(--faint); }
+.idea .fine { font-size: 13px; color: var(--muted); }
+.idea details { border-top: 1px solid var(--line); padding-top: 10px; }
+.idea summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.idea details > * + * { margin-top: 8px; }
+.idea details ol, .idea details ul { margin-bottom: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; }
+.idea details .k { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--muted); }
+.idea .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+#mentor-body { align-items: start; }
+.wrow { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.wrow:first-child { border-top: 0; padding-top: 0; }
+.wrow b { font-weight: 600; }
+.wrow p { margin: 0; color: var(--muted); }
+.wrow .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; }
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
 .toast { position: fixed; z-index: 50; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100% - 32px); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
@@ -304,6 +322,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" id="tab-today" data-tab="today" aria-selected="false">Today in Nepal<span class="n" id="n-today">0</span></button>
       <button class="tab" role="tab" id="tab-builds" data-tab="builds" aria-selected="false">My builds<span class="n" id="n-builds">0</span></button>
+      <button class="tab" role="tab" id="tab-mentor" data-tab="mentor" aria-selected="false">Mentor</button>
       <button class="tab" role="tab" id="tab-business" data-tab="business" aria-selected="false">Business</button>
       <button class="tab" role="tab" id="tab-nepse" data-tab="nepse" aria-selected="false">NEPSE<span class="n" id="n-nepse">–</span></button>
       <button class="tab" role="tab" id="tab-invest" data-tab="invest" aria-selected="false">Invest</button>
@@ -353,6 +372,29 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       </div>
     </div>
     <div id="builds-body"></div>
+  </section>
+
+  <section class="view" id="v-mentor" aria-labelledby="tab-mentor" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="mentor-eyebrow">Business mentor</p>
+        <h1>What could you build?</h1>
+        <p>Businesses with published cost and profit studies from Nepal, sized to the money you have. Each one shows what it costs to start, what it could earn, and what to do first. Add one to My builds to start tracking it.</p>
+      </div>
+    </div>
+    <div class="panel calc">
+      <div class="fld"><label for="mentor-budget">Money you can put in (Rs)</label><input id="mentor-budget" type="number" min="0" step="50000" inputmode="numeric"></div>
+      <div class="fld"><span class="lbl" id="mentor-where-l">Where</span><div class="seg" role="group" aria-labelledby="mentor-where-l" id="mentor-where"><button type="button" data-where="all">Anywhere</button><button type="button" data-where="terai">Terai</button><button type="button" data-where="hills">Hills</button></div></div>
+      <div class="fld"><label for="mentor-sort">Show first</label><select id="mentor-sort"><option value="return">Best return on your money</option><option value="profit">Most profit a month</option><option value="start">Lowest money to start</option></select></div>
+    </div>
+    <div class="tiles" id="mentor-tiles"></div>
+    <div class="grid" id="mentor-body"></div>
+    <div class="panel" id="mentor-watch-panel" hidden>
+      <h3>Looked at, but no numbers yet</h3>
+      <p class="note">Businesses people often ask about, where the published figures are too thin to size to your budget.</p>
+      <div id="mentor-watch"></div>
+    </div>
+    <p class="foot" id="mentor-foot"></p>
   </section>
 
   <section class="view" id="v-business" aria-labelledby="tab-business" hidden>
@@ -579,7 +621,7 @@ const PROJECTS = [
   ['Nijgadh International Airport', 'Airports', 'Madhesh', 0, null, 'Not started']
 ].map(([name, sector, province, progress, cost, status]) => ({ name, sector, province, progress, cost, status }));
 
-const S = { builds: [], stage: null, q: '', sort: 'stage', view: 'board', open: null, feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, loaded: false, bizf: 'all', range: 66, tab: 'today', news: 'all', proj: 'all' };
+const S = { builds: [], stage: null, q: '', sort: 'stage', view: 'board', open: null, feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, mentor: null, loaded: false, bizf: 'all', range: 66, tab: 'today', news: 'all', proj: 'all' };
 const liveNote = () => 'Not in this update yet.';
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
@@ -608,7 +650,7 @@ function header() {
   $('when-fy').textContent = fiscalYear(t);
   const r = lastRefresh();
   $('when-upd').textContent = r ? 'Updated ' + stamp(r) : '';
-  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = S.tab === 'builds'; }
+  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = S.tab === 'builds' || S.tab === 'mentor'; }
 }
 
 let toastT;
@@ -622,7 +664,7 @@ function loadData() {
     .then((r) => r.ok ? r.json() : null).catch(() => null)
     .then((d) => {
       clearTimeout(t);
-      if (asObj(d)) { S.feed = asObj(d.feed); S.biz = asObj(d.business); S.nepse = asObj(d.nepse); S.watch = asObj(d.watch); S.invest = asObj(d.invest); S.places = asObj(d.places); }
+      if (asObj(d)) { S.feed = asObj(d.feed); S.biz = asObj(d.business); S.nepse = asObj(d.nepse); S.watch = asObj(d.watch); S.invest = asObj(d.invest); S.places = asObj(d.places); S.mentor = asObj(d.mentor); }
       S.loaded = true;
       const ix = S.nepse && S.nepse.index; $('n-nepse').textContent = ix ? Math.round(ix.close).toLocaleString('en') : '\u2013';
       $('n-today').textContent = S.feed && Array.isArray(S.feed.news) ? S.feed.news.length : 0;
@@ -642,7 +684,7 @@ function localWrite(fn) {
     fn();
     try { localStorage.setItem(LKEY, JSON.stringify(S.builds)); }
     catch (e) { if (!localWarned) { localWarned = true; setTimeout(() => toast('This browser won\u2019t keep changes after you close the page.'), 2300); } }
-    renderBuilds(); if (S.open) renderSheet(false);
+    renderBuilds(); if (S.open) renderSheet(false); if (S.tab === 'mentor') renderMentor();
   });
 }
 function patchBuild(id, patch) {
@@ -723,11 +765,12 @@ function renderBuilds() {
   $('vw-list').setAttribute('aria-pressed', S.view === 'list' ? 'true' : 'false');
   const body = $('builds-body'); body.replaceChildren();
   if (!S.builds.length) {
-    const e = el('div', 'empty'); e.append(el('h3', null, 'No builds yet'), el('p', null, 'A build is any project you want to make happen: a business, a school programme, a farm, an app. Add one and track it from idea to launch.'));
+    const e = el('div', 'empty'); e.append(el('h3', null, 'No builds yet'), el('p', null, 'A build is any project you want to make happen: a business, a school programme, a farm, an app. Add one and track it from idea to launch. Not sure what to build? The mentor has businesses with the numbers worked out.'));
     const row = el('div', 'toolbar'); row.style.justifyContent = 'center';
     const b = el('button', 'btn primary', 'New build'); b.type = 'button'; b.addEventListener('click', () => openSheet(null));
     const x = el('button', 'btn', 'Add an example'); x.type = 'button'; x.addEventListener('click', () => addExample().then(() => toast('Example added. Open it to edit or delete it.')));
-    row.append(b, x); e.append(row); body.append(e); return;
+    const m = el('button', 'btn', 'Ask the mentor'); m.type = 'button'; m.addEventListener('click', () => show('mentor', true));
+    row.append(b, m, x); e.append(row); body.append(e); return;
   }
   const rows = filtered();
   if (!rows.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'Nothing matches'), el('p', null, 'Clear the search or pick another stage.')); body.append(e); return; }
@@ -1379,8 +1422,143 @@ for (const [id, key, int] of [['inv-amount', 'amount', true], ['inv-monthly', 'm
 }
 document.querySelectorAll('#inv-scen [data-scen]').forEach((b) => b.addEventListener('click', () => { INV.scen = b.dataset.scen; saveInv(); renderInvest(); }));
 
+/* ---------- Mentor ----------
+   Sizes each business to the visitor's budget. All figures come from data.json (mentor.ideas):
+   setup and first_cycle are rupees per unit, cost_year and profit are rupees per unit a year. */
+const MEN = { budget: 500000, where: 'all', sort: 'return' };
+try { const s = JSON.parse(localStorage.getItem('n1-mentor') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(MEN)) if (k in s) MEN[k] = s[k]; } catch (e) {}
+const saveMen = () => { try { localStorage.setItem('n1-mentor', JSON.stringify(MEN)); } catch (e) {} };
+const menFold = new Map();
+const about = (n) => rs(Math.round(Number(n) / 100) * 100);
+function mentorCalc(o, budget) {
+  const per = Number(o.setup) + Number(o.first_cycle), sc = o.scale || { min: 1, max: 1, step: 1 }, p = o.profit || {};
+  let n = Math.floor(Math.max(0, budget) / per / sc.step) * sc.step;
+  const fits = n >= sc.min;
+  n = fits ? Math.min(n, sc.max) : sc.min;
+  const start = n * per, setup = n * Number(o.setup), mid = n * Number(p.mid);
+  return { n, fits, minStart: sc.min * per, capped: fits && n === sc.max && budget >= (sc.max + sc.step) * per, start, setup, mid, month: mid / 12,
+    low: p.low == null ? null : n * p.low, high: p.high == null ? null : n * p.high,
+    ret: start ? mid / start * 100 : 0, payback: setup > 0 && mid > 0 ? setup / mid : 0,
+    back: (Number(o.cost_year) + Number(p.mid)) / Number(o.cost_year) * 100 };
+}
+function sizeText(o, n) {
+  const s = Array.isArray(o.size) ? o.size[n === 1 ? 0 : 1] : '{n} units';
+  return String(s).replace('{n}', Number(n).toLocaleString('en-IN'));
+}
+function landText(o, n) {
+  if (!o.land) return '';
+  const a = n * (Number(o.area_factor) || 0);
+  return String(o.land).replace('{n}', Number(n).toLocaleString('en-IN')).replace('{a}', a.toLocaleString('en-IN', { maximumFractionDigits: 1 }));
+}
+const spanText = (y) => y < 1 ? Math.max(1, Math.round(y * 12)) + ' months' : fmt1(y) + ' years';
+function adoptIdea(o, c) {
+  const size = sizeText(o, c.n), steps = Array.isArray(o.steps) ? o.steps : [];
+  const notes = ['Mentor estimate, ' + niceDate(S.mentor.as_of) + '.', 'Size: ' + size + '.', 'Money to start: ' + rs(c.start) + '.',
+    'Expected profit: about ' + about(c.month) + ' a month (' + about(c.mid) + ' a year).'];
+  if (c.low != null && c.high != null) notes.push('Studies range from ' + about(c.low / 12) + ' to ' + about(c.high / 12) + ' a month.');
+  if (Array.isArray(o.watch) && o.watch.length) notes.push('Watch out: ' + o.watch.join(' '));
+  notes.push('These are estimates. Check local prices before spending money.');
+  return createBuild({ build: o.name, sector: SECTORS.includes(o.sector) ? o.sector : 'Other', stage: 'Exploring', priority: 'Medium',
+    vision: 'Run ' + size + ' and earn about ' + about(c.month) + ' a month once it is running.',
+    next_step: steps[0] || '', tasks: steps.map((x) => ({ text: String(x), done: false })), notes: notes.join('\n'), from_mentor: o.id });
+}
+function mentorCard(o, c, pick) {
+  const card = el('article', 'idea' + (pick ? ' pick' : ''));
+  const meta = el('div', 'meta'); meta.append(el('span', 'chip', o.sector || 'Business'), riskPill(o.risk));
+  if (pick) meta.append(el('span', 'pick-badge', "Mentor's pick"));
+  if (!c.fits) meta.append(el('span', 'status bad', 'Above your budget'));
+  card.append(meta, el('h3', null, o.name));
+  const size = sizeText(o, c.n);
+  card.append(el('p', null, !c.fits ? 'Needs about ' + rs(c.start) + ' for the smallest sensible size: ' + size + '.'
+    : c.capped ? 'Your money covers more than the largest size we plan for: ' + size + '. That uses ' + rs(c.start) + '.'
+    : 'With ' + rs(MEN.budget) + ' you could run ' + size + '.'));
+  if (pick) card.append(el('p', 'why', 'Best return on your money among the lower-risk options that fit your budget and place.'));
+  const dl = el('dl', 'mgrid');
+  const row = (k, v, sub) => { const d = el('div'); const dd = el('dd', null, v); if (sub) dd.append(el('small', null, sub)); d.append(el('dt', null, k), dd); dl.append(d); };
+  row('Money to start', rs(c.start), c.setup > 0 ? rs(c.setup) + ' set-up, the rest runs the first ' + (o.cycle || 'year') : 'Runs the first ' + (o.cycle || 'year') + '. No set-up cost.');
+  row('Profit a month', about(c.month), about(c.mid) + ' a year, expected');
+  row('Set-up paid back in', c.setup > 0 ? spanText(c.payback) : 'First harvest', c.setup > 0 ? 'from expected profit' : 'nothing to build');
+  row('For every Rs 100 spent', 'Rs ' + Math.round(c.back) + ' back', 'on running costs');
+  card.append(dl);
+  card.append(el('p', 'fine', c.low != null && c.high != null ? 'Studies range from ' + about(c.low / 12) + ' to ' + about(c.high / 12) + ' a month at this size.' : 'Only one study gives a profit figure, so there is no range.'));
+  const land = landText(o, c.n); if (land) card.append(el('p', 'fine', 'You need: ' + land));
+  const fold = (key, title, fill) => {
+    const d = el('details'), k = o.id + key, s = el('summary', null, title);
+    d.open = menFold.has(k) ? menFold.get(k) : (pick && key === ':advice');
+    s.addEventListener('click', () => menFold.set(k, !d.open));
+    d.append(s); fill(d); card.append(d);
+  };
+  fold(':advice', "Mentor's advice", (d) => {
+    if (o.why) d.append(el('p', null, o.why));
+    if (o.where) d.append(el('p', 'fine', 'Where it fits: ' + o.where));
+    const list = (label, items, tag) => { if (!Array.isArray(items) || !items.length) return; d.append(el('div', 'k', label)); const l = el(tag); for (const x of items) l.append(el('li', null, x)); d.append(l); };
+    list('First steps', o.steps, 'ol'); list('Watch out', o.watch, 'ul');
+  });
+  fold(':how', 'How these numbers are worked out', (d) => {
+    d.append(el('p', null, 'For ' + sizeText(o, 1) + ': ' + (Number(o.setup) > 0 ? 'set-up ' + rs(o.setup) + ', ' : 'no set-up cost, ') + 'running cost ' + rs(o.cost_year) + ' a year, expected profit ' + rs(o.profit.mid) + ' a year.'));
+    if (o.basis) d.append(el('p', null, o.basis));
+    if (o.evidence) d.append(el('p', 'fine', 'Evidence: ' + o.evidence + '.'));
+    const srcs = el('div', 'srcs');
+    for (const s of (Array.isArray(o.sources) ? o.sources : [])) { const u = safeUrl(s.url); if (u) { const a = el('a', 'src', (s.name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; srcs.append(a); } }
+    d.append(srcs);
+  });
+  const act = el('div', 'act');
+  act.append(el('span', 'meta', Math.round(c.ret) + '% a year on the money to start'));
+  if (S.builds.some((b) => b.from_mentor === o.id)) act.append(el('span', 'added', '✓ In My builds'));
+  else {
+    const b = el('button', 'btn' + (pick ? ' primary' : ''), 'Add to My builds'); b.type = 'button';
+    b.addEventListener('click', () => { b.disabled = true; adoptIdea(o, c).then(() => toast('Added to My builds with its first steps as tasks')); });
+    act.append(b);
+  }
+  card.append(act);
+  return card;
+}
+function renderMentor() {
+  const d = S.mentor, body = $('mentor-body'), tiles = $('mentor-tiles'), foot = $('mentor-foot'), wp = $('mentor-watch-panel');
+  body.replaceChildren(); tiles.replaceChildren(); foot.replaceChildren(); wp.hidden = true;
+  const bi = $('mentor-budget'); if (document.activeElement !== bi) bi.value = String(MEN.budget);
+  $('mentor-sort').value = MEN.sort;
+  document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.where === MEN.where)));
+  $('mentor-eyebrow').textContent = d && d.as_of ? 'Business mentor · figures gathered ' + niceDate(d.as_of) : 'Business mentor';
+  const ideas = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
+  if (!ideas.length) { const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No businesses listed yet' : 'Loading the mentor')); body.append(e); return; }
+  const budget = Math.max(0, Number(MEN.budget) || 0);
+  let rows = ideas.filter((o) => MEN.where === 'all' || (Array.isArray(o.regions) && o.regions.includes(MEN.where))).map((o) => ({ o, c: mentorCalc(o, budget) }));
+  const by = { profit: (a, b) => b.c.month - a.c.month, return: (a, b) => b.c.ret - a.c.ret, start: (a, b) => a.c.minStart - b.c.minStart }[MEN.sort] || ((a, b) => b.c.ret - a.c.ret);
+  rows.sort((a, b) => (b.c.fits - a.c.fits) || by(a, b));
+  const fit = rows.filter((x) => x.c.fits);
+  const pick = fit.filter((x) => x.o.risk !== 'High').sort((a, b) => b.c.ret - a.c.ret)[0];
+  if (pick) rows = [pick].concat(rows.filter((x) => x !== pick));
+  const tile = (k, v, s) => { const x = el('div', 'tile'); x.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(x); };
+  if (fit.length) {
+    const top = fit.slice().sort((a, b) => b.c.month - a.c.month)[0], best = fit.slice().sort((a, b) => b.c.ret - a.c.ret)[0], cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
+    tile('Most profit a month', about(top.c.month), top.o.name + ' · ' + (top.o.risk || '') + ' risk');
+    tile('Best return a year', Math.round(best.c.ret) + '%', best.o.name + ' · ' + (best.o.risk || '') + ' risk');
+    tile('Smallest way to start', rs(cheap.c.minStart), cheap.o.name + ' · ' + sizeText(cheap.o, cheap.o.scale.min));
+  } else if (rows.length) {
+    const cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
+    tile('Nothing fits this budget yet', rs(cheap.c.minStart), 'is the least you need: ' + cheap.o.name + ', ' + sizeText(cheap.o, cheap.o.scale.min));
+  }
+  if (!rows.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'Nothing listed for this place yet'), el('p', null, 'Choose Anywhere to see every business.')); body.append(e); }
+  for (const x of rows) body.append(mentorCard(x.o, x.c, x === pick));
+  const watch = d && Array.isArray(d.watch) ? d.watch : [];
+  if (watch.length) {
+    wp.hidden = false; const box = $('mentor-watch'); box.replaceChildren();
+    for (const w of watch) {
+      const r = el('div', 'wrow'); r.append(el('b', null, w.name || ''), el('p', null, w.finding || ''));
+      const srcs = el('div', 'srcs');
+      for (const s of (Array.isArray(w.sources) ? w.sources : [])) { const u = safeUrl(s.url); if (u) { const a = el('a', 'src', (s.name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; srcs.append(a); } }
+      r.append(srcs); box.append(r);
+    }
+  }
+  foot.textContent = (d.disclaimer || '') + ' Money to start is the set-up cost plus the running costs of the first batch or year. Sizes stay between a smallest sensible size and a largest size for each business.';
+}
+$('mentor-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderMentor(); });
+$('mentor-sort').addEventListener('change', (e) => { MEN.sort = e.target.value; saveMen(); renderMentor(); });
+document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderMentor(); }));
+
 /* ---------- Routing ---------- */
-const TABS = ['today', 'builds', 'business', 'nepse', 'invest', 'economy', 'projects'];
+const TABS = ['today', 'builds', 'mentor', 'business', 'nepse', 'invest', 'economy', 'projects'];
 function show(tab, push) {
   if (!TABS.includes(tab)) tab = 'today';
   S.tab = tab;
@@ -1393,7 +1571,8 @@ function show(tab, push) {
   if (tab === 'nepse') renderNepse();
   if (tab === 'invest') renderInvest();
   if (tab === 'builds') renderBuilds();
-  const asof = $('asof'); asof.hidden = tab === 'builds' || !asof.textContent;
+  if (tab === 'mentor') renderMentor();
+  const asof = $('asof'); asof.hidden = tab === 'builds' || tab === 'mentor' || !asof.textContent;
   window.scrollTo(0, 0);
 }
 

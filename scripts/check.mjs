@@ -14,9 +14,20 @@ let data;
 try { data = JSON.parse(readFileSync('site/data.json', 'utf8')); ok('data.json is valid JSON'); }
 catch (e) { fail('data.json is not valid JSON: ' + e.message); }
 if (data) {
-  for (const key of ['feed', 'business', 'nepse', 'watch', 'invest', 'places']) {
+  for (const key of ['feed', 'business', 'nepse', 'watch', 'invest', 'places', 'mentor']) {
     if (data[key] && typeof data[key] === 'object') ok('data.json has "' + key + '"');
     else fail('data.json is missing the "' + key + '" section');
+  }
+  // Mentor businesses: every figure the calculator multiplies must be a real number, and every source a real link.
+  const ideas = data.mentor && Array.isArray(data.mentor.ideas) ? data.mentor.ideas : [];
+  if (!ideas.length) fail('mentor has no businesses');
+  for (const o of ideas) {
+    const nums = [o.setup, o.first_cycle, o.cost_year, o.profit && o.profit.mid, o.scale && o.scale.min, o.scale && o.scale.max, o.scale && o.scale.step];
+    const bad = nums.some((n) => typeof n !== 'number' || !isFinite(n) || n < 0) || !(o.first_cycle > 0) || !(o.cost_year > 0) || !(o.scale.step > 0) || o.scale.min > o.scale.max;
+    const srcs = Array.isArray(o.sources) ? o.sources : [];
+    if (!o.id || !o.name || bad) fail('mentor business "' + (o.id || o.name || '?') + '" has a missing or invalid number');
+    else if (!srcs.length || srcs.some((s) => !/^https:\/\//.test(String(s.url || '')))) fail('mentor business "' + o.id + '" needs https source links');
+    else ok('mentor business "' + o.id + '" is complete');
   }
 }
 

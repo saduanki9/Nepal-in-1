@@ -1,0 +1,1596 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Nepal Dashboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Layout: app shell. Ink brand bar with tab rail (sticky), one 1200px working column; the board scrolls sideways inside its own track; detail sheet slides in from the right (bottom on phones). */
+:root {
+  --bar: #13203f; --bar-fg: #f3f5fb; --bar-muted: #a9b3cc;
+  --bg: #f4f5f9; --surface: #ffffff; --raise: #f9fafc; --line: #dde1ea; --line-strong: #c3c9d6;
+  --fg: #141a2b; --muted: #5b6377; --faint: #8b93a6;
+  --accent: #c8102e; --accent-ink: #9e0c24; --accent-soft: #fbe8eb;
+  --st-idea: #8b93a6; --st-exploring: #2d6ad3; --st-planning: #b5761b; --st-building: #c8102e; --st-launched: #1d8656;
+  --ok: #1d8656; --warn: #b5761b; --bad: #c8102e; --c6: #7a4fd0;
+  --scrim: rgba(13, 18, 33, .42);
+  --shadow: 0 10px 30px rgba(19, 32, 63, .14), 0 2px 6px rgba(19, 32, 63, .08);
+  --display: "Gloock", "Iowan Old Style", Georgia, serif;
+  --body: "Hanken Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bar: #0a0f1e; --bar-fg: #eef1f8; --bar-muted: #8e98b2;
+  --bg: #0f1424; --surface: #161d31; --raise: #1b233a; --line: #273049; --line-strong: #39445f;
+  --fg: #e8ebf3; --muted: #a2aac0; --faint: #78819a;
+  --accent: #ff5a73; --accent-ink: #ff8496; --accent-soft: #3a1823;
+  --st-idea: #8f98ae; --st-exploring: #6a9cf2; --st-planning: #e0a548; --st-building: #ff5a73; --st-launched: #46c08a;
+  --ok: #46c08a; --warn: #e0a548; --bad: #ff5a73; --c6: #a98af0;
+  --scrim: rgba(0, 0, 0, .55);
+  --shadow: 0 12px 34px rgba(0, 0, 0, .45);
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bar: #0a0f1e; --bar-fg: #eef1f8; --bar-muted: #8e98b2;
+  --bg: #0f1424; --surface: #161d31; --raise: #1b233a; --line: #273049; --line-strong: #39445f;
+  --fg: #e8ebf3; --muted: #a2aac0; --faint: #78819a;
+  --accent: #ff5a73; --accent-ink: #ff8496; --accent-soft: #3a1823;
+  --st-idea: #8f98ae; --st-exploring: #6a9cf2; --st-planning: #e0a548; --st-building: #ff5a73; --st-launched: #46c08a;
+  --ok: #46c08a; --warn: #e0a548; --bad: #ff5a73; --c6: #a98af0;
+  --scrim: rgba(0, 0, 0, .55);
+  --shadow: 0 12px 34px rgba(0, 0, 0, .45);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bar); }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1200px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bar); color: var(--bar-fg); }
+.bar-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px 10px; }
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand svg { flex: none; }
+.brand-name { font-family: var(--display); font-size: 22px; line-height: 1.1; letter-spacing: .005em; white-space: nowrap; }
+.brand-sub { font-size: 12px; color: var(--bar-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.when { text-align: right; font-size: 12px; color: var(--bar-muted); line-height: 1.35; white-space: nowrap; }
+.when b { display: block; color: var(--bar-fg); font-weight: 500; font-size: 13px; }
+.when span { display: block; }
+.when .upd { color: var(--bar-fg); opacity: .85; font-variant-numeric: tabular-nums; }
+.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; padding-bottom: 0; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { border: 0; background: transparent; color: var(--bar-muted); padding: 10px 14px 12px; font-size: 14px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; }
+.tab:hover { color: var(--bar-fg); }
+.tab[aria-selected="true"] { color: var(--bar-fg); border-bottom-color: var(--accent); }
+.tab .n { margin-left: 6px; font-size: 11px; padding: 1px 7px; border-radius: 99px; background: rgba(255,255,255,.12); color: var(--bar-fg); font-variant-numeric: tabular-nums; }
+
+main { padding-block: 28px 64px; }
+.view { display: grid; gap: 22px; }
+.head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px; }
+.head h1 { font-family: var(--display); font-weight: 400; font-size: clamp(28px, 4vw, 38px); line-height: 1.08; margin: 0; text-wrap: balance; }
+.head p { margin: 6px 0 0; color: var(--muted); max-width: 62ch; }
+.eyebrow { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 8px; }
+h2.sec { font-family: var(--display); font-weight: 400; font-size: 22px; margin: 6px 0 0; }
+
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; padding: 9px 16px; min-height: 40px; border: 1px solid var(--line-strong); background: var(--surface); font-weight: 500; font-size: 14px; }
+.btn:hover { border-color: var(--fg); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+.btn.ghost:hover { color: var(--fg); background: var(--raise); }
+.btn.danger { color: var(--bad); border-color: var(--line); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn svg { width: 16px; height: 16px; }
+
+.pipeline { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.pipe { border: 0; background: transparent; text-align: left; padding: 14px 16px; border-right: 1px solid var(--line); display: grid; gap: 2px; position: relative; }
+.pipe:last-child { border-right: 0; }
+.pipe:hover { background: var(--raise); }
+.pipe .k { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.pipe .v { font-family: var(--display); font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums lining-nums; }
+.pipe[aria-pressed="true"] { background: var(--raise); }
+.pipe[aria-pressed="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--pc, var(--fg)); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pc, var(--faint)); display: inline-block; flex: none; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.search { flex: 1 1 220px; min-width: 0; position: relative; }
+.search input { width: 100%; height: 40px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--surface); padding: 0 12px 0 36px; }
+.search svg { position: absolute; left: 11px; top: 12px; width: 16px; height: 16px; color: var(--faint); }
+.select { height: 40px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--surface); padding: 0 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden; background: var(--surface); }
+.seg button { border: 0; background: transparent; padding: 0 14px; height: 38px; font-size: 13px; color: var(--muted); font-weight: 500; }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(225px, 1fr); gap: 14px; overflow-x: auto; padding-bottom: 6px; align-items: start; }
+.col { background: var(--raise); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; display: grid; gap: 10px; min-height: 140px; align-content: start; }
+.col-h { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 2px; font-size: 13px; font-weight: 600; }
+.col-h span:last-child { color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+.col-empty { font-size: 12px; color: var(--faint); padding: 14px 6px; text-align: center; border: 1px dashed var(--line-strong); border-radius: 8px; }
+.card { cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 12px 10px; display: grid; gap: 8px; text-align: left; width: 100%; border-left: 3px solid var(--pc, var(--line)); }
+.card:hover { border-color: var(--line-strong); border-left-color: var(--pc); box-shadow: var(--shadow); }
+.card h3 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.3; }
+.card .ns { font-size: 13px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 12px; color: var(--muted); }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); font-size: 12px; color: var(--fg); white-space: nowrap; }
+.prio-High { color: var(--bad); } .prio-Medium { color: var(--warn); } .prio-Low { color: var(--muted); }
+.card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.adv { border: 1px solid var(--line); background: transparent; border-radius: 6px; font-size: 12px; padding: 3px 8px; color: var(--muted); }
+.adv:hover { color: var(--fg); border-color: var(--line-strong); }
+.mini { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; width: 54px; display: inline-block; vertical-align: middle; }
+.mini i { display: block; height: 100%; background: var(--ok); }
+
+.tablewrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--raise); }
+td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+tbody tr.click { cursor: pointer; }
+tbody tr.click:hover td { background: var(--raise); }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.dim { color: var(--muted); font-size: 13px; }
+
+.empty { background: var(--surface); border: 1px dashed var(--line-strong); border-radius: var(--r); padding: 36px 20px; text-align: center; color: var(--muted); display: grid; gap: 10px; justify-items: center; }
+.empty h3 { margin: 0; color: var(--fg); font-family: var(--display); font-weight: 400; font-size: 22px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.fchip { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 99px; padding: 6px 13px; font-size: 13px; color: var(--muted); min-height: 34px; }
+.fchip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.story { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+.story.local { border-color: var(--accent); }
+.story h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.35; }
+.story p { margin: 0; font-size: 14px; color: var(--muted); }
+.story a, .src { font-size: 13px; color: var(--muted); margin-top: auto; text-decoration: none; border-bottom: 1px solid var(--line-strong); align-self: flex-start; }
+.story a:hover, .src:hover { color: var(--fg); }
+
+.idea { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.idea.pick { border: 2px solid var(--accent); padding: 17px; }
+.idea h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1.15; }
+.idea p { margin: 0; font-size: 14px; }
+.idea .trend { color: var(--muted); }
+.idea .why { background: var(--accent-soft); border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.idea .act { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.num-badge { font-family: var(--display); font-size: 18px; color: var(--faint); }
+.pick-badge { background: var(--accent); color: #fff; border-radius: 99px; padding: 2px 10px; font-size: 12px; font-weight: 600; }
+.added { color: var(--ok); font-weight: 500; font-size: 14px; display: inline-flex; gap: 6px; align-items: center; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 14px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; }
+.tile .k { font-size: 12px; color: var(--muted); }
+.tile .v { font-family: var(--display); font-size: 34px; line-height: 1.15; margin: 4px 0 2px; font-variant-numeric: tabular-nums lining-nums; }
+.tile .s { font-size: 12px; color: var(--faint); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 20px; min-width: 0; }
+.panel h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+.panel .note { margin: 0 0 14px; font-size: 13px; color: var(--muted); }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 14px; }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.sw { width: 14px; height: 0; border-top: 2px solid; display: inline-block; }
+.readout { font-size: 12px; color: var(--muted); min-height: 18px; font-variant-numeric: tabular-nums; margin-top: 6px; }
+.meter { height: 12px; border-radius: 6px; background: var(--line); overflow: hidden; margin: 10px 0; }
+.meter i { display: block; height: 100%; background: var(--st-exploring); border-radius: 6px; }
+.pips { display: inline-flex; gap: 3px; vertical-align: middle; margin-right: 8px; }
+.pips i { width: 14px; height: 7px; border-radius: 2px; background: var(--line); }
+.pbar { display: inline-block; width: 70px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; vertical-align: middle; margin-right: 10px; }
+.pbar i { display: block; height: 100%; border-radius: 3px; }
+.foot { font-size: 12px; color: var(--faint); line-height: 1.6; margin: 0; }
+
+.scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 40; opacity: 0; transition: opacity .2s; }
+.scrim.on { opacity: 1; }
+.sheet { position: fixed; z-index: 41; top: 0; right: 0; bottom: 0; width: min(520px, 100%); background: var(--surface); border-left: 1px solid var(--line); box-shadow: var(--shadow); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .24s cubic-bezier(.2,.8,.2,1); padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.sheet.on { transform: none; }
+.sheet-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+.sheet-h .t { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.sheet-b { overflow-y: auto; padding: 18px 20px 28px; display: grid; gap: 18px; align-content: start; flex: 1; }
+.fld { display: grid; gap: 6px; }
+.fld label, .fld .lbl { font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: .02em; }
+.fld input, .fld textarea, .fld select { width: 100%; border: 1px solid var(--line-strong); background: var(--surface); border-radius: 8px; padding: 9px 11px; min-height: 40px; }
+.fld textarea { min-height: 84px; resize: vertical; line-height: 1.5; }
+.fld .big { font-family: var(--display); font-size: 24px; border-color: transparent; padding-left: 0; background: transparent; }
+.fld .big:hover, .fld .big:focus { border-color: var(--line-strong); padding-left: 11px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stages { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.stages button { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; font-size: 12px; padding: 8px 2px; color: var(--muted); }
+.stages button[aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; font-weight: 600; }
+.signal { background: var(--raise); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 6px; font-size: 14px; }
+.signal .k { font-size: 12px; color: var(--muted); }
+.tasks { display: grid; gap: 4px; }
+.task { display: flex; align-items: center; gap: 10px; padding: 6px 4px; border-radius: 6px; }
+.task:hover { background: var(--raise); }
+.task input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--ok); flex: none; }
+.task span { flex: 1; font-size: 14px; }
+.task.done span { color: var(--faint); text-decoration: line-through; }
+.task button { border: 0; background: transparent; color: var(--faint); padding: 2px 6px; border-radius: 4px; }
+.task button:hover { color: var(--bad); }
+.addtask { display: flex; gap: 8px; }
+.addtask input { flex: 1; min-width: 0; border: 1px solid var(--line-strong); background: var(--surface); border-radius: 8px; padding: 8px 11px; height: 38px; }
+.sheet-f { padding: 14px 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
+.saved { font-size: 12px; color: var(--muted); }
+.err { color: var(--bad); font-size: 13px; }
+
+.split { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
+.grid.narrow { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.events { display: grid; gap: 0; }
+.ev { display: grid; grid-template-columns: 54px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); text-decoration: none; color: inherit; }
+.ev:first-child { border-top: 0; padding-top: 4px; }
+.ev .d { text-align: center; border: 1px solid var(--line); border-radius: 8px; padding: 4px 0; line-height: 1.1; }
+.ev .d b { display: block; font-family: var(--display); font-weight: 400; font-size: 22px; }
+.ev .d span { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.ev .t { font-size: 14px; font-weight: 500; }
+.ev .p { font-size: 12px; color: var(--muted); }
+.ev.past { opacity: .5; }
+.three { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 14px; }
+.panel-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.tablewrap.flat { border: 0; border-radius: 0; background: transparent; }
+.tablewrap.flat th { background: transparent; padding-left: 0; }
+.tablewrap.flat td { padding-left: 0; }
+th.r, td.r { text-align: right; }
+.up { color: var(--ok); } .down { color: var(--bad); }
+.tile .v.up, .tile .v.down { color: inherit; }
+.delta { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.status { font-size: 12px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); white-space: nowrap; }
+.status.open { border-color: var(--ok); color: var(--ok); }
+.status.warn { border-color: var(--warn); color: var(--warn); }
+#t-watch .status { white-space: normal; }
+.status.bad { border-color: var(--bad); color: var(--bad); }
+.calc { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 14px; align-items: end; }
+.calc .seg { width: 100%; }
+.calc .seg button { flex: 1; }
+.opt-name { font-weight: 600; }
+.only-sm { display: none; }
+.opt-card h3 { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.opt-card .srcs, .place-card .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: auto; }
+.sec-note { margin: -12px 0 0; color: var(--muted); max-width: 72ch; font-size: 14px; }
+.place-card h3 { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.place-card .sig { color: var(--fg); }
+.place-card .k { font-size: 12px; font-weight: 600; color: var(--fg); letter-spacing: .02em; margin-top: 2px; }
+.pct { width: 74px; min-height: 36px; text-align: right; border: 1px solid var(--line-strong); background: var(--surface); border-radius: 8px; padding: 6px 8px; font-variant-numeric: tabular-nums; }
+.plan-sum { min-height: 40px; display: flex; align-items: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+.plan-sum.off { color: var(--bad); }
+tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bottom: 0; }
+.place-card ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); display: grid; gap: 4px; }
+.sym { font-weight: 600; letter-spacing: .02em; }
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+.toast { position: fixed; z-index: 50; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100% - 32px); }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.banner { background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; font-size: 13px; }
+
+@media (max-width: 760px) {
+  .pipeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pipe { border-bottom: 1px solid var(--line); }
+  .pipe:nth-child(3n) { border-right: 0; }
+  .pipe .v { font-size: 24px; }
+  .when b, #when-fy { display: none; }
+  .when { white-space: normal; max-width: 8.5em; }
+  .sheet { top: auto; height: 92%; width: 100%; border-left: 0; border-top: 1px solid var(--line); border-radius: 14px 14px 0 0; transform: translateY(100%); padding-right: 0; }
+  .hide-sm { display: none; }
+  .only-sm { display: inline; }
+}
+@media (prefers-reduced-motion: reduce) { .sheet, .scrim, .toast { transition: none; } }
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="bar-top">
+      <div class="brand">
+        <svg width="26" height="32" viewBox="0 0 26 32" aria-hidden="true"><path d="M2 1 L24 14 H9 L24 30 H2 Z" fill="#c8102e" stroke="#2f5bd3" stroke-width="2" stroke-linejoin="round"/></svg>
+        <div style="min-width:0">
+          <div class="brand-name">Nepal Dashboard</div>
+          <div class="brand-sub">Key builds, business, NEPSE and the economy</div>
+        </div>
+      </div>
+      <div class="when" id="when"><b id="when-date">Today</b><span id="when-fy">Fiscal year</span><span class="upd" id="when-upd"></span></div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" id="tab-builds" data-tab="builds" aria-selected="true">Key builds<span class="n" id="n-builds">0</span></button>
+      <button class="tab" role="tab" id="tab-today" data-tab="today" aria-selected="false">Today in Nepal<span class="n" id="n-today">0</span></button>
+      <button class="tab" role="tab" id="tab-ideas" data-tab="ideas" aria-selected="false">Ideas<span class="n" id="n-ideas">0</span></button>
+      <button class="tab" role="tab" id="tab-business" data-tab="business" aria-selected="false">Business</button>
+      <button class="tab" role="tab" id="tab-nepse" data-tab="nepse" aria-selected="false">NEPSE<span class="n" id="n-nepse">–</span></button>
+      <button class="tab" role="tab" id="tab-invest" data-tab="invest" aria-selected="false">Invest</button>
+      <button class="tab" role="tab" id="tab-economy" data-tab="economy" aria-selected="false">Economy</button>
+      <button class="tab" role="tab" id="tab-projects" data-tab="projects" aria-selected="false">National projects</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="offline" class="banner" role="status" hidden style="margin-bottom:18px">Saving is not available in this view. You can browse everything, but changes need the artifact opened on claude.ai while signed in.</div>
+
+  <section class="view" id="v-builds" aria-labelledby="tab-builds">
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="builds-eyebrow">Your portfolio</p>
+        <h1>Key builds</h1>
+        <p id="builds-desc">Every project you have chosen for your school and community. Claude adds a fresh news signal to each one every morning.</p>
+      </div>
+      <button class="btn primary" id="new-build" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>New build</button>
+    </div>
+    <div class="pipeline" id="pipeline" role="group" aria-label="Filter by stage"></div>
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg><input id="q" type="search" placeholder="Search builds, sectors, next steps" aria-label="Search builds"></label>
+      <select class="select" id="sort" aria-label="Sort builds">
+        <option value="stage">Sort: furthest along</option>
+        <option value="priority">Sort: priority</option>
+        <option value="target">Sort: target date</option>
+        <option value="added">Sort: newest</option>
+        <option value="name">Sort: name</option>
+      </select>
+      <div class="seg" role="group" aria-label="Layout">
+        <button type="button" id="vw-board" aria-pressed="true">Board</button>
+        <button type="button" id="vw-list" aria-pressed="false">List</button>
+      </div>
+    </div>
+    <div id="builds-body"></div>
+  </section>
+
+  <section class="view" id="v-today" aria-labelledby="tab-today" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="today-eyebrow">Daily brief</p>
+        <h1>Today in Nepal</h1>
+        <p id="today-desc">The stories that matter for your school, your province and your plans, refreshed every morning at about 6:34.</p>
+      </div>
+    </div>
+    <div class="chips" id="news-chips" role="group" aria-label="Filter stories"></div>
+    <div id="news-body" class="grid"></div>
+  </section>
+
+  <section class="view" id="v-ideas" aria-labelledby="tab-ideas" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="ideas-eyebrow">What we can build</p>
+        <h1>Today's ideas</h1>
+        <p>Opportunities drawn from the day's news, sized for a school and community in Kanchanpur. Claude marks one as today's pick. Add any idea to your key builds with one tap.</p>
+      </div>
+    </div>
+    <div id="ideas-body" class="grid"></div>
+  </section>
+
+  <section class="view" id="v-business" aria-labelledby="tab-business" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="biz-eyebrow">Nepal business</p>
+        <h1>Business pulse</h1>
+        <p>Company results, deals, prices and the dates that matter for Nepali business, refreshed every morning.</p>
+      </div>
+    </div>
+    <div class="tiles" id="biz-tiles"></div>
+    <div class="split">
+      <div class="view" style="gap:14px">
+        <div class="chips" id="biz-chips" role="group" aria-label="Filter business news"></div>
+        <div id="biz-body" class="grid narrow"></div>
+      </div>
+      <aside class="panel" aria-labelledby="ev-h">
+        <h3 id="ev-h">Coming up</h3>
+        <p class="note">Deadlines and events for business owners.</p>
+        <div id="biz-events" class="events"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="view" id="v-nepse" aria-labelledby="tab-nepse" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="nepse-eyebrow">Nepal Stock Exchange</p>
+        <h1>NEPSE</h1>
+        <p>Closing figures from the last trading session, refreshed every trading day at 4 pm, an hour after the 3 pm close. For information only, not investment advice.</p>
+      </div>
+    </div>
+    <div class="tiles" id="nepse-tiles"></div>
+    <div class="panel">
+      <div class="panel-top">
+        <div><h3>NEPSE index</h3><p class="note" style="margin:0">Daily close</p></div>
+        <div class="seg" role="group" aria-label="Chart range">
+          <button type="button" data-range="22" aria-pressed="false">1M</button>
+          <button type="button" data-range="66" aria-pressed="true">3M</button>
+          <button type="button" data-range="0" aria-pressed="false">All</button>
+        </div>
+      </div>
+      <div class="chart" id="nepse-chart"></div>
+      <div class="readout" id="nepse-read">Hover or tap the chart to read a day.</div>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <h3>Sector moves</h3>
+        <p class="note" id="sec-note">Sub-index change on the last session, %.</p>
+        <div class="chart" id="nepse-sectors"></div>
+      </div>
+      <div class="panel">
+        <h3>Where the money traded</h3>
+        <p class="note">Turnover by sector on the last session, rupees in crore.</p>
+        <div class="chart" id="nepse-turnover"></div>
+      </div>
+    </div>
+    <div class="three">
+      <div class="panel"><h3>Best performers today</h3><div class="tablewrap flat"><table><thead><tr><th>Symbol</th><th class="r">Price</th><th class="r">Change</th></tr></thead><tbody id="t-gain"></tbody></table></div></div>
+      <div class="panel"><h3>Top losers</h3><div class="tablewrap flat"><table><thead><tr><th>Symbol</th><th class="r">Price</th><th class="r">Change</th></tr></thead><tbody id="t-lose"></tbody></table></div></div>
+      <div class="panel"><h3>Most traded</h3><div class="tablewrap flat"><table><thead><tr><th>Symbol</th><th class="r">Price</th><th class="r">Turnover</th></tr></thead><tbody id="t-turn"></tbody></table></div></div>
+    </div>
+    <div class="panel">
+      <h3 id="wl-h">Fundamentals watchlist</h3>
+      <p class="note" id="wl-note"></p>
+      <div class="tablewrap flat"><table aria-labelledby="wl-h"><thead><tr><th>#</th><th>Stock</th><th class="r">Price</th><th class="r">P/E</th><th class="r hide-sm">P/B</th><th class="r hide-sm">ROE</th><th class="r hide-sm">Bad loans</th><th class="r hide-sm">Profit y/y</th><th class="r">Score</th></tr></thead><tbody id="t-watch"></tbody></table></div>
+      <p class="foot" id="wl-method" style="margin-top:12px"></p>
+    </div>
+    <div class="panel">
+      <h3>IPOs and share issues</h3>
+      <p class="note" id="pipe-note"></p>
+      <div class="tablewrap flat"><table><thead><tr><th>Company</th><th>Issue</th><th class="r hide-sm">Units</th><th class="hide-sm">Opens</th><th>Closes</th><th>Status</th></tr></thead><tbody id="t-issues"></tbody></table></div>
+    </div>
+    <p class="foot" id="nepse-foot"></p>
+  </section>
+
+  <section class="view" id="v-invest" aria-labelledby="tab-invest" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="inv-eyebrow">Compare and project</p>
+        <h1>Investment options</h1>
+        <p>What a sum could grow to in Nepal's main savings and investment options, including land and property, using today's published rates, past returns and stated assumptions. Projections, not promises.</p>
+      </div>
+    </div>
+    <div class="panel calc">
+      <div class="fld"><label for="inv-amount">Invest now (Rs)</label><input id="inv-amount" type="number" min="0" step="10000" inputmode="numeric"></div>
+      <div class="fld"><label for="inv-monthly">Add each month (Rs)</label><input id="inv-monthly" type="number" min="0" step="1000" inputmode="numeric"></div>
+      <div class="fld"><label for="inv-years">Years</label><input id="inv-years" type="number" min="1" max="30" step="1" inputmode="numeric"></div>
+      <div class="fld"><label for="inv-infl">Inflation a year (%)</label><input id="inv-infl" type="number" min="0" max="30" step="0.1" inputmode="decimal"></div>
+      <div class="fld"><span class="lbl" id="inv-scen-l">Scenario</span><div class="seg" role="group" aria-labelledby="inv-scen-l" id="inv-scen"><button type="button" data-scen="low">Low</button><button type="button" data-scen="mid">Expected</button><button type="button" data-scen="high">High</button></div></div>
+    </div>
+    <div class="tiles" id="inv-tiles"></div>
+    <div class="tablewrap"><table aria-label="Projected value by option"><thead><tr><th>Option</th><th class="r hide-sm">Return a year</th><th class="r" id="inv-col">Value</th><th class="r">Profit</th></tr></thead><tbody id="inv-body"></tbody></table></div>
+    <div class="panel">
+      <h3>Growth over time</h3>
+      <p class="note" id="inv-chart-note">Value at the end of each year, after tax.</p>
+      <div class="legend" id="inv-legend"></div>
+      <div class="chart" id="inv-chart"></div>
+      <div class="readout" id="inv-read">Hover or tap the chart to read a year.</div>
+    </div>
+    <h2 class="sec">Your investment plan</h2>
+    <p class="sec-note">Split one total across the options and see what the whole plan could be worth. Rs 5 crore is only a starting figure; change the total or any share at any time. Years and inflation come from the calculator above.</p>
+    <div class="panel" style="display:grid;gap:14px">
+      <div class="calc">
+        <div class="fld"><label for="plan-total">Total to invest (Rs)</label><input id="plan-total" type="number" min="0" step="100000" inputmode="numeric"></div>
+        <div class="fld"><span class="lbl">Shares used</span><div id="plan-sum" class="plan-sum">100%</div></div>
+        <div class="fld"><span class="lbl" aria-hidden="true">&nbsp;</span><button class="btn" id="plan-reset" type="button">Reset to model split</button></div>
+      </div>
+      <div class="tablewrap flat"><table aria-label="Investment plan"><thead><tr><th>Option</th><th class="r">Share</th><th class="r hide-sm">Amount</th><th class="r hide-sm">Low</th><th class="r" id="plan-col">Expected</th><th class="r hide-sm">High</th></tr></thead><tbody id="plan-body"></tbody><tfoot id="plan-foot"></tfoot></table></div>
+      <p class="saved" id="plan-saved"></p>
+    </div>
+    <div class="tiles" id="plan-tiles"></div>
+    <h2 class="sec">How each figure is worked out</h2>
+    <div class="grid narrow" id="inv-cards"></div>
+    <h2 class="sec">Places to watch for property</h2>
+    <p class="sec-note" id="pl-note">Where published data or big projects point to rising demand for land.</p>
+    <div class="grid narrow" id="pl-cards"></div>
+    <p class="foot" id="inv-foot"></p>
+  </section>
+
+  <section class="view" id="v-economy" aria-labelledby="tab-economy" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow">Nepal to 2036</p>
+        <h1>The economy you are building in</h1>
+        <p>Growth is slow today and the next decade could land anywhere from about $62 billion to $99 billion. Execution decides which.</p>
+      </div>
+    </div>
+    <div class="tiles" id="eco-tiles"></div>
+    <div class="two">
+      <div class="panel">
+        <h3>Three paths to 2036</h3>
+        <p class="note">Nominal GDP, US$ billions, compounding from the 2026 base. Illustrative growth rates, not a forecast.</p>
+        <div class="legend" id="scen-legend"></div>
+        <div class="chart" id="scen"></div>
+        <div class="readout" id="scen-read">Hover or tap the chart to read a year.</div>
+      </div>
+      <div class="panel">
+        <h3>Official growth forecasts</h3>
+        <p class="note">Real GDP growth, %. IMF (October 2026) and ADB (July 2026).</p>
+        <div class="legend"><span><i class="sw" style="border-color:var(--st-exploring)"></i>IMF</span><span><i class="sw" style="border-color:var(--st-planning)"></i>ADB</span></div>
+        <div class="chart" id="growth"></div>
+      </div>
+      <div class="panel">
+        <h3>What the economy is made of</h3>
+        <p class="note">Share of GDP by sector, FY2025/26. Consumption is 90.3% of GDP, so little goes to investment.</p>
+        <div class="chart" id="structure"></div>
+      </div>
+      <div class="panel">
+        <h3>Hydropower export progress</h3>
+        <p class="note">Export capacity approved by India against the 10,000 MW goal of the 2024 agreement.</p>
+        <div class="tile" style="border:0;padding:0"><div class="v" id="mw">1,179 MW</div></div>
+        <div class="meter"><i id="mw-bar"></i></div>
+        <p class="note" id="mw-note" style="margin:0"></p>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Growth scorecard</h3>
+      <p class="note">Each driver's potential over the decade, 1 (weak) to 5 (strong). Claude's assessment.</p>
+      <div class="tablewrap" style="border:0"><table><thead><tr><th>Driver</th><th>Rating</th><th class="hide-sm">Outlook</th></tr></thead><tbody id="score"></tbody></table></div>
+    </div>
+    <p class="foot">Sources: IMF World Economic Outlook (Oct 2026), Asian Development Bank (Jul 2026), Nepal Statistics Office and Economic Survey 2025/26, Nepal Electricity Authority (Oct 2026). Scenario rates and scorecard ratings are analyst assumptions.</p>
+  </section>
+
+  <section class="view" id="v-projects" aria-labelledby="tab-projects" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow">National pride projects</p>
+        <h1>Projects that decide the decade</h1>
+        <p>Only 4 of Nepal's 27 national pride projects are finished. Here is where the big bets stand, with Sudurpashchim highlighted.</p>
+      </div>
+    </div>
+    <div class="tiles" id="proj-tiles"></div>
+    <div class="chips" id="proj-chips" role="group" aria-label="Filter projects"></div>
+    <div class="tablewrap"><table><thead><tr><th>Project</th><th>Progress</th><th class="hide-sm">Province</th><th class="hide-sm">Cost, Rs B</th><th class="hide-sm">Status</th></tr></thead><tbody id="proj-body"></tbody></table></div>
+    <p class="foot">Progress from the National Planning Commission report (April 2026), Arun-3 from January 2026, Kathmandu–Terai Expressway target from the Nepali Army. Status notes summarised by Claude.</p>
+  </section>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="sheet-h"><span class="t" id="sheet-title">Build</span><button class="btn ghost" type="button" id="sheet-close" aria-label="Close">Close</button></div>
+  <div class="sheet-b" id="sheet-b"></div>
+  <div class="sheet-f" id="sheet-f"></div>
+</aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+const STAGES = ['Idea', 'Exploring', 'Planning', 'Building', 'Launched'];
+const STAGE_VAR = { Idea: '--st-idea', Exploring: '--st-exploring', Planning: '--st-planning', Building: '--st-building', Launched: '--st-launched' };
+const PRIOS = ['High', 'Medium', 'Low'];
+const SECTORS = ['Education & tech', 'Skills', 'Community & business', 'Agriculture', 'Health', 'Tourism', 'Energy', 'Other'];
+const LOCAL = 'Sudurpashchim';
+
+const ECON = {
+  gdp: 45.8, perCapita: 1548, growth: 3.6, remit: 33.0, consumption: 90.3, mw: 1179, mwTarget: 10000,
+  scen: [{ name: 'Breakout', rate: 0.08, color: '--st-launched', dash: '' }, { name: 'Base', rate: 0.05, color: '--st-exploring', dash: '6 4' }, { name: 'Downside', rate: 0.03, color: '--bad', dash: '2 4' }],
+  growth: [{ year: '2025', imf: 4.4, adb: 4.4 }, { year: '2026', imf: 3.6, adb: 3.9 }, { year: '2027', imf: 3.7, adb: 4.5 }],
+  structure: [{ s: 'Services', v: 61.8 }, { s: 'Agriculture & primary', v: 24.5 }, { s: 'Industry & construction', v: 13.7 }],
+  score: [
+    ['Hydropower & energy', 5, 'Strongest lever; 10,000 MW export deal with India, but floods and annual approvals add risk'],
+    ['Human capital', 4, 'Young, educated workforce; outflow of workers is the main drag'],
+    ['Tourism', 4, 'Large untapped value; needs airports, roads and marketing'],
+    ['Geography & trade', 3, 'Between India and China: a hub if managed, a squeeze if not'],
+    ['Governance & stability', 3, 'Fresh majority mandate in 2026; delivery still untested'],
+    ['Investment climate', 2, 'Consumption over 90% of GDP; slow project execution'],
+    ['Climate resilience', 2, '2026 glacier floods swept away more than 12 hydropower plants']
+  ]
+};
+const PROJECTS = [
+  ['Upper Tamakoshi Hydropower', 'Energy', 'Bagmati', 100, null, 'Operating'],
+  ['Gautam Buddha International Airport', 'Airports', 'Lumbini', 100, 6.82, 'Complete'],
+  ['Melamchi Drinking Water, phase 1', 'Water', 'Bagmati', 99.52, null, 'Water reaching Kathmandu'],
+  ['Pokhara Regional International Airport', 'Airports', 'Gandaki', 99.5, 22, 'Technically complete'],
+  ['Pashupati Area Development', 'Culture & tourism', 'Bagmati', 98.33, null, 'Near complete'],
+  ['Pushpalal Mid-Hill Highway', 'Roads', 'Multi-province', 82.9, 84.33, 'Started FY2064/65'],
+  ['Babai Irrigation', 'Irrigation', 'Lumbini', 78.74, 18.96, 'Cost revised up'],
+  ['Kaligandaki North-South Corridor', 'Roads', 'Gandaki', 78.69, 24, 'China trade link'],
+  ['Rani Jamara Kulariya Irrigation', 'Irrigation', 'Sudurpashchim', 74.76, null, 'Kailali farmland'],
+  ['Arun-3 Hydropower, 900 MW', 'Energy', 'Koshi', 74.61, 144, 'Built by India’s SJVN'],
+  ['Hulaki (Postal) Highway', 'Roads', 'Multi-province', 73.35, 65.2, 'Runs the length of the Terai'],
+  ['Lumbini Area Development', 'Culture & tourism', 'Lumbini', 68.25, null, 'Buddhist tourism hub'],
+  ['Bheri-Babai Diversion', 'Irrigation', 'Karnali', 65, null, 'Works continuing'],
+  ['Sikta Irrigation', 'Irrigation', 'Lumbini', 47.5, 52.89, 'Cost up from Rs 12.8B'],
+  ['Kathmandu-Terai Expressway', 'Roads', 'Multi-province', 46.4, 211.93, 'Target mid-April 2027'],
+  ['Koshi North-South Corridor', 'Roads', 'Koshi', 45.38, 11.93, 'Eastern hills to Terai'],
+  ['Sun Koshi-Marin Diversion', 'Irrigation', 'Madhesh', 37.1, null, 'Tender cancelled Oct 2026'],
+  ['Mahakali Irrigation', 'Irrigation', 'Sudurpashchim', 26.6, null, 'Kanchanpur farmland'],
+  ['President Chure Conservation', 'Environment', 'Multi-province', 19, null, 'Protects the Terai’s water'],
+  ['Karnali North-South Corridor', 'Roads', 'Karnali', 17.16, 0.67, 'Early stage'],
+  ['Kathmandu Valley water transmission, second', 'Water', 'Bagmati', 10.45, null, 'Early stage'],
+  ['Budhigandaki Hydropower, 1,200 MW', 'Energy', 'Gandaki', 10, 406.02, 'Deadline moved to 2085 BS'],
+  ['West Seti Hydropower', 'Energy', 'Sudurpashchim', 0, null, 'Construction not begun'],
+  ['Pancheshwar Multipurpose (Mahakali)', 'Energy', 'Sudurpashchim', 0, null, 'Project report still not agreed'],
+  ['Nijgadh International Airport', 'Airports', 'Madhesh', 0, null, 'Not started']
+].map(([name, sector, province, progress, cost, status]) => ({ name, sector, province, progress, cost, status }));
+
+const S = { builds: [], feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, loadedInvest: false, loadedBiz: false, loadedNepse: false, bizf: 'all', range: 66, loadedBuilds: false, loadedFeed: false, tab: 'builds', stage: null, q: '', sort: 'stage', view: 'board', news: 'all', proj: 'all', open: null, canWrite: true, live: false, local: false };
+let db = null;
+/* Device mode: only when the shared database is unreachable (signed out, or opened outside claude.ai, e.g. from X).
+   Builds then live in this browser's storage; nothing in this mode ever touches the shared database. */
+const LKEY = 'nd-device-builds';
+const canEdit = () => S.local || (S.canWrite && !!db);
+const liveNote = (dflt) => S.local ? 'Daily updates appear when the dashboard is opened signed in to Claude.' : dflt;
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const fmt1 = (n) => Number(n).toLocaleString('en', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const fmt0 = (n) => Math.round(Number(n)).toLocaleString('en');
+const today = () => { try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kathmandu' }).format(new Date()); } catch (e) { return new Date().toISOString().slice(0, 10); } };
+const niceDate = (iso) => { if (!iso) return ''; const d = new Date(String(iso).slice(0, 10) + 'T00:00:00Z'); return isNaN(d) ? '' : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }); };
+const niceMonth = (ym) => { if (!ym) return ''; const d = new Date(ym + '-01T00:00:00Z'); return isNaN(d) ? '' : d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' }); };
+const safeUrl = (u) => /^https:\/\//.test(String(u || '')) ? String(u) : '';
+const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+function fiscalYear(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const bs = (m > 7 || (m === 7 && d >= 17)) ? y + 57 : y + 56;
+  return 'Fiscal year ' + bs + '/' + String(bs + 1).slice(-2);
+}
+const stamp = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kathmandu' }); };
+function lastRefresh() {
+  const xs = [S.feed, S.biz, S.nepse].map((d) => d && d.updated_at).filter((x) => x && !isNaN(new Date(x)));
+  return xs.length ? xs.reduce((a, b) => new Date(b) > new Date(a) ? b : a) : '';
+}
+function header() {
+  const t = today();
+  $('when-date').textContent = new Date(t + 'T00:00:00Z').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+  $('when-fy').textContent = fiscalYear(t);
+  const r = lastRefresh();
+  $('when-upd').textContent = r ? 'Updated ' + stamp(r) : '';
+  $('builds-eyebrow').textContent = S.local ? 'Saved on this device' : r ? 'Your portfolio · refreshed ' + stamp(r) : 'Your portfolio';
+}
+
+let toastT;
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2200); }
+
+const chains = {};
+function queue(key, fn) {
+  const p = (chains[key] || Promise.resolve()).then(fn).catch((e) => {
+    if (e && e.code === 'invalid_argument') { S.canWrite = false; $('offline').hidden = false; toast('You can view this desk but not change it.'); }
+    else if (e && e.code === 'quota_exceeded') toast('Storage is full. Delete a build to make room.');
+    else toast('That change did not save. Check your connection and try again.');
+    throw e;
+  });
+  chains[key] = p.catch(() => {});
+  return p;
+}
+let localWarned = false;
+function loadLocal() {
+  try { const a = JSON.parse(localStorage.getItem(LKEY) || '[]'); return Array.isArray(a) ? a.filter((x) => x && typeof x === 'object' && typeof x.id === 'string') : []; } catch (e) { return []; }
+}
+function localWrite(fn) {
+  return Promise.resolve().then(() => {
+    fn();
+    try { localStorage.setItem(LKEY, JSON.stringify(S.builds)); }
+    catch (e) { if (!localWarned) { localWarned = true; setTimeout(() => toast('This browser won’t keep changes after you close the page.'), 2300); } }
+    renderBuilds(); renderIdeas(); if (S.open) renderSheet(false);
+  });
+}
+function deviceMode() {
+  S.local = true; S.canWrite = true; db = null;
+  S.builds = loadLocal();
+  S.loadedBuilds = true; S.loadedFeed = S.loadedBiz = S.loadedNepse = S.loadedInvest = false;
+  const o = $('offline');
+  o.textContent = 'Public view. News, ideas, business, NEPSE and investment rates refresh every day. Builds you add here are saved only on this device. If this is your dashboard, open it signed in to Claude to edit it.';
+  o.hidden = false;
+  $('builds-desc').textContent = 'Track your own projects here: add a build, move it through the stages and tick off tasks. Everything stays in this browser only.';
+  $('today-desc').textContent = 'The stories that matter for Nepal and Sudurpashchim, refreshed every morning.';
+  header(); renderLive();
+  if (!location.hash && S.tab === 'builds' && !S.builds.length) show('today', false);
+  loadPublic();
+}
+const asObj = (x) => x && typeof x === 'object' && !Array.isArray(x) ? x : null;
+function loadPublic() {
+  const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+  const t = setTimeout(() => { if (ctl) ctl.abort(); }, 10000);
+  fetch('public.json?t=' + Date.now(), { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+    .then((r) => r.ok ? r.json() : null).catch(() => null)
+    .then((d) => {
+      clearTimeout(t);
+      if (asObj(d)) { S.feed = asObj(d.feed); S.biz = asObj(d.business); S.nepse = asObj(d.nepse); S.watch = asObj(d.watch); S.invest = asObj(d.invest); S.places = asObj(d.places); }
+      S.loadedFeed = S.loadedBiz = S.loadedNepse = S.loadedInvest = true;
+      header(); renderLive(); if (S.tab === 'invest') renderInvest();
+    });
+}
+function patchBuild(id, patch) {
+  if (S.local) return localWrite(() => { const b = S.builds.find((x) => x.id === id); if (b) Object.assign(b, patch, { updated_at: new Date().toISOString() }); });
+  if (!db || !S.canWrite) return Promise.reject();
+  return queue(id, () => db.doc('builds/' + id).update(Object.assign({}, patch, { updated_at: new Date().toISOString() })));
+}
+function createBuild(data) {
+  if (!S.local && (!db || !S.canWrite)) return Promise.reject();
+  const body = Object.assign({ build: 'Untitled build', sector: 'Other', vision: '', stage: 'Idea', priority: 'Medium', target: '', signal: '', signal_date: '', signal_source: '', signal_url: '', next_step: '', notes: '', tasks: [], added: today() }, data, { updated_at: new Date().toISOString() });
+  if (S.local) return localWrite(() => { S.builds.push(Object.assign({ id: 'dev-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7) }, body)); });
+  return queue('new', () => db.collection('builds').add(body));
+}
+function removeBuild(id) {
+  if (S.local) return localWrite(() => { S.builds = S.builds.filter((x) => x.id !== id); });
+  return queue(id, () => db.doc('builds/' + id).delete());
+}
+
+/* ---------- Builds ---------- */
+function stageOf(b) { return STAGES.includes(b.stage) ? b.stage : 'Idea'; }
+function taskStats(b) { const t = Array.isArray(b.tasks) ? b.tasks : []; return { n: t.length, d: t.filter((x) => x && x.done).length }; }
+function filtered() {
+  const q = norm(S.q);
+  let rows = S.builds.filter((b) => (!S.stage || stageOf(b) === S.stage) && (!q || norm([b.build, b.sector, b.vision, b.next_step, b.notes].join(' ')).includes(q)));
+  const by = {
+    stage: (a, b) => STAGES.indexOf(stageOf(b)) - STAGES.indexOf(stageOf(a)) || PRIOS.indexOf(a.priority) - PRIOS.indexOf(b.priority),
+    priority: (a, b) => PRIOS.indexOf(a.priority) - PRIOS.indexOf(b.priority) || STAGES.indexOf(stageOf(b)) - STAGES.indexOf(stageOf(a)),
+    target: (a, b) => (a.target || '9999').localeCompare(b.target || '9999'),
+    added: (a, b) => String(b.added || '').localeCompare(String(a.added || '')),
+    name: (a, b) => String(a.build).localeCompare(String(b.build))
+  }[S.sort];
+  return rows.sort(by);
+}
+function renderPipeline() {
+  const box = $('pipeline'); box.replaceChildren();
+  const mk = (label, n, stage, color) => {
+    const b = el('button', 'pipe'); b.type = 'button';
+    b.setAttribute('aria-pressed', S.stage === stage ? 'true' : 'false');
+    if (color) b.style.setProperty('--pc', 'var(' + color + ')');
+    const k = el('span', 'k'); if (color) { const d = el('i', 'dot'); k.append(d); } k.append(label);
+    b.append(k, el('span', 'v', String(n)));
+    b.addEventListener('click', () => { S.stage = S.stage === stage ? null : stage; renderBuilds(); });
+    return b;
+  };
+  box.append(mk('All builds', S.builds.length, null, null));
+  for (const s of STAGES) box.append(mk(s, S.builds.filter((b) => stageOf(b) === s).length, s, STAGE_VAR[s]));
+}
+function buildCard(b) {
+  const c = el('div', 'card'); c.tabIndex = 0;
+  c.style.setProperty('--pc', 'var(' + STAGE_VAR[stageOf(b)] + ')');
+  c.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target === c) openSheet(b.id); });
+  const meta = el('div', 'meta');
+  meta.append(el('span', 'chip', b.sector || 'Other'));
+  if (b.priority) meta.append(el('span', 'prio-' + b.priority, b.priority + ' priority'));
+  c.append(meta, el('h3', null, b.build || 'Untitled build'));
+  if (b.next_step) c.append(el('div', 'ns', 'Next: ' + b.next_step));
+  const foot = el('div', 'card-foot'); const left = el('div', 'meta');
+  const ts = taskStats(b);
+  if (ts.n) { const m = el('span'); const bar = el('span', 'mini'); const f = el('i'); f.style.width = (ts.d / ts.n * 100) + '%'; bar.append(f); m.append(bar, ' ' + ts.d + '/' + ts.n); left.append(m); }
+  if (b.target) left.append(el('span', null, 'Target ' + niceMonth(b.target)));
+  foot.append(left);
+  const i = STAGES.indexOf(stageOf(b));
+  if (i < STAGES.length - 1 && canEdit()) {
+    const adv = el('button', 'adv', 'Move to ' + STAGES[i + 1] + ' →'); adv.type = 'button';
+    adv.addEventListener('click', (e) => { e.stopPropagation(); adv.disabled = true; patchBuild(b.id, { stage: STAGES[i + 1] }).then(() => toast('Moved to ' + STAGES[i + 1])).catch(() => { adv.disabled = false; }); });
+    foot.append(adv);
+  }
+  c.append(foot);
+  c.addEventListener('click', () => openSheet(b.id));
+  return c;
+}
+function renderBuilds() {
+  $('n-builds').textContent = S.builds.length;
+  renderPipeline();
+  $('vw-board').setAttribute('aria-pressed', S.view === 'board' ? 'true' : 'false');
+  $('vw-list').setAttribute('aria-pressed', S.view === 'list' ? 'true' : 'false');
+  $('new-build').disabled = !canEdit();
+  const body = $('builds-body'); body.replaceChildren();
+  if (!S.loadedBuilds) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading your builds')); body.append(e); return; }
+  if (!S.builds.length) {
+    const e = el('div', 'empty'); e.append(el('h3', null, 'No key builds yet'), el('p', null, 'Add your first project, or open Ideas and adopt one with a tap.'));
+    const b = el('button', 'btn primary', 'New build'); b.type = 'button'; b.addEventListener('click', () => openSheet(null)); b.disabled = !canEdit();
+    e.append(b); body.append(e); return;
+  }
+  const rows = filtered();
+  if (!rows.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'Nothing matches'), el('p', null, 'Clear the search or pick another stage.')); body.append(e); return; }
+  if (S.view === 'board') {
+    const board = el('div', 'board');
+    const stages = S.stage ? [S.stage] : STAGES;
+    for (const s of stages) {
+      const col = el('div', 'col'); col.style.setProperty('--pc', 'var(' + STAGE_VAR[s] + ')');
+      const items = rows.filter((b) => stageOf(b) === s);
+      const h = el('div', 'col-h'); const t = el('span'); t.append(el('i', 'dot'), ' ' + s); t.style.display = 'inline-flex'; t.style.alignItems = 'center'; t.style.gap = '6px';
+      h.append(t, el('span', null, String(items.length))); col.append(h);
+      if (!items.length) col.append(el('div', 'col-empty', 'No builds here'));
+      for (const b of items) col.append(buildCard(b));
+      board.append(col);
+    }
+    body.append(board);
+  } else {
+    const wrap = el('div', 'tablewrap'); const t = el('table'); const th = el('thead'); const tr = el('tr');
+    for (const [h, cls] of [['Build'], ['Stage'], ['Priority', 'hide-sm'], ['Target', 'hide-sm'], ['Tasks', 'hide-sm'], ['Next step', 'hide-sm']]) { const x = el('th', cls, h); tr.append(x); }
+    th.append(tr); const tb = el('tbody');
+    for (const b of rows) {
+      const r = el('tr', 'click'); r.tabIndex = 0;
+      const n = el('td'); n.append(el('div', null, b.build)); const sub = el('div', 'meta'); sub.append(b.sector || ''); n.append(sub);
+      const st = el('td', 'num'); const d = el('i', 'dot'); d.style.setProperty('--pc', 'var(' + STAGE_VAR[stageOf(b)] + ')'); st.append(d, ' ' + stageOf(b));
+      const pr = el('td', 'hide-sm prio-' + (b.priority || ''), b.priority || '');
+      const tg = el('td', 'num hide-sm', niceMonth(b.target));
+      const ts = taskStats(b); const tk = el('td', 'num hide-sm', ts.n ? ts.d + '/' + ts.n : '');
+      const nx = el('td', 'dim hide-sm', b.next_step || '');
+      r.append(n, st, pr, tg, tk, nx);
+      r.addEventListener('click', () => openSheet(b.id));
+      r.addEventListener('keydown', (e) => { if (e.key === 'Enter') openSheet(b.id); });
+      tb.append(r);
+    }
+    t.append(th, tb); wrap.append(t); body.append(wrap);
+  }
+}
+
+/* ---------- Sheet ---------- */
+let notesT = null; let lastFocus = null;
+function openSheet(id) {
+  lastFocus = document.activeElement;
+  S.open = id === null ? 'new' : id;
+  renderSheet(true);
+  const sc = $('scrim'), sh = $('sheet');
+  sc.hidden = false; sh.hidden = false;
+  requestAnimationFrame(() => { sc.classList.add('on'); sh.classList.add('on'); const f = sh.querySelector('input, textarea, button'); if (f) f.focus(); });
+}
+function closeSheet() {
+  if (S.open && S.open !== 'new') flushNotes();
+  S.open = null;
+  const sc = $('scrim'), sh = $('sheet');
+  sc.classList.remove('on'); sh.classList.remove('on');
+  setTimeout(() => { if (!S.open) { sc.hidden = true; sh.hidden = true; $('sheet-b').replaceChildren(); $('sheet-f').replaceChildren(); } }, 240);
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+function flushNotes() { if (notesT) { clearTimeout(notesT.t); notesT.fn(); notesT = null; } }
+function field(label, input) { const f = el('div', 'fld'); const l = el('label', null, label); if (input.id) l.htmlFor = input.id; f.append(l, input); return f; }
+function selectOf(id, opts, val) { const s = el('select'); s.id = id; for (const o of opts) { const op = new Option(o, o); s.append(op); } s.value = val || opts[0]; return s; }
+
+function renderSheet(force) {
+  if (!S.open) return;
+  const body = $('sheet-b'), foot = $('sheet-f');
+  if (!force && S.open === 'new') return;
+  const ae = document.activeElement;
+  const keepFocus = !force && ae && ae.id && $('sheet').contains(ae) ? { id: ae.id, value: ae.value, a: ae.selectionStart, z: ae.selectionEnd } : null;
+  const scroll = force ? 0 : body.scrollTop;
+  const ro = !canEdit();
+  body.replaceChildren(); foot.replaceChildren();
+  queueMicrotask(() => {
+    body.scrollTop = scroll;
+    if (!keepFocus) return;
+    const n = $(keepFocus.id); if (!n) return;
+    if (typeof keepFocus.value === 'string' && 'value' in n && n.type !== 'checkbox' && n.tagName !== 'SELECT') n.value = keepFocus.value;
+    n.focus({ preventScroll: true });
+    try { if (keepFocus.a != null) n.setSelectionRange(keepFocus.a, keepFocus.z); } catch (e) {}
+  });
+  if (S.open === 'new') {
+    $('sheet-title').textContent = 'New build';
+    const name = el('input', 'big'); name.id = 'f-name'; name.placeholder = 'Name your build'; name.maxLength = 80;
+    const sector = selectOf('f-sector', SECTORS, 'Education & tech');
+    const prio = selectOf('f-prio', PRIOS, 'Medium');
+    const vision = el('textarea'); vision.id = 'f-vision'; vision.placeholder = 'What will this achieve for the school and community?';
+    const next = el('input'); next.id = 'f-next'; next.placeholder = 'The first concrete action';
+    const target = el('input'); target.id = 'f-target'; target.type = 'month';
+    const msg = el('div', 'err');
+    const row = el('div', 'row2'); row.append(field('Sector', sector), field('Priority', prio));
+    body.append(field('Build', name), row, field('Vision', vision), field('Next step', next), field('Target month', target), msg);
+    const save = el('button', 'btn primary', 'Add build'); save.type = 'button'; save.disabled = ro;
+    save.addEventListener('click', () => {
+      if (!name.value.trim()) { msg.textContent = 'Give the build a name first.'; name.focus(); return; }
+      save.disabled = true;
+      createBuild({ build: name.value.trim(), sector: sector.value, priority: prio.value, vision: vision.value.trim(), next_step: next.value.trim(), target: target.value || '', stage: 'Idea' })
+        .then(() => { toast('Build added'); closeSheet(); }).catch(() => { save.disabled = false; });
+    });
+    name.addEventListener('input', () => { msg.textContent = ''; });
+    const cancel = el('button', 'btn ghost', 'Cancel'); cancel.type = 'button'; cancel.addEventListener('click', closeSheet);
+    foot.append(cancel, save);
+    return;
+  }
+  const b = S.builds.find((x) => x.id === S.open);
+  if (!b) { $('sheet-title').textContent = 'Build'; body.append(el('p', 'note', 'This build was removed.')); return; }
+  $('sheet-title').textContent = 'Key build';
+  const name = el('input', 'big'); name.id = 'e-name'; name.value = b.build || ''; name.maxLength = 80; name.disabled = ro;
+  name.addEventListener('change', () => { const v = name.value.trim(); if (v && v !== b.build) patchBuild(b.id, { build: v }).then(() => toast('Renamed')).catch(() => {}); });
+  body.append(field('Build', name));
+
+  const stWrap = el('div', 'fld'); stWrap.append(el('span', 'lbl', 'Stage'));
+  const st = el('div', 'stages'); st.setAttribute('role', 'group'); st.setAttribute('aria-label', 'Stage');
+  for (const s of STAGES) {
+    const x = el('button', null, s); x.type = 'button'; x.disabled = ro;
+    x.style.setProperty('--pc', 'var(' + STAGE_VAR[s] + ')');
+    x.setAttribute('aria-pressed', stageOf(b) === s ? 'true' : 'false');
+    x.addEventListener('click', () => { if (stageOf(b) !== s) patchBuild(b.id, { stage: s }).then(() => toast('Stage: ' + s)).catch(() => {}); });
+    st.append(x);
+  }
+  stWrap.append(st); body.append(stWrap);
+
+  const sector = selectOf('e-sector', SECTORS.includes(b.sector) ? SECTORS : [b.sector].concat(SECTORS), b.sector || 'Other'); sector.disabled = ro;
+  sector.addEventListener('change', () => patchBuild(b.id, { sector: sector.value }).catch(() => {}));
+  const prio = selectOf('e-prio', PRIOS, b.priority || 'Medium'); prio.disabled = ro;
+  prio.addEventListener('change', () => patchBuild(b.id, { priority: prio.value }).catch(() => {}));
+  const row = el('div', 'row2'); row.append(field('Sector', sector), field('Priority', prio)); body.append(row);
+
+  const target = el('input'); target.type = 'month'; target.id = 'e-target'; target.value = b.target || ''; target.disabled = ro;
+  target.addEventListener('change', () => patchBuild(b.id, { target: target.value || '' }).catch(() => {}));
+  const added = el('input'); added.id = 'e-added'; added.value = niceDate(b.added); added.disabled = true;
+  const row2 = el('div', 'row2'); row2.append(field('Target month', target), field('Added', added)); body.append(row2);
+
+  const vision = el('textarea'); vision.id = 'e-vision'; vision.value = b.vision || ''; vision.disabled = ro;
+  vision.addEventListener('change', () => patchBuild(b.id, { vision: vision.value.trim() }).catch(() => {}));
+  body.append(field('Vision', vision));
+
+  const next = el('textarea'); next.id = 'e-next'; next.value = b.next_step || ''; next.disabled = ro; next.style.minHeight = '60px';
+  next.addEventListener('change', () => patchBuild(b.id, { next_step: next.value.trim() }).catch(() => {}));
+  body.append(field('Next step', next));
+
+  const sig = el('div', 'signal'); sig.id = 'e-signal'; body.append(sig); fillSignal(sig, b);
+
+  const tw = el('div', 'fld'); const ts = taskStats(b);
+  tw.append(el('span', 'lbl', 'Tasks' + (ts.n ? ' · ' + ts.d + ' of ' + ts.n + ' done' : '')));
+  const list = el('div', 'tasks');
+  const tasks = Array.isArray(b.tasks) ? b.tasks.map((t) => ({ text: String(t.text || ''), done: !!t.done })) : [];
+  tasks.forEach((t, i) => {
+    const r = el('div', 'task' + (t.done ? ' done' : ''));
+    const cb = el('input'); cb.type = 'checkbox'; cb.checked = t.done; cb.id = 'e-task-' + i; cb.disabled = ro;
+    cb.addEventListener('change', () => { const nt = tasks.map((x, j) => j === i ? { text: x.text, done: cb.checked } : x); patchBuild(b.id, { tasks: nt }).catch(() => {}); });
+    const tx = el('span', null, t.text); tx.addEventListener('click', () => { if (!ro) cb.click(); });
+    const del = el('button', null, '✕'); del.type = 'button'; del.setAttribute('aria-label', 'Remove task'); del.disabled = ro;
+    del.addEventListener('click', () => { patchBuild(b.id, { tasks: tasks.filter((x, j) => j !== i) }).catch(() => {}); });
+    r.append(cb, tx, del); list.append(r);
+  });
+  const add = el('div', 'addtask'); const ti = el('input'); ti.id = 'e-newtask'; ti.placeholder = 'Add a task'; ti.maxLength = 140; ti.disabled = ro;
+  const ab = el('button', 'btn', 'Add'); ab.type = 'button'; ab.disabled = ro;
+  const doAdd = () => { const v = ti.value.trim(); if (!v) { ti.focus(); return; } ti.value = ''; patchBuild(b.id, { tasks: tasks.concat([{ text: v, done: false }]) }).then(() => { const n = $('e-newtask'); if (n) n.focus(); }).catch(() => {}); };
+  ab.addEventListener('click', doAdd); ti.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doAdd(); } });
+  add.append(ti, ab); tw.append(list, add); body.append(tw);
+
+  const notes = el('textarea'); notes.id = 'e-notes'; notes.value = b.notes || ''; notes.placeholder = 'Contacts, costs, decisions, anything to remember'; notes.disabled = ro; notes.style.minHeight = '110px';
+  const savedLbl = el('span', 'saved', b.updated_at ? 'Saved ' + new Date(b.updated_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '');
+  notes.addEventListener('input', () => {
+    if (notesT) clearTimeout(notesT.t);
+    const fn = () => { const live = $('e-notes'); const v = live ? live.value : notes.value; return patchBuild(b.id, { notes: v }).then(() => { const l = document.querySelector('#sheet-f .saved'); if (l) l.textContent = 'Notes saved'; }).catch(() => {}); };
+    notesT = { fn, t: setTimeout(() => { notesT = null; fn(); }, 900) };
+    savedLbl.textContent = 'Saving…';
+  });
+  notes.addEventListener('blur', flushNotes);
+  body.append(field('Notes', notes));
+
+  const del = el('button', 'btn danger', 'Delete build'); del.type = 'button'; del.disabled = ro;
+  let armed = false;
+  del.addEventListener('click', () => {
+    if (!armed) { armed = true; del.textContent = 'Tap again to delete'; setTimeout(() => { armed = false; del.textContent = 'Delete build'; }, 4000); return; }
+    removeBuild(b.id).then(() => { toast('Build deleted'); closeSheet(); }).catch(() => {});
+  });
+  foot.append(del, savedLbl);
+}
+function fillSignal(sig, b) {
+  sig.replaceChildren();
+  sig.append(el('span', 'k', 'Latest signal' + (b.signal_date ? ' · ' + niceDate(b.signal_date) : '')));
+  sig.append(el('div', null, b.signal || (S.local ? 'No news signal yet.' : 'Claude will add a news signal for this build at the next morning update.')));
+  const u = safeUrl(b.signal_url);
+  if (u) { const a = el('a', 'src', (b.signal_source || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; sig.append(a); }
+}
+function refreshSignal() { const b = S.builds.find((x) => x.id === S.open); const s = $('e-signal'); if (b && s) fillSignal(s, b); }
+
+/* ---------- Today ---------- */
+function renderToday() {
+  const items = (S.feed && Array.isArray(S.feed.news)) ? S.feed.news : [];
+  $('n-today').textContent = items.length;
+  $('today-eyebrow').textContent = S.feed && S.feed.updated_at ? 'Updated ' + stamp(S.feed.updated_at) : 'Daily brief';
+  const chips = $('news-chips'); chips.replaceChildren();
+  const cats = ['all', LOCAL, 'Education'].concat([...new Set(items.map((x) => x.category))].filter((c) => c && c !== LOCAL && c !== 'Education').sort());
+  for (const c of cats) {
+    const n = c === 'all' ? items.length : items.filter((x) => x.category === c).length;
+    if (c !== 'all' && !n) continue;
+    const b = el('button', 'fchip', (c === 'all' ? 'All' : c) + ' · ' + n); b.type = 'button';
+    b.setAttribute('aria-pressed', S.news === c ? 'true' : 'false');
+    b.addEventListener('click', () => { S.news = c; renderToday(); });
+    chips.append(b);
+  }
+  const body = $('news-body'); body.replaceChildren();
+  if (!S.loadedFeed) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading the brief')); body.append(e); return; }
+  if (!items.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'No brief yet'), el('p', null, liveNote('The morning update fills this page at about 6:34 every day.'))); body.append(e); return; }
+  const rows = items.filter((r) => S.news === 'all' || r.category === S.news).slice().sort((a, b) => (b.category === LOCAL) - (a.category === LOCAL) || String(b.date).localeCompare(String(a.date)));
+  for (const r of rows) {
+    const c = el('article', 'story' + (r.category === LOCAL ? ' local' : ''));
+    const m = el('div', 'meta'); m.append(el('span', 'chip', r.category || 'News'), el('span', null, niceDate(r.date)));
+    c.append(m, el('h3', null, r.headline), el('p', null, r.why_it_matters));
+    const u = safeUrl(r.source_url); if (u) { const a = el('a', null, (r.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; c.append(a); }
+    body.append(c);
+  }
+}
+
+/* ---------- Ideas ---------- */
+function isBuild(name) { const n = norm(name); return S.builds.some((b) => { const k = norm(b.build); return k && (k === n || k.startsWith(n) || n.startsWith(k)); }); }
+function renderIdeas() {
+  const items = (S.feed && Array.isArray(S.feed.ideas)) ? S.feed.ideas : [];
+  $('n-ideas').textContent = items.length;
+  $('ideas-eyebrow').textContent = S.feed && S.feed.updated_at ? 'Updated ' + stamp(S.feed.updated_at) : 'What we can build';
+  const body = $('ideas-body'); body.replaceChildren();
+  if (!S.loadedFeed) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading ideas')); body.append(e); return; }
+  if (!items.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'No ideas yet'), el('p', null, liveNote('New ideas arrive with the morning update.'))); body.append(e); return; }
+  const rows = items.slice().sort((a, b) => (b.pick === true) - (a.pick === true) || (Number(a.number) || 99) - (Number(b.number) || 99));
+  for (const r of rows) {
+    const c = el('article', 'idea' + (r.pick === true ? ' pick' : ''));
+    const m = el('div', 'meta');
+    if (r.number != null) m.append(el('span', 'num-badge', '#' + r.number));
+    m.append(el('span', 'chip', r.sector || ''));
+    if (r.pick === true) m.append(el('span', 'pick-badge', "Today's pick"));
+    c.append(m, el('h3', null, r.idea), el('p', 'trend', 'Trend: ' + (r.trend || '')), el('p', null, r.build || ''));
+    if (r.pick === true && r.pick_reason) c.append(el('p', 'why', r.pick_reason));
+    const act = el('div', 'act');
+    act.append(el('span', 'meta', 'For ' + (r.fit || '') + ' · ' + (r.effort || '') + ' effort'));
+    if (isBuild(r.idea)) act.append(el('span', 'added', '✓ In your builds'));
+    else {
+      const b = el('button', 'btn' + (r.pick === true ? ' primary' : ''), 'Add to key builds'); b.type = 'button'; b.disabled = !canEdit();
+      b.addEventListener('click', () => {
+        b.disabled = true;
+        const story = (S.feed.news || []).find((n) => norm(n.headline).length && r.trend && norm(r.trend).split(' ').filter((w) => w.length > 4).some((w) => norm(n.headline).includes(w)));
+        createBuild({ build: r.idea, sector: SECTORS.includes(r.sector) ? r.sector : (r.sector || 'Other'), vision: r.build || '', stage: 'Exploring', priority: 'Medium', signal: r.trend || '', signal_date: story ? story.date : (S.feed.date || today()), signal_source: story ? story.source_name : '', signal_url: story ? story.source_url : '', next_step: '', from_idea: true })
+          .then(() => toast('Added to your key builds')).catch(() => { b.disabled = false; });
+      });
+      act.append(b);
+    }
+    c.append(act); body.append(c);
+  }
+}
+
+/* ---------- Economy ---------- */
+function svgEl(tag, attrs) { const e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+function txt(parent, x, y, s, attrs) { const t = svgEl('text', Object.assign({ x, y, 'font-size': 12, fill: css('--muted'), 'font-family': 'inherit' }, attrs || {})); t.textContent = s; parent.append(t); return t; }
+function renderEconomy() {
+  const tiles = $('eco-tiles'); tiles.replaceChildren();
+  for (const [k, v, s] of [['Economy size, 2026', '$' + fmt1(ECON.gdp) + 'B', 'Nominal GDP, IMF'], ['Income per person', '$' + fmt0(ECON.perCapita), 'GDP per capita, 2026'], ['Real growth, 2026', fmt1(ECON.growth) + '%', 'IMF; South Asia about 6%'], ['Remittances', fmt1(ECON.remit) + '%', 'Share of GDP, FY2025/26']]) {
+    const t = el('div', 'tile'); t.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(t);
+  }
+  drawScenarios(); drawGrowth(); drawStructure();
+  $('mw').textContent = fmt0(ECON.mw) + ' MW';
+  $('mw-bar').style.width = (ECON.mw / ECON.mwTarget * 100) + '%';
+  $('mw-note').textContent = Math.round(ECON.mw / ECON.mwTarget * 100) + '% of the ' + fmt0(ECON.mwTarget) + ' MW target. The August 2026 floods knocked out about 550 MW of generation.';
+  const sc = $('score'); sc.replaceChildren();
+  for (const [d, r, o] of ECON.score) {
+    const tr = el('tr'); const td2 = el('td', 'num'); const p = el('span', 'pips');
+    const col = r >= 4 ? css('--ok') : r === 3 ? css('--warn') : css('--bad');
+    for (let i = 1; i <= 5; i++) { const x = el('i'); if (i <= r) x.style.background = col; p.append(x); }
+    td2.append(p, String(r));
+    tr.append(el('td', null, d), td2, el('td', 'dim hide-sm', o)); sc.append(tr);
+  }
+}
+function drawScenarios() {
+  const box = $('scen'); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth || 520), H = 250, m = { t: 12, r: 104, b: 26, l: 46 };
+  const years = []; for (let y = 2026; y <= 2036; y++) years.push(y);
+  const series = ECON.scen.map((s) => ({ ...s, pts: years.map((y) => ({ y, v: ECON.gdp * Math.pow(1 + s.rate, y - 2026) })) }));
+  const vmax = 100, vmin = 40;
+  const X = (y) => m.l + (y - 2026) / 10 * (W - m.l - m.r);
+  const Y = (v) => m.t + (1 - (v - vmin) / (vmax - vmin)) * (H - m.t - m.b);
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'GDP paths to 2036 under three scenarios' });
+  for (const t of [40, 60, 80, 100]) { svg.append(svgEl('line', { x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), stroke: css('--line') })); txt(svg, m.l - 8, Y(t) + 4, '$' + t + 'B', { 'text-anchor': 'end', 'font-size': 11 }); }
+  for (const y of (W < 440 ? [2026, 2031, 2036] : [2026, 2028, 2030, 2032, 2034, 2036])) txt(svg, X(y), H - 6, String(y), { 'text-anchor': 'middle', 'font-size': 11 });
+  const legend = $('scen-legend'); legend.replaceChildren();
+  const labels = [];
+  for (const s of series) {
+    const c = css(s.color);
+    svg.append(svgEl('path', { d: s.pts.map((p, i) => (i ? 'L' : 'M') + X(p.y).toFixed(1) + ' ' + Y(p.v).toFixed(1)).join(' '), fill: 'none', stroke: c, 'stroke-width': 2.2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-dasharray': s.dash }));
+    const last = s.pts[s.pts.length - 1];
+    svg.append(svgEl('circle', { cx: X(last.y), cy: Y(last.v), r: 4.5, fill: c, stroke: css('--surface'), 'stroke-width': 2 }));
+    labels.push({ y: Y(last.v), s: s.name + ' $' + Math.round(last.v) + 'B' });
+    const lg = el('span'); const sw = el('i', 'sw'); sw.style.borderColor = c; if (s.dash) sw.style.borderTopStyle = 'dashed'; lg.append(sw, s.name + ' ' + Math.round(s.rate * 100) + '% a year'); legend.append(lg);
+  }
+  labels.sort((a, b) => a.y - b.y); for (let i = 1; i < labels.length; i++) if (labels[i].y - labels[i - 1].y < 16) labels[i].y = labels[i - 1].y + 16;
+  for (const l of labels) txt(svg, W - m.r + 10, l.y + 4, l.s, { fill: css('--fg') });
+  const rule = svgEl('line', { y1: m.t, y2: H - m.b, stroke: css('--line-strong'), opacity: 0 }); svg.append(rule);
+  const hit = svgEl('rect', { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: 'transparent' }); svg.append(hit);
+  const read = (ev) => {
+    const r = svg.getBoundingClientRect(); const x = (ev.clientX - r.left) / r.width * W;
+    const y = Math.max(2026, Math.min(2036, Math.round(2026 + (x - m.l) / (W - m.l - m.r) * 10)));
+    rule.setAttribute('x1', X(y)); rule.setAttribute('x2', X(y)); rule.setAttribute('opacity', 1);
+    $('scen-read').textContent = y + ':  ' + series.map((s) => s.name + ' $' + fmt1(s.pts[y - 2026].v) + 'B').join('  ·  ');
+  };
+  hit.addEventListener('pointermove', read); hit.addEventListener('pointerdown', read);
+  box.append(svg);
+}
+function drawGrowth() {
+  const box = $('growth'); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth || 520), H = 230, m = { t: 22, r: 8, b: 26, l: 34 };
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'IMF and ADB growth forecasts' });
+  const Y = (v) => m.t + (1 - v / 6) * (H - m.t - m.b);
+  for (const t of [0, 2, 4, 6]) { svg.append(svgEl('line', { x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), stroke: t ? css('--line') : css('--line-strong') })); txt(svg, m.l - 8, Y(t) + 4, t + '%', { 'text-anchor': 'end', 'font-size': 11 }); }
+  const g = ECON.growth, band = (W - m.l - m.r) / g.length, bw = Math.min(34, band * 0.28);
+  g.forEach((r, i) => {
+    const cx = m.l + band * i + band / 2;
+    [['imf', '--st-exploring', -1], ['adb', '--st-planning', 1]].forEach(([k, c, side]) => {
+      const x = cx + (side < 0 ? -bw - 3 : 3);
+      svg.append(svgEl('rect', { x, y: Y(r[k]), width: bw, height: Y(0) - Y(r[k]), rx: 3, fill: css(c) }));
+      txt(svg, x + bw / 2, Y(r[k]) - 6, fmt1(r[k]), { 'text-anchor': 'middle', fill: css('--fg'), 'font-size': 11 });
+    });
+    txt(svg, cx, H - 6, r.year, { 'text-anchor': 'middle', 'font-size': 11 });
+  });
+  box.append(svg);
+}
+function drawStructure() {
+  const box = $('structure'); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth || 520), rowH = 52, H = ECON.structure.length * rowH;
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'GDP share by sector' });
+  ECON.structure.forEach((r, i) => {
+    const top = i * rowH, w = W - 60;
+    txt(svg, 0, top + 14, r.s, { fill: css('--fg'), 'font-size': 13 });
+    svg.append(svgEl('rect', { x: 0, y: top + 22, width: w, height: 14, rx: 4, fill: css('--line') }));
+    svg.append(svgEl('rect', { x: 0, y: top + 22, width: w * r.v / 100, height: 14, rx: 4, fill: i ? css('--faint') : css('--accent') }));
+    txt(svg, W, top + 34, fmt1(r.v) + '%', { 'text-anchor': 'end', fill: css('--fg'), 'font-size': 13 });
+  });
+  box.append(svg);
+}
+
+/* ---------- Projects ---------- */
+function renderProjects() {
+  const tiles = $('proj-tiles'); tiles.replaceChildren();
+  const p = PROJECTS.map((x) => x.progress).sort((a, b) => a - b); const mid = (p[(p.length - 1) >> 1] + p[p.length >> 1]) / 2;
+  const sud = PROJECTS.filter((x) => x.province === LOCAL);
+  const cost = PROJECTS.reduce((s, x) => s + (x.cost || 0), 0);
+  for (const [k, v, s] of [['Projects tracked', String(PROJECTS.length), 'Pride projects plus Arun-3, Pancheshwar'], ['Complete or nearly', String(PROJECTS.filter((x) => x.progress >= 98).length), '98% or more built'], ['Median progress', fmt1(mid) + '%', 'Physical progress'], ['Sudurpashchim average', Math.round(sud.reduce((s, x) => s + x.progress, 0) / sud.length) + '%', sud.length + ' projects in your province'], ['Known cost', 'Rs ' + fmt0(cost) + 'B', 'Where an estimate is published']]) {
+    const t = el('div', 'tile'); t.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(t);
+  }
+  const chips = $('proj-chips'); chips.replaceChildren();
+  for (const [k, l] of [['all', 'All'], [LOCAL, LOCAL], ['Energy', 'Energy'], ['Roads', 'Roads'], ['Irrigation', 'Irrigation'], ['other', 'Airports, water & other']]) {
+    const b = el('button', 'fchip', l); b.type = 'button'; b.setAttribute('aria-pressed', S.proj === k ? 'true' : 'false');
+    b.addEventListener('click', () => { S.proj = k; renderProjects(); }); chips.append(b);
+  }
+  const keep = (x) => S.proj === 'all' || (S.proj === LOCAL ? x.province === LOCAL : S.proj === 'other' ? !['Energy', 'Roads', 'Irrigation'].includes(x.sector) : x.sector === S.proj);
+  const tb = $('proj-body'); tb.replaceChildren();
+  for (const x of PROJECTS.filter(keep).sort((a, b) => b.progress - a.progress)) {
+    const tr = el('tr');
+    const n = el('td'); n.append(el('div', null, x.name)); const sm = el('div', 'meta', x.sector); n.append(sm);
+    if (x.province === LOCAL) { const c = el('span', 'chip', 'Your province'); c.style.borderColor = css('--accent'); sm.append(' ', c); }
+    const pr = el('td', 'num'); const bar = el('span', 'pbar'); const f = el('i'); f.style.width = Math.min(100, x.progress) + '%';
+    f.style.background = x.progress >= 98 ? css('--ok') : x.progress >= 50 ? css('--st-exploring') : x.progress >= 20 ? css('--warn') : css('--bad');
+    bar.append(f); pr.append(bar, fmt1(x.progress) + '%');
+    tr.append(n, pr, el('td', 'dim hide-sm', x.province), el('td', 'num hide-sm', x.cost == null ? '' : fmt1(x.cost)), el('td', 'dim hide-sm', x.status));
+    tb.append(tr);
+  }
+}
+
+/* ---------- Business ---------- */
+const crore = (rs) => 'Rs ' + (Number(rs) / 1e7).toLocaleString('en', { maximumFractionDigits: Number(rs) >= 1e9 ? 0 : 1 }) + ' Cr';
+const signed = (n, d) => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(Number(n)).toLocaleString('en', { minimumFractionDigits: d, maximumFractionDigits: d });
+function renderBusiness() {
+  const b = S.biz;
+  $('biz-eyebrow').textContent = b && b.updated_at ? 'Updated ' + stamp(b.updated_at) : 'Nepal business';
+  const tiles = $('biz-tiles'); tiles.replaceChildren();
+  const body = $('biz-body'); body.replaceChildren();
+  const evs = $('biz-events'); evs.replaceChildren();
+  const chips = $('biz-chips'); chips.replaceChildren();
+  if (!S.loadedBiz) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading business news')); body.append(e); return; }
+  if (!b) { const e = el('div', 'empty'); e.append(el('h3', null, 'No business brief yet'), el('p', null, liveNote('The morning update fills this page every day.'))); body.append(e); return; }
+  for (const t of (b.indicators || [])) {
+    const x = el('div', 'tile'); x.append(el('div', 'k', t.label), el('div', 'v', t.value));
+    const s = el('div', 's', t.note || ''); const u = safeUrl(t.source_url);
+    if (u) { const a = el('a', 'src', ' ' + (t.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; a.style.marginLeft = '6px'; s.append(a); }
+    x.append(s); tiles.append(x);
+  }
+  const items = Array.isArray(b.news) ? b.news : [];
+  const secs = [...new Set(items.map((x) => x.sector).filter(Boolean))].sort();
+  for (const c of ['all'].concat(secs)) {
+    const n = c === 'all' ? items.length : items.filter((x) => x.sector === c).length;
+    const btn = el('button', 'fchip', (c === 'all' ? 'All' : c) + ' · ' + n); btn.type = 'button';
+    btn.setAttribute('aria-pressed', S.bizf === c ? 'true' : 'false');
+    btn.addEventListener('click', () => { S.bizf = c; renderBusiness(); }); chips.append(btn);
+  }
+  const rows = items.filter((x) => S.bizf === 'all' || x.sector === S.bizf).slice().sort((a, c) => String(c.date).localeCompare(String(a.date)));
+  for (const r of rows) {
+    const c = el('article', 'story');
+    const m = el('div', 'meta'); m.append(el('span', 'chip', r.sector || 'Business'), el('span', null, (r.company ? r.company + ' · ' : '') + niceDate(r.date)));
+    c.append(m, el('h3', null, r.headline), el('p', null, r.why_it_matters || ''));
+    const u = safeUrl(r.source_url); if (u) { const a = el('a', null, (r.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; c.append(a); }
+    body.append(c);
+  }
+  const t = today();
+  const list = (b.events || []).slice().sort((a, c) => String(a.date).localeCompare(String(c.date)));
+  if (!list.length) evs.append(el('p', 'note', 'Nothing scheduled.'));
+  for (const e of list) {
+    const u = safeUrl(e.source_url);
+    const row = el(u ? 'a' : 'div', 'ev' + ((e.end || e.date) < t ? ' past' : '')); if (u) { row.href = u; row.target = '_blank'; row.rel = 'noopener'; }
+    const d = new Date(String(e.date).slice(0, 10) + 'T00:00:00Z');
+    const box = el('div', 'd'); box.append(el('b', null, isNaN(d) ? '' : String(d.getUTCDate())), el('span', null, isNaN(d) ? '' : d.toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' })));
+    const txtBox = el('div'); txtBox.append(el('div', 't', e.title), el('div', 'p', (e.end ? 'Until ' + niceDate(e.end) + ' · ' : '') + (e.place || '')));
+    row.append(box, txtBox); evs.append(row);
+  }
+}
+
+/* ---------- NEPSE ---------- */
+function renderNepse() {
+  const m = S.nepse;
+  const tiles = $('nepse-tiles'); tiles.replaceChildren();
+  for (const id of ['nepse-chart', 'nepse-sectors', 'nepse-turnover', 't-gain', 't-lose', 't-turn', 't-issues']) $(id).replaceChildren();
+  if (!S.loadedNepse || !m || !m.index) {
+    $('n-nepse').textContent = '–';
+    const e = el('div', 'empty'); e.append(el('h3', null, S.loadedNepse ? 'No market data yet' : 'Loading market data'), el('p', null, liveNote('The morning update brings the last session’s close.')));
+    tiles.append(e); return;
+  }
+  const ix = m.index;
+  $('n-nepse').textContent = Math.round(ix.close).toLocaleString('en');
+  $('nepse-eyebrow').textContent = 'Nepal Stock Exchange · close of ' + niceDate(m.as_of) + (m.updated_at ? ' · checked ' + stamp(m.updated_at) : '');
+  const hist = (Array.isArray(m.history) ? m.history : []).filter((h) => h && h.d && isFinite(h.c)).sort((a, b) => a.d.localeCompare(b.d));
+  const tile = (k, v, s, cls) => { const t = el('div', 'tile'); t.append(el('div', 'k', k)); const vv = el('div', 'v', v); t.append(vv); const ss = el('div', 's'); if (s instanceof Node) ss.append(s); else ss.textContent = s; t.append(ss); tiles.append(t); return t; };
+  const dl = el('span', 'delta ' + (ix.change >= 0 ? 'up' : 'down'), signed(ix.change, 2) + ' (' + signed(ix.pct, 2) + '%)');
+  tile('NEPSE index', Number(ix.close).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), dl);
+  const g0 = (m.gainers || [])[0];
+  if (g0) tile('Best performer today', g0.symbol, signed(g0.pct, 2) + '% to Rs ' + Number(g0.ltp).toLocaleString('en', { maximumFractionDigits: 2 }));
+  if (hist.length > 22) { const base = hist[hist.length - 23].c; const ch = (ix.close - base) / base * 100; tile('One month', signed(ch, 1) + '%', 'Since ' + niceDate(hist[hist.length - 23].d)); }
+  if (hist.length) { const hi = hist.reduce((a, b) => b.c > a.c ? b : a); const lo = hist.reduce((a, b) => b.c < a.c ? b : a); tile('Range shown', fmt0(lo.c) + ' – ' + fmt0(hi.c), 'Low ' + niceDate(lo.d) + ', high ' + niceDate(hi.d)); }
+  const turn = (m.sector_turnover || []).reduce((a, b) => a + Number(b.rs || 0), 0);
+  if (m.session && m.session.turnover_rs) tile('Turnover', crore(m.session.turnover_rs), m.session.shares ? fmt0(m.session.shares) + ' shares traded' : 'Last session');
+  else if (turn) tile('Turnover, top sectors', crore(turn), 'Last session, ten busiest sectors');
+  drawNepseChart(hist);
+  drawDiverging($('nepse-sectors'), (m.sectors || []).map((x) => ({ label: x.name, v: Number(x.pct) })));
+  drawHBars($('nepse-turnover'), (m.sector_turnover || []).map((x) => ({ label: x.name, v: Number(x.rs) })), (v) => (v / 1e7).toLocaleString('en', { maximumFractionDigits: 0 }));
+  const fill = (id, rows, last) => { const tb = $(id); for (const r of rows || []) { const tr = el('tr'); tr.append(el('td', 'sym', r.symbol), el('td', 'r num', Number(r.ltp).toLocaleString('en', { maximumFractionDigits: 2 })), last(r)); tb.append(tr); } if (!(rows || []).length) { const tr = el('tr'); const td = el('td', 'dim', 'No data'); td.colSpan = 3; tr.append(td); tb.append(tr); } };
+  fill('t-gain', m.gainers, (r) => el('td', 'r num up', signed(r.pct, 2) + '%'));
+  fill('t-lose', m.losers, (r) => el('td', 'r num down', signed(r.pct, 2) + '%'));
+  fill('t-turn', m.turnover_top, (r) => el('td', 'r num', crore(r.rs)));
+  const p = m.pipeline || {};
+  $('pipe-note').textContent = p.companies ? p.companies + ' companies are waiting for IPO approval, seeking Rs ' + (Number(p.amount_rs) / 1e9).toLocaleString('en', { maximumFractionDigits: 1 }) + ' billion. ' + (p.note || '') : (p.note || '');
+  const t = today(); const ti = $('t-issues');
+  for (const r of (m.issues || [])) {
+    const tr = el('tr'); const c = el('td'); c.append(el('div', null, r.company)); if (r.symbol) c.append(el('div', 'meta', r.symbol));
+    const st = r.close && r.close < t ? 'Closed' : (r.status || '');
+    const sb = el('span', 'status' + (st === 'Open' ? ' open' : ''), st); const std = el('td'); std.append(sb);
+    const u = safeUrl(r.source_url); if (u) { const a = el('a', 'src', ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('aria-label', 'Source for ' + r.company); a.style.marginLeft = '6px'; std.append(a); }
+    tr.append(c, el('td', 'dim', r.type || ''), el('td', 'r num hide-sm', r.units ? Number(r.units).toLocaleString('en') : ''), el('td', 'num hide-sm', niceDate(r.open)), el('td', 'num', niceDate(r.close)), std);
+    ti.append(tr);
+  }
+  const foot = $('nepse-foot'); foot.replaceChildren(); foot.append('Sources: ');
+  (m.sources || []).forEach((s, i) => { const u = safeUrl(s.url); if (i) foot.append(', '); if (u) { const a = el('a', 'src', s.name); a.href = u; a.target = '_blank'; a.rel = 'noopener'; foot.append(a); } else foot.append(s.name); });
+  foot.append('. Prices are last-session closes. Nothing here is a recommendation to buy or sell.');
+  renderWatch();
+}
+function renderWatch() {
+  const tb = $('t-watch'); tb.replaceChildren();
+  const w = S.watch;
+  const rows = w && Array.isArray(w.rows) ? w.rows.slice().sort((a, b) => (Number(a.rank) || 99) - (Number(b.rank) || 99)) : [];
+  $('wl-note').textContent = w ? 'Banks ranked by one fixed rule from their latest quarterly reports and the ' + niceDate(w.as_of) + ' closing price. Not investment advice.' : 'The 4 pm update builds this list from published quarterly reports.';
+  $('wl-method').textContent = w ? [w.universe, w.method, w.disclaimer].filter(Boolean).join(' ') : '';
+  const n2 = (v, d) => (v == null || !isFinite(v)) ? '' : Number(v).toLocaleString('en', { minimumFractionDigits: d, maximumFractionDigits: d });
+  if (!rows.length) { const tr = el('tr'); const td = el('td', 'dim', 'No stocks screened yet.'); td.colSpan = 9; tr.append(td); tb.append(tr); return; }
+  for (const r of rows) {
+    const tr = el('tr');
+    const c = el('td'); const top = el('div'); top.append(el('span', 'sym', r.symbol || ''));
+    const u = safeUrl(r.source_url); if (u) { const a = el('a', 'src', ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('aria-label', 'Quarterly report for ' + (r.name || r.symbol)); a.style.marginLeft = '6px'; top.append(a); }
+    c.append(top, el('div', 'meta', [r.name, r.quarter].filter(Boolean).join(' · ')));
+    const tags = el('div', 'meta'); tags.style.marginTop = '4px';
+    if (r.leader === true) tags.append(el('span', 'status open', 'Screen leader'));
+    for (const f of (Array.isArray(r.flags) ? r.flags : [])) tags.append(el('span', 'status warn', f));
+    if (tags.childNodes.length) c.append(tags);
+    const pg = Number(r.profit_growth);
+    tr.append(el('td', 'num', String(r.rank ?? '')), c, el('td', 'r num', n2(r.ltp, 2)), el('td', 'r num', n2(r.pe, 1)), el('td', 'r num hide-sm', n2(r.pb, 2)), el('td', 'r num hide-sm', r.roe == null ? '' : n2(r.roe, 1) + '%'), el('td', 'r num hide-sm' + (Number(r.npl) > 6 ? ' down' : ''), r.npl == null ? '' : n2(r.npl, 2) + '%'), el('td', 'r num hide-sm ' + (pg >= 0 ? 'up' : 'down'), isFinite(pg) ? signed(pg, 1) + '%' : ''), el('td', 'r num', n2(r.score, 1)));
+    tb.append(tr);
+  }
+}
+function drawNepseChart(hist) {
+  const box = $('nepse-chart'); box.replaceChildren();
+  const pts = S.range ? hist.slice(-S.range) : hist;
+  document.querySelectorAll('[data-range]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.range) === S.range)));
+  if (pts.length < 2) { box.append(el('p', 'note', 'Not enough history yet.')); return; }
+  const W = Math.max(300, box.clientWidth || 800), H = 260, m = { t: 14, r: 12, b: 26, l: 52 };
+  const vs = pts.map((p) => p.c); let lo = Math.min(...vs), hi = Math.max(...vs); const pad = (hi - lo) * 0.12 || 10; lo -= pad; hi += pad;
+  const step = [10, 20, 25, 50, 100, 200].find((s) => (hi - lo) / s <= 5) || 250;
+  const X = (i) => m.l + i / (pts.length - 1) * (W - m.l - m.r), Y = (v) => m.t + (1 - (v - lo) / (hi - lo)) * (H - m.t - m.b);
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'NEPSE index daily close' });
+  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) { svg.append(svgEl('line', { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), stroke: css('--line') })); txt(svg, m.l - 8, Y(v) + 4, fmt0(v), { 'text-anchor': 'end', 'font-size': 11 }); }
+  const nT = W < 480 ? 3 : 5;
+  for (let k = 0; k < nT; k++) { const i = Math.round(k / (nT - 1) * (pts.length - 1)); const d = new Date(pts[i].d + 'T00:00:00Z'); txt(svg, X(i), H - 6, d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }), { 'text-anchor': k === 0 ? 'start' : k === nT - 1 ? 'end' : 'middle', 'font-size': 11 }); }
+  const up = pts[pts.length - 1].c >= pts[0].c; const col = up ? css('--ok') : css('--bad');
+  const gid = 'g' + Math.random().toString(36).slice(2, 8);
+  const defs = svgEl('defs', {}); const lg = svgEl('linearGradient', { id: gid, x1: 0, x2: 0, y1: 0, y2: 1 });
+  lg.append(svgEl('stop', { offset: '0', 'stop-color': col, 'stop-opacity': '0.22' }), svgEl('stop', { offset: '1', 'stop-color': col, 'stop-opacity': '0' })); defs.append(lg); svg.append(defs);
+  const line = pts.map((p, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(p.c).toFixed(1)).join(' ');
+  svg.append(svgEl('path', { d: line + ` L${X(pts.length - 1).toFixed(1)} ${H - m.b} L${m.l} ${H - m.b} Z`, fill: `url(#${gid})` }));
+  svg.append(svgEl('path', { d: line, fill: 'none', stroke: col, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+  svg.append(svgEl('circle', { cx: X(pts.length - 1), cy: Y(pts[pts.length - 1].c), r: 4.5, fill: col, stroke: css('--surface'), 'stroke-width': 2 }));
+  const rule = svgEl('line', { y1: m.t, y2: H - m.b, stroke: css('--line-strong'), opacity: 0 }); const dot = svgEl('circle', { r: 4, fill: col, opacity: 0 }); svg.append(rule, dot);
+  const hit = svgEl('rect', { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: 'transparent' }); svg.append(hit);
+  const read = (ev) => { const r = svg.getBoundingClientRect(); const x = (ev.clientX - r.left) / r.width * W; const i = Math.max(0, Math.min(pts.length - 1, Math.round((x - m.l) / (W - m.l - m.r) * (pts.length - 1)))); const p = pts[i]; const prev = i ? pts[i - 1].c : null;
+    rule.setAttribute('x1', X(i)); rule.setAttribute('x2', X(i)); rule.setAttribute('opacity', 1); dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(p.c)); dot.setAttribute('opacity', 1);
+    $('nepse-read').textContent = niceDate(p.d) + ':  ' + p.c.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + (prev ? '  (' + signed(p.c - prev, 2) + ')' : ''); };
+  hit.addEventListener('pointermove', read); hit.addEventListener('pointerdown', read);
+  box.append(svg);
+}
+function drawDiverging(box, rows) {
+  box.replaceChildren(); if (!rows.length) { box.append(el('p', 'note', 'No sector data.')); return; }
+  rows = rows.slice().sort((a, b) => b.v - a.v);
+  const W = Math.max(300, box.clientWidth || 500), rowH = 26, H = rows.length * rowH + 6, lab = Math.min(150, W * 0.38);
+  const max = Math.max(0.5, ...rows.map((r) => Math.abs(r.v))); const mid = lab + (W - lab) / 2; const half = (W - lab) / 2 - 46;
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Sector index change' });
+  svg.append(svgEl('line', { x1: mid, x2: mid, y1: 0, y2: H, stroke: css('--line-strong') }));
+  rows.forEach((r, i) => { const y = i * rowH + 4; const w = Math.abs(r.v) / max * half; const c = r.v >= 0 ? css('--ok') : css('--bad');
+    txt(svg, 0, y + 13, r.label, { fill: css('--fg'), 'font-size': 12 });
+    svg.append(svgEl('rect', { x: r.v >= 0 ? mid : mid - w, y: y + 3, width: Math.max(1.5, w), height: 13, rx: 3, fill: c }));
+    txt(svg, r.v >= 0 ? mid + w + 6 : mid - w - 6, y + 14, signed(r.v, 2) + '%', { 'text-anchor': r.v >= 0 ? 'start' : 'end', 'font-size': 11, fill: css('--fg') }); });
+  box.append(svg);
+}
+function drawHBars(box, rows, fmtV) {
+  box.replaceChildren(); if (!rows.length) { box.append(el('p', 'note', 'No turnover data.')); return; }
+  rows = rows.slice().sort((a, b) => b.v - a.v);
+  const W = Math.max(300, box.clientWidth || 500), rowH = 26, H = rows.length * rowH + 6, lab = Math.min(150, W * 0.38), vw = 52;
+  const max = Math.max(...rows.map((r) => r.v));
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Turnover by sector' });
+  rows.forEach((r, i) => { const y = i * rowH + 4; const w = r.v / max * (W - lab - vw);
+    txt(svg, 0, y + 13, r.label, { fill: css('--fg'), 'font-size': 12 });
+    svg.append(svgEl('rect', { x: lab, y: y + 3, width: Math.max(1.5, w), height: 13, rx: 3, fill: i ? css('--faint') : css('--st-exploring') }));
+    txt(svg, W, y + 14, fmtV(r.v), { 'text-anchor': 'end', 'font-size': 11, fill: css('--fg') }); });
+  box.append(svg);
+}
+
+/* ---------- Invest ---------- */
+const INV = { amount: 1000000, monthly: 0, years: 10, infl: null, scen: 'mid' };
+try { const s = JSON.parse(localStorage.getItem('nd-invest') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(INV)) if (k in s) INV[k] = s[k]; } catch (e) {}
+const saveInv = () => { try { localStorage.setItem('nd-invest', JSON.stringify(INV)); } catch (e) {} };
+const rs = (n) => 'Rs ' + Math.round(Number(n) || 0).toLocaleString('en-IN');
+const lakh = (n) => (Number(n) / 1e5).toLocaleString('en-IN', { maximumFractionDigits: 1 }) + ' lakh';
+const INV_COLORS = ['--st-exploring', '--st-launched', '--st-planning', '--accent', '--faint', '--c6'];
+const SCEN = { low: 'Low', mid: 'Expected', high: 'High' };
+function rentalPath(o, P, M, Y, scen) {
+  const g = (Number((o.rates || {})[scen]) || 0) / 100, ry = (Number((o.rent_yield || {})[scen]) || 0) / 100;
+  const rt = (Number(o.rent_tax) || 0) / 100, share = o.land_share != null ? Number(o.land_share) : 0.6;
+  const entry = Math.min(50, Math.max(0, Number(o.entry_cost) || 0)) / 100, rf = (Number(o.reinvest_rate) || 0) / 100 * (1 - (Number(o.reinvest_tax) || 0) / 100);
+  const t = o.tax || {}, la = Number(t.long_after) || 1;
+  const mg = Math.pow(1 + g, 1 / 12) - 1, mf = Math.pow(1 + rf, 1 / 12) - 1;
+  let land = 0, bld = 0, paid = 0, pot = 0;
+  const add = (a) => { land += a * share * (1 - entry); bld += a * (1 - share); paid += a; };
+  add(P);
+  const path = [{ y: 0, v: land + bld, paid }];
+  for (let k = 1; k <= 12 * Y; k++) {
+    land *= 1 + mg; pot = pot * (1 + mf) + paid * ry / 12 * (1 - rt);
+    if (M) add(M);
+    if (k % 12 === 0) {
+      const y = k / 12, sale = land + bld;
+      const tax = sale > paid ? (sale - paid) * ((y > la ? Number(t.long) : Number(t.short)) || 0) / 100 : 0;
+      path.push({ y, v: sale - tax + pot, paid });
+    }
+  }
+  return path;
+}
+function project(o, P, M, Y, scen) {
+  if (o.type === 'rental') return rentalPath(o, P, M, Y, scen);
+  const r = (Number((o.rates || {})[scen]) || 0) / 100; const t = o.tax || {};
+  const net = t.type === 'interest' ? r * (1 - (Number(t.rate) || 0) / 100) : r;
+  const m = Math.pow(1 + net, 1 / 12) - 1;
+  const keep = 1 - Math.min(50, Math.max(0, Number(o.entry_cost) || 0)) / 100;
+  const la = Number(t.long_after) || 1;
+  const path = [];
+  for (let y = 0; y <= Y; y++) {
+    const n = 12 * y; let v = P * keep * Math.pow(1 + net, y);
+    if (M && n) v += keep * (m ? M * (Math.pow(1 + m, n) - 1) / m : M * n);
+    const paid = P + M * n;
+    if (t.type === 'gain' && v > paid && y > 0) v -= (v - paid) * ((y > la ? Number(t.long) : Number(t.short)) || 0) / 100;
+    path.push({ y, v, paid });
+  }
+  return path;
+}
+function riskPill(r) { return el('span', 'status ' + (r === 'Low' ? 'open' : r === 'High' ? 'bad' : 'warn'), (r || '') + ' risk'); }
+function invInputs() {
+  const num = (id, v) => { const n = $(id); if (document.activeElement !== n) n.value = v == null ? '' : String(v); };
+  num('inv-amount', INV.amount); num('inv-monthly', INV.monthly); num('inv-years', INV.years);
+  const infl = INV.infl != null ? INV.infl : (S.invest && S.invest.inflation ? S.invest.inflation.rate : '');
+  num('inv-infl', infl);
+  document.querySelectorAll('#inv-scen [data-scen]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.scen === INV.scen)));
+}
+function renderInvest() {
+  invInputs();
+  const d = S.invest;
+  const tb = $('inv-body'); tb.replaceChildren();
+  const tiles = $('inv-tiles'); tiles.replaceChildren();
+  const cards = $('inv-cards'); cards.replaceChildren();
+  $('inv-chart').replaceChildren(); $('inv-legend').replaceChildren();
+  const opts = d && Array.isArray(d.options) ? d.options : [];
+  $('inv-eyebrow').textContent = d && d.as_of ? 'Compare and project · rates as of ' + niceDate(d.as_of) : 'Compare and project';
+  if (!opts.length) { const tr = el('tr'); const td = el('td', 'dim', S.loadedInvest ? liveNote('No rates yet. The morning update fills these in.') : 'Loading rates…'); td.colSpan = 4; tr.append(td); tb.append(tr); $('inv-foot').textContent = ''; return; }
+  const P = Math.max(0, Number(INV.amount) || 0), M = Math.max(0, Number(INV.monthly) || 0), Y = Math.min(30, Math.max(1, Math.round(Number(INV.years) || 1)));
+  const infl = (INV.infl != null && INV.infl !== '' ? Number(INV.infl) : Number(d.inflation && d.inflation.rate)) || 0;
+  const defl = Math.pow(1 + infl / 100, Y);
+  $('inv-col').textContent = 'Value after ' + Y + (Y === 1 ? ' year' : ' years');
+  const res = opts.map((o, i) => ({ o, i, path: project(o, P, M, Y, INV.scen) })).map((x) => Object.assign(x, { end: x.path[x.path.length - 1] }));
+  const paid = P + M * 12 * Y;
+  const tile = (k, v, s) => { const t = el('div', 'tile'); t.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(t); };
+  tile('You put in', lakh(paid), rs(paid) + ' over ' + Y + (Y === 1 ? ' year' : ' years'));
+  const sorted = res.slice().sort((a, b) => b.end.v - a.end.v);
+  const top = sorted[0]; tile('Highest projection', lakh(top.end.v), top.o.name + ' · ' + (top.o.risk || '') + ' risk · ' + SCEN[INV.scen].toLowerCase());
+  const safe = sorted.find((x) => x.o.risk === 'Low'); if (safe) tile('Highest low-risk projection', lakh(safe.end.v), safe.o.name);
+  tile('Prices rise by', fmt1((defl - 1) * 100) + '%', 'Over ' + Y + ' years at ' + fmt1(infl) + '% inflation');
+  for (const x of sorted) {
+    const tr = el('tr');
+    const c = el('td'); const nm = el('div'); const dot = el('i', 'dot'); dot.style.setProperty('--pc', 'var(' + INV_COLORS[x.i % INV_COLORS.length] + ')'); nm.append(dot, ' ', el('span', 'opt-name', x.o.name)); c.append(nm);
+    const meta = el('div', 'meta'); meta.style.marginTop = '4px'; meta.append(riskPill(x.o.risk)); meta.append(el('span', 'only-sm', fmt1(Number((x.o.rates || {})[INV.scen]) || 0) + '% a year')); if (x.o.detail) meta.append(el('span', 'hide-sm', x.o.detail)); c.append(meta);
+    const rate = Number((x.o.rates || {})[INV.scen]) || 0;
+    const rc = el('td', 'r num hide-sm'); rc.append(el('div', null, fmt1(rate) + '%'));
+    if (x.o.type === 'rental') rc.append(el('div', 'meta', 'land growth + ' + fmt1((x.o.rent_yield || {})[INV.scen]) + '% rent'));
+    else rc.append(el('div', 'meta', x.o.tax && x.o.tax.type === 'interest' ? 'before tax' : x.o.tax && x.o.tax.type === 'gain' ? 'price growth' : 'assumed'));
+    const vc = el('td', 'r num'); vc.append(el('div', null, rs(x.end.v))); vc.append(el('div', 'meta', rs(x.end.v / defl) + " in today's money"));
+    const profit = x.end.v - paid;
+    const pc = el('td', 'r num ' + (profit >= 0 ? 'up' : 'down'), (profit >= 0 ? '+' : '−') + rs(Math.abs(profit)).replace('Rs ', 'Rs '));
+    tr.append(c, rc, vc, pc); tb.append(tr);
+  }
+  drawInvest(res, Y);
+  renderPlan(opts, Y, defl);
+  for (const x of res) {
+    const c = el('article', 'story opt-card');
+    const h = el('h3'); h.append(el('span', null, x.o.name), riskPill(x.o.risk)); c.append(h);
+    const r = x.o.rates || {}; c.append(el('p', null, (x.o.type === 'rental' ? 'Land growth: ' : '') + 'Low ' + fmt1(r.low) + '% · Expected ' + fmt1(r.mid) + '% · High ' + fmt1(r.high) + '% a year'));
+    if (x.o.type === 'rental' && x.o.rent_yield) { const ry = x.o.rent_yield; c.append(el('p', null, 'Rent a year, as a share of the money put in: Low ' + fmt1(ry.low) + '% · Expected ' + fmt1(ry.mid) + '% · High ' + fmt1(ry.high) + '%')); }
+    if (x.o.basis) c.append(el('p', null, x.o.basis));
+    if (Number(x.o.entry_cost)) c.append(el('p', null, 'Buying cost: ' + fmt1(x.o.entry_cost) + '% ' + (x.o.type === 'rental' ? 'registration on the land part' : 'of the amount') + ', taken off at the start.'));
+    if (x.o.tax_note) c.append(el('p', null, 'Tax: ' + x.o.tax_note));
+    if (x.o.access) c.append(el('p', null, 'Access: ' + x.o.access));
+    const srcs = el('div', 'srcs');
+    for (const s of [{ name: x.o.source_name, url: x.o.source_url }].concat(Array.isArray(x.o.extra_sources) ? x.o.extra_sources : [])) { const u = safeUrl(s.url); if (u) { const a = el('a', 'src', (s.name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; srcs.append(a); } }
+    c.append(srcs); cards.append(c);
+  }
+  renderPlaces();
+  const foot = $('inv-foot'); foot.replaceChildren();
+  foot.append((d.disclaimer || '') + ' Interest is taxed each year and reinvested; share gains are taxed once when sold at the end; monthly additions go in at the end of each month. ');
+  if (d.inflation) { foot.append('Inflation default: ' + (d.inflation.note || '') + ' '); const u = safeUrl(d.inflation.source_url); if (u) { const a = el('a', 'src', (d.inflation.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; foot.append(a); } }
+}
+const PLAN_DEFAULT = { total: 50000000, alloc: { fd: 10, bond: 20, febond: 0, nepse: 20, gold: 10, realestate: 40, rental: 0 } };
+const PLAN = JSON.parse(JSON.stringify(PLAN_DEFAULT));
+let planFromDb = false, planT = null, planRows = {}, planKey = '';
+try { const s = JSON.parse(localStorage.getItem('nd-plan') || 'null'); if (s && s.alloc) { PLAN.total = Number(s.total) || PLAN.total; PLAN.alloc = Object.assign({}, PLAN.alloc, s.alloc); } } catch (e) {}
+function savePlan() {
+  try { localStorage.setItem('nd-plan', JSON.stringify(PLAN)); } catch (e) {}
+  clearTimeout(planT);
+  planT = setTimeout(() => {
+    if (!db || !S.canWrite) { $('plan-saved').textContent = 'Saved on this device.'; return; }
+    db.doc('invest/plan').set({ total: PLAN.total, alloc: PLAN.alloc, updated_at: new Date().toISOString() })
+      .then(() => { $('plan-saved').textContent = 'Plan saved. It opens the same way on your other devices.'; })
+      .catch(() => { $('plan-saved').textContent = 'Saved on this device only; the shared copy did not save.'; });
+  }, 900);
+}
+function applyPlanDoc(d) {
+  if (!d || typeof d !== 'object' || !d.alloc) return;
+  const box = $('v-invest'); if (box && box.contains(document.activeElement) && document.activeElement.closest('#plan-body, #plan-total')) return;
+  PLAN.total = Number(d.total) || PLAN.total; PLAN.alloc = Object.assign({}, PLAN.alloc, d.alloc); planFromDb = true;
+}
+function renderPlan(opts, Y, defl) {
+  const tb = $('plan-body'), ft = $('plan-foot');
+  const key = opts.map((o) => o.id).join('|');
+  if (key !== planKey) {
+    planKey = key; planRows = {}; tb.replaceChildren();
+    for (const o of opts) {
+      const tr = el('tr'); const c = el('td');
+      const nm = el('div'); const dot = el('i', 'dot'); dot.style.setProperty('--pc', 'var(' + INV_COLORS[opts.indexOf(o) % INV_COLORS.length] + ')'); nm.append(dot, ' ', el('span', 'opt-name', o.name));
+      const meta = el('div', 'meta'); meta.style.marginTop = '4px'; meta.append(riskPill(o.risk)); const amt = el('span', 'only-sm'); meta.append(amt);
+      c.append(nm, meta);
+      const pc = el('td', 'r'); const inp = el('input', 'pct'); inp.type = 'number'; inp.min = '0'; inp.max = '100'; inp.step = '5'; inp.inputMode = 'decimal'; inp.id = 'plan-pct-' + o.id; inp.setAttribute('aria-label', 'Share for ' + o.name + ', percent');
+      inp.addEventListener('input', () => { PLAN.alloc[o.id] = inp.value === '' ? 0 : Math.max(0, Math.min(100, Number(inp.value) || 0)); savePlan(); renderInvest(); });
+      pc.append(inp);
+      const cA = el('td', 'r num hide-sm'), cL = el('td', 'r num hide-sm'), cM = el('td', 'r num'), cH = el('td', 'r num hide-sm');
+      tr.append(c, pc, cA, cL, cM, cH); tb.append(tr);
+      planRows[o.id] = { inp, amt, cA, cL, cM, cH };
+    }
+  }
+  const tot = $('plan-total'); if (document.activeElement !== tot) tot.value = String(PLAN.total);
+  const T = Math.max(0, Number(PLAN.total) || 0);
+  let sum = 0; const sums = { low: 0, mid: 0, high: 0 }; let usedAmt = 0;
+  for (const o of opts) {
+    const pct = Number(PLAN.alloc[o.id]) || 0; sum += pct;
+    const a = T * pct / 100; usedAmt += a;
+    const row = planRows[o.id]; if (document.activeElement !== row.inp) row.inp.value = String(pct);
+    const v = {}; for (const s of ['low', 'mid', 'high']) { const p = project(o, a, 0, Y, s); v[s] = p[p.length - 1].v; sums[s] += v[s]; }
+    row.amt.textContent = a ? rs(a) : '';
+    row.cA.textContent = a ? rs(a) : '–'; row.cL.textContent = a ? rs(v.low) : '–'; row.cM.textContent = a ? rs(v.mid) : '–'; row.cH.textContent = a ? rs(v.high) : '–';
+  }
+  const ps = $('plan-sum'); ps.textContent = fmt1(sum) + '%' + (Math.abs(sum - 100) > 0.01 ? (sum < 100 ? ' · ' + fmt1(100 - sum) + '% not placed' : ' · over by ' + fmt1(sum - 100) + '%') : '');
+  ps.classList.toggle('off', Math.abs(sum - 100) > 0.01);
+  $('plan-col').textContent = 'Expected after ' + Y + (Y === 1 ? ' yr' : ' yrs');
+  ft.replaceChildren(); const fr = el('tr');
+  fr.append(el('td', null, 'Whole plan'), el('td', 'r num', fmt1(sum) + '%'), el('td', 'r num hide-sm', rs(usedAmt)), el('td', 'r num hide-sm', rs(sums.low)), el('td', 'r num', rs(sums.mid)), el('td', 'r num hide-sm', rs(sums.high)));
+  ft.append(fr);
+  const tiles = $('plan-tiles'); tiles.replaceChildren();
+  const tile = (k, v, s) => { const t = el('div', 'tile'); t.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(t); };
+  const crore = (n) => (n / 1e7).toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' cr';
+  const big = (n) => Math.abs(n) >= 1e7 ? 'Rs ' + crore(n) : lakh(n);
+  if (usedAmt > 0) {
+    const cagr = (Math.pow(sums.mid / usedAmt, 1 / Y) - 1) * 100;
+    tile('Expected value', big(sums.mid), 'After ' + Y + ' years · ' + fmt1(cagr) + '% a year');
+    tile('Expected profit', (sums.mid >= usedAmt ? '+' : '−') + big(Math.abs(sums.mid - usedAmt)).replace('Rs ', ''), 'On ' + big(usedAmt) + ' put in');
+    tile("In today's money", big(sums.mid / defl), 'Keeping up needs ' + big(usedAmt * defl));
+    tile('Range', big(sums.low) + ' – ' + big(sums.high), 'All options low vs all high');
+  }
+}
+function renderPlaces() {
+  const box = $('pl-cards'); box.replaceChildren();
+  const d = S.places; const list = d && Array.isArray(d.places) ? d.places.slice() : [];
+  $('pl-note').textContent = d && d.note ? d.note + (d.as_of ? ' Updated ' + niceDate(d.as_of) + '.' : '') : 'Where published data or big projects point to rising demand for land.';
+  if (!list.length) { box.append(el('p', 'note', S.loadedInvest ? 'No places listed yet.' : 'Loading places…')); return; }
+  const good = ['Strong drivers', 'Recovering fastest'], weak = ['Mixed', 'Weak signals'];
+  const rankO = (o) => good.includes(o) ? 0 : weak.includes(o) ? 2 : 1;
+  list.sort((a, b) => (b.local === true) - (a.local === true) || rankO(a.outlook) - rankO(b.outlook));
+  for (const pl of list) {
+    const c = el('article', 'story place-card' + (pl.local === true ? ' local' : ''));
+    const h = el('h3'); h.append(el('span', null, pl.name || ''));
+    if (pl.outlook) h.append(el('span', 'status ' + (good.includes(pl.outlook) ? 'open' : weak.includes(pl.outlook) ? 'bad' : 'warn'), pl.outlook));
+    c.append(h);
+    const meta = el('div', 'meta'); meta.append(el('span', 'chip', [pl.area, pl.province].filter(Boolean).join(' · ')));
+    if (pl.local === true) { const y = el('span', 'chip', 'Your province'); y.style.borderColor = css('--accent'); meta.append(y); }
+    c.append(meta);
+    if (pl.signal) c.append(el('p', 'sig', pl.signal));
+    const list2 = (label, items) => { if (!Array.isArray(items) || !items.length) return; c.append(el('div', 'k', label)); const ul = el('ul'); for (const t of items) ul.append(el('li', null, t)); c.append(ul); };
+    list2('Growth drivers', pl.drivers); list2('Holding it back', pl.risks);
+    const srcs = el('div', 'srcs');
+    for (const s of (Array.isArray(pl.sources) ? pl.sources : [])) { const u = safeUrl(s.url); if (u) { const a = el('a', 'src', (s.name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; srcs.append(a); } }
+    c.append(srcs); box.append(c);
+  }
+}
+function drawInvest(res, Y) {
+  const box = $('inv-chart'); box.replaceChildren();
+  const legend = $('inv-legend'); legend.replaceChildren();
+  const W = Math.max(300, box.clientWidth || 800), H = 260, m = { t: 14, r: 12, b: 26, l: 62 };
+  const max = Math.max(1, ...res.map((x) => x.end.v)) * 1.06;
+  const steps = [1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6, 1e7, 2e7, 5e7, 1e8, 2e8, 5e8, 1e9];
+  const step = steps.find((s) => max / s <= 5) || 1e9;
+  const X = (y) => m.l + (Y ? y / Y : 0) * (W - m.l - m.r), Yp = (v) => m.t + (1 - v / max) * (H - m.t - m.b);
+  const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Projected value of each option by year' });
+  for (let v = 0; v <= max; v += step) { svg.append(svgEl('line', { x1: m.l, x2: W - m.r, y1: Yp(v), y2: Yp(v), stroke: v ? css('--line') : css('--line-strong') })); txt(svg, m.l - 8, Yp(v) + 4, v ? lakh(v).replace(' lakh', 'L') : '0', { 'text-anchor': 'end', 'font-size': 11 }); }
+  const ticks = Y <= 10 ? Array.from({ length: Y + 1 }, (_, i) => i) : [0, Math.round(Y / 4), Math.round(Y / 2), Math.round(3 * Y / 4), Y];
+  for (const y of ticks) if (W >= 480 || y % 2 === 0 || y === Y) txt(svg, X(y), H - 6, y ? 'Yr ' + y : 'Now', { 'text-anchor': y === 0 ? 'start' : y === Y ? 'end' : 'middle', 'font-size': 11 });
+  const paidPath = res[0].path.map((p, i) => (i ? 'L' : 'M') + X(p.y).toFixed(1) + ' ' + Yp(p.paid).toFixed(1)).join(' ');
+  svg.append(svgEl('path', { d: paidPath, fill: 'none', stroke: css('--faint'), 'stroke-width': 1.5, 'stroke-dasharray': '4 4' }));
+  const lgp = el('span'); const swp = el('i', 'sw'); swp.style.borderColor = css('--faint'); swp.style.borderTopStyle = 'dashed'; lgp.append(swp, 'Money put in'); legend.append(lgp);
+  for (const x of res) {
+    const c = css(INV_COLORS[x.i % INV_COLORS.length]);
+    svg.append(svgEl('path', { d: x.path.map((p, i) => (i ? 'L' : 'M') + X(p.y).toFixed(1) + ' ' + Yp(p.v).toFixed(1)).join(' '), fill: 'none', stroke: c, 'stroke-width': 2.2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    svg.append(svgEl('circle', { cx: X(Y), cy: Yp(x.end.v), r: 4, fill: c, stroke: css('--surface'), 'stroke-width': 2 }));
+    const lg = el('span'); const sw = el('i', 'sw'); sw.style.borderColor = c; lg.append(sw, x.o.name); legend.append(lg);
+  }
+  const rule = svgEl('line', { y1: m.t, y2: H - m.b, stroke: css('--line-strong'), opacity: 0 }); svg.append(rule);
+  const hit = svgEl('rect', { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: 'transparent' }); svg.append(hit);
+  const read = (ev) => { const r = svg.getBoundingClientRect(); const xx = (ev.clientX - r.left) / r.width * W; const y = Math.max(0, Math.min(Y, Math.round((xx - m.l) / (W - m.l - m.r) * Y)));
+    rule.setAttribute('x1', X(y)); rule.setAttribute('x2', X(y)); rule.setAttribute('opacity', 1);
+    $('inv-read').textContent = (y ? 'Year ' + y : 'Now') + ':  ' + res.slice().sort((a, b) => b.path[y].v - a.path[y].v).map((x) => x.o.name + ' ' + lakh(x.path[y].v)).join('  ·  '); };
+  hit.addEventListener('pointermove', read); hit.addEventListener('pointerdown', read);
+  box.append(svg);
+}
+for (const [id, key, int] of [['inv-amount', 'amount', true], ['inv-monthly', 'monthly', true], ['inv-years', 'years', true], ['inv-infl', 'infl', false]]) {
+  $(id).addEventListener('input', (e) => { const v = e.target.value; INV[key] = v === '' ? (key === 'infl' ? null : 0) : (int ? Math.round(Number(v)) : Number(v)); saveInv(); renderInvest(); });
+}
+document.querySelectorAll('#inv-scen [data-scen]').forEach((b) => b.addEventListener('click', () => { INV.scen = b.dataset.scen; saveInv(); renderInvest(); }));
+$('plan-total').addEventListener('input', (e) => { PLAN.total = Math.max(0, Math.round(Number(e.target.value) || 0)); savePlan(); renderInvest(); });
+$('plan-reset').addEventListener('click', () => { PLAN.total = PLAN_DEFAULT.total; PLAN.alloc = Object.assign({}, PLAN_DEFAULT.alloc); savePlan(); renderInvest(); toast('Plan reset to the Rs 5 crore model split'); });
+
+/* ---------- Routing ---------- */
+const TABS = ['builds', 'today', 'ideas', 'business', 'nepse', 'invest', 'economy', 'projects'];
+function show(tab, push) {
+  if (!TABS.includes(tab)) tab = 'builds';
+  S.tab = tab;
+  for (const t of TABS) { $('v-' + t).hidden = t !== tab; $('tab-' + t).setAttribute('aria-selected', t === tab ? 'true' : 'false'); }
+  if (push && location.hash.slice(1) !== tab) location.hash = tab;
+  if (tab === 'economy') renderEconomy();
+  if (tab === 'projects') renderProjects();
+  if (tab === 'today') renderToday();
+  if (tab === 'ideas') renderIdeas();
+  if (tab === 'business') renderBusiness();
+  if (tab === 'nepse') renderNepse();
+  if (tab === 'invest') renderInvest();
+  if (tab === 'builds') renderBuilds();
+  window.scrollTo(0, 0);
+}
+function renderLive() { renderBuilds(); renderToday(); renderIdeas(); renderBusiness(); renderNepse(); if (S.open) renderSheet(false); }
+
+document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => show(b.dataset.tab, true)));
+window.addEventListener('hashchange', () => show(location.hash.slice(1), false));
+$('new-build').addEventListener('click', () => openSheet(null));
+$('q').addEventListener('input', (e) => { S.q = e.target.value; renderBuilds(); });
+$('sort').addEventListener('change', (e) => { S.sort = e.target.value; renderBuilds(); });
+$('vw-board').addEventListener('click', () => { S.view = 'board'; try { localStorage.setItem('vd-view', 'board'); } catch (e) {} renderBuilds(); });
+$('vw-list').addEventListener('click', () => { S.view = 'list'; try { localStorage.setItem('vd-view', 'list'); } catch (e) {} renderBuilds(); });
+$('sheet-close').addEventListener('click', closeSheet);
+$('scrim').addEventListener('click', closeSheet);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && S.open) closeSheet(); });
+try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (S.tab === 'economy') renderEconomy(); if (S.tab === 'projects') renderProjects(); if (S.tab === 'nepse') renderNepse(); if (S.tab === 'invest') renderInvest(); }); } catch (e) {}
+let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (S.tab === 'economy') { drawScenarios(); drawGrowth(); drawStructure(); } if (S.tab === 'nepse') renderNepse(); if (S.tab === 'invest') renderInvest(); }, 150); });
+document.querySelectorAll('[data-range]').forEach((b) => b.addEventListener('click', () => { S.range = Number(b.dataset.range); renderNepse(); }));
+try { const v = localStorage.getItem('vd-view'); if (v === 'list' || v === 'board') S.view = v; } catch (e) {}
+
+header();
+setInterval(header, 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) header(); });
+show(location.hash.slice(1) || 'builds', false);
+
+async function connect() {
+  if (!window.claude || !window.claude.use) { deviceMode(); return; }
+  db = await window.claude.use('db');
+  const user = await window.claude.use('user');
+  if (user) { try { const c = await user.can('data.write'); if (c === false) S.canWrite = false; } catch (e) {} }
+  if (!db) { deviceMode(); return; }
+  if (!S.canWrite) $('offline').hidden = false;
+  db.collection('builds').onSnapshot((snap) => {
+    S.builds = snap.docs.map((d) => Object.assign({ id: d.id }, d.data()));
+    S.loadedBuilds = true; renderBuilds(); renderIdeas(); if (S.open) renderSheet(false);
+  }, () => { S.loadedBuilds = true; renderBuilds(); toast('Your builds could not load. Reopen the page to retry.'); });
+  db.doc('feed/today').onSnapshot((snap) => {
+    S.feed = snap.exists ? snap.data() : null; S.loadedFeed = true; header(); renderToday(); renderIdeas();
+  }, () => { S.loadedFeed = true; renderToday(); renderIdeas(); });
+  db.doc('business/today').onSnapshot((snap) => { S.biz = snap.exists ? snap.data() : null; S.loadedBiz = true; header(); if (S.tab === 'business') renderBusiness(); },
+    () => { S.loadedBiz = true; if (S.tab === 'business') renderBusiness(); });
+  db.doc('market/nepse').onSnapshot((snap) => { S.nepse = snap.exists ? snap.data() : null; S.loadedNepse = true; header(); const ix = S.nepse && S.nepse.index; $('n-nepse').textContent = ix ? Math.round(ix.close).toLocaleString('en') : '\u2013'; if (S.tab === 'nepse') renderNepse(); },
+    () => { S.loadedNepse = true; if (S.tab === 'nepse') renderNepse(); });
+  db.doc('invest/options').onSnapshot((snap) => { S.invest = snap.exists ? snap.data() : null; S.loadedInvest = true; if (S.tab === 'invest') renderInvest(); }, () => { S.loadedInvest = true; if (S.tab === 'invest') renderInvest(); });
+  db.doc('invest/plan').onSnapshot((snap) => { if (snap.exists) { applyPlanDoc(snap.data()); if (S.tab === 'invest') renderInvest(); } }, () => {});
+  db.doc('invest/places').onSnapshot((snap) => { S.places = snap.exists ? snap.data() : null; if (S.tab === 'invest') renderInvest(); }, () => {});
+  db.doc('market/watchlist').onSnapshot((snap) => { S.watch = snap.exists ? snap.data() : null; if (S.tab === 'nepse') renderNepse(); }, () => {});
+}
+connect();
+})();
+</script>
+
+</body></html>

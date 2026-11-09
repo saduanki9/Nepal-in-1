@@ -9,13 +9,16 @@ Nepal in 1 is a public website, kept separate from any personal dashboard. Every
 | Tab | What you get |
 |---|---|
 | **Today in Nepal** | The day's key stories from across the country, filterable by topic, each with why it matters |
+| **My builds** | A personal project board for each visitor: add a build, move it from Idea to Launched, track tasks, notes and a target month |
 | **Business** | Key indicators, company news and upcoming business dates |
 | **NEPSE** | Index chart (1M / 3M / all), sector moves, top gainers, losers and most traded, a fundamentals watchlist for banks, IPOs and share issues |
 | **Invest** | A calculator comparing fixed deposits, savings bonds, NEPSE, gold and land: lump sum or monthly, low / expected / high, after tax and inflation; plus places to watch for property |
 | **Economy** | GDP paths to 2036, IMF and ADB forecasts, what the economy is made of, hydropower export progress, a growth scorecard |
 | **National projects** | Progress, cost and status of 25 national pride and major projects, by sector |
 
-Light and dark mode follow the device setting. Nothing is tracked. The calculator remembers its inputs only in the visitor's own browser.
+Light and dark mode follow the device setting. Nothing is tracked.
+
+**Where builds are saved:** only in the visitor's own browser, on that device. The site has no accounts and no server, so nobody else can see them, they don't follow the visitor to another device, and clearing the browser's data removes them. The calculator remembers its inputs the same way.
 
 ## How it's built
 
@@ -62,11 +65,12 @@ After that, every change to `site/` on `main` goes live by itself within a minut
 
 ## Roadmap
 
-1. **Automatic data refresh.** A scheduled GitHub workflow that rebuilds `data.json` every morning and after each NEPSE close.
-2. **A custom domain,** such as a `.com.np` address, in place of the `github.io` one.
-3. **Nepali language.** A नेपाली / English switch.
-4. **More of Nepal:** weather and air quality by city, exchange rates, gold and silver prices, a festival and holiday calendar, a province-by-province view.
-5. **Share cards.** A one-tap image of the day's NEPSE close or top story, for Facebook, Viber and X.
+1. **Back up and move builds.** Export builds to a file and import them on another device.
+2. **Automatic data refresh.** A scheduled GitHub workflow that rebuilds `data.json` every morning and after each NEPSE close.
+3. **A custom domain,** such as a `.com.np` address, in place of the `github.io` one.
+4. **Nepali language.** A नेपाली / English switch.
+5. **More of Nepal:** weather and air quality by city, exchange rates, gold and silver prices, a festival and holiday calendar, a province-by-province view.
+6. **Share cards.** A one-tap image of the day's NEPSE close or top story, for Facebook, Viber and X.
 
 ## Disclaimer
 

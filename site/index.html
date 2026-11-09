@@ -130,7 +130,7 @@ h2.sec { font-family: var(--display); font-weight: 400; font-size: 22px; margin:
 .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); font-size: 12px; color: var(--fg); white-space: nowrap; }
 .prio-High { color: var(--bad); } .prio-Medium { color: var(--warn); } .prio-Low { color: var(--muted); }
 .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.adv { border: 1px solid var(--line); background: transparent; border-radius: 6px; font-size: 12px; padding: 3px 8px; color: var(--muted); }
+.adv { border: 1px solid var(--line); background: transparent; border-radius: 6px; font-size: 12px; padding: 3px 8px; color: var(--muted); white-space: nowrap; flex: none; }
 .adv:hover { color: var(--fg); border-color: var(--line-strong); }
 .mini { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; width: 54px; display: inline-block; vertical-align: middle; }
 .mini i { display: block; height: 100%; background: var(--ok); }
@@ -303,6 +303,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" id="tab-today" data-tab="today" aria-selected="false">Today in Nepal<span class="n" id="n-today">0</span></button>
+      <button class="tab" role="tab" id="tab-builds" data-tab="builds" aria-selected="false">My builds<span class="n" id="n-builds">0</span></button>
       <button class="tab" role="tab" id="tab-business" data-tab="business" aria-selected="false">Business</button>
       <button class="tab" role="tab" id="tab-nepse" data-tab="nepse" aria-selected="false">NEPSE<span class="n" id="n-nepse">–</span></button>
       <button class="tab" role="tab" id="tab-invest" data-tab="invest" aria-selected="false">Invest</button>
@@ -325,6 +326,33 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     </div>
     <div class="chips" id="news-chips" role="group" aria-label="Filter stories"></div>
     <div id="news-body" class="grid"></div>
+  </section>
+
+  <section class="view" id="v-builds" aria-labelledby="tab-builds" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow">Saved on this device</p>
+        <h1>My builds</h1>
+        <p>Track your own projects from first idea to launch: add a build, move it through the stages and tick off tasks. Builds are saved only in this browser, so clearing its data removes them.</p>
+      </div>
+      <button class="btn primary" id="new-build" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>New build</button>
+    </div>
+    <div class="pipeline" id="pipeline" role="group" aria-label="Filter by stage"></div>
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg><input id="q" type="search" placeholder="Search builds, sectors, next steps" aria-label="Search builds"></label>
+      <select class="select" id="sort" aria-label="Sort builds">
+        <option value="stage">Sort: furthest along</option>
+        <option value="priority">Sort: priority</option>
+        <option value="target">Sort: target date</option>
+        <option value="added">Sort: newest</option>
+        <option value="name">Sort: name</option>
+      </select>
+      <div class="seg" role="group" aria-label="Layout">
+        <button type="button" id="vw-board" aria-pressed="true">Board</button>
+        <button type="button" id="vw-list" aria-pressed="false">List</button>
+      </div>
+    </div>
+    <div id="builds-body"></div>
   </section>
 
   <section class="view" id="v-business" aria-labelledby="tab-business" hidden>
@@ -492,10 +520,21 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
   </section>
 </main>
 
+<div class="scrim" id="scrim" hidden></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="sheet-h"><span class="t" id="sheet-title">Build</span><button class="btn ghost" type="button" id="sheet-close" aria-label="Close">Close</button></div>
+  <div class="sheet-b" id="sheet-b"></div>
+  <div class="sheet-f" id="sheet-f"></div>
+</aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (() => {
+
+const STAGES = ['Idea', 'Exploring', 'Planning', 'Building', 'Launched'];
+const STAGE_VAR = { Idea: '--st-idea', Exploring: '--st-exploring', Planning: '--st-planning', Building: '--st-building', Launched: '--st-launched' };
+const PRIOS = ['High', 'Medium', 'Low'];
+const SECTORS = ['Education & tech', 'Skills', 'Community & business', 'Agriculture', 'Health', 'Tourism', 'Energy', 'Other'];
 
 const ECON = {
   gdp: 45.8, perCapita: 1548, growth: 3.6, remit: 33.0, consumption: 90.3, mw: 1179, mwTarget: 10000,
@@ -540,7 +579,7 @@ const PROJECTS = [
   ['Nijgadh International Airport', 'Airports', 'Madhesh', 0, null, 'Not started']
 ].map(([name, sector, province, progress, cost, status]) => ({ name, sector, province, progress, cost, status }));
 
-const S = { feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, loaded: false, bizf: 'all', range: 66, tab: 'today', news: 'all', proj: 'all' };
+const S = { builds: [], stage: null, q: '', sort: 'stage', view: 'board', open: null, feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, loaded: false, bizf: 'all', range: 66, tab: 'today', news: 'all', proj: 'all' };
 const liveNote = () => 'Not in this update yet.';
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
@@ -569,7 +608,7 @@ function header() {
   $('when-fy').textContent = fiscalYear(t);
   const r = lastRefresh();
   $('when-upd').textContent = r ? 'Updated ' + stamp(r) : '';
-  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = false; }
+  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = S.tab === 'builds'; }
 }
 
 let toastT;
@@ -589,6 +628,278 @@ function loadData() {
       $('n-today').textContent = S.feed && Array.isArray(S.feed.news) ? S.feed.news.length : 0;
       header(); show(S.tab, false);
     });
+}
+
+/* ---------- Builds: storage ----------
+   Builds belong to the visitor and live only in this browser's storage. Nothing is sent anywhere. */
+const LKEY = 'n1-builds';
+let localWarned = false;
+function loadLocal() {
+  try { const a = JSON.parse(localStorage.getItem(LKEY) || '[]'); return Array.isArray(a) ? a.filter((x) => x && typeof x === 'object' && typeof x.id === 'string') : []; } catch (e) { return []; }
+}
+function localWrite(fn) {
+  return Promise.resolve().then(() => {
+    fn();
+    try { localStorage.setItem(LKEY, JSON.stringify(S.builds)); }
+    catch (e) { if (!localWarned) { localWarned = true; setTimeout(() => toast('This browser won\u2019t keep changes after you close the page.'), 2300); } }
+    renderBuilds(); if (S.open) renderSheet(false);
+  });
+}
+function patchBuild(id, patch) {
+  return localWrite(() => { const b = S.builds.find((x) => x.id === id); if (b) Object.assign(b, patch, { updated_at: new Date().toISOString() }); });
+}
+function createBuild(data) {
+  const body = Object.assign({ build: 'Untitled build', sector: 'Other', vision: '', stage: 'Idea', priority: 'Medium', target: '', next_step: '', notes: '', tasks: [], added: today() }, data, { updated_at: new Date().toISOString() });
+  return localWrite(() => { S.builds.push(Object.assign({ id: 'b-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7) }, body)); });
+}
+function removeBuild(id) {
+  return localWrite(() => { S.builds = S.builds.filter((x) => x.id !== id); });
+}
+function addExample() {
+  return createBuild({ build: 'Example: village homestay', sector: 'Tourism', stage: 'Exploring', priority: 'Medium',
+    vision: 'Three guest rooms run by local families, bringing visitors and income to the village.',
+    next_step: 'Visit two working homestays and note what they charge and what guests ask for.',
+    tasks: [{ text: 'Ask the ward office how to register a homestay', done: true }, { text: 'List the repairs each room needs', done: false }, { text: 'Work out a price per night', done: false }],
+    notes: 'This is an example. Edit it to make it yours, or delete it.' });
+}
+
+/* ---------- Builds ---------- */
+function stageOf(b) { return STAGES.includes(b.stage) ? b.stage : 'Idea'; }
+function taskStats(b) { const t = Array.isArray(b.tasks) ? b.tasks : []; return { n: t.length, d: t.filter((x) => x && x.done).length }; }
+function filtered() {
+  const q = norm(S.q);
+  let rows = S.builds.filter((b) => (!S.stage || stageOf(b) === S.stage) && (!q || norm([b.build, b.sector, b.vision, b.next_step, b.notes].join(' ')).includes(q)));
+  const by = {
+    stage: (a, b) => STAGES.indexOf(stageOf(b)) - STAGES.indexOf(stageOf(a)) || PRIOS.indexOf(a.priority) - PRIOS.indexOf(b.priority),
+    priority: (a, b) => PRIOS.indexOf(a.priority) - PRIOS.indexOf(b.priority) || STAGES.indexOf(stageOf(b)) - STAGES.indexOf(stageOf(a)),
+    target: (a, b) => (a.target || '9999').localeCompare(b.target || '9999'),
+    added: (a, b) => String(b.added || '').localeCompare(String(a.added || '')),
+    name: (a, b) => String(a.build).localeCompare(String(b.build))
+  }[S.sort];
+  return rows.sort(by);
+}
+function renderPipeline() {
+  const box = $('pipeline'); box.replaceChildren();
+  const mk = (label, n, stage, color) => {
+    const b = el('button', 'pipe'); b.type = 'button';
+    b.setAttribute('aria-pressed', S.stage === stage ? 'true' : 'false');
+    if (color) b.style.setProperty('--pc', 'var(' + color + ')');
+    const k = el('span', 'k'); if (color) { const d = el('i', 'dot'); k.append(d); } k.append(label);
+    b.append(k, el('span', 'v', String(n)));
+    b.addEventListener('click', () => { S.stage = S.stage === stage ? null : stage; renderBuilds(); });
+    return b;
+  };
+  box.append(mk('All builds', S.builds.length, null, null));
+  for (const s of STAGES) box.append(mk(s, S.builds.filter((b) => stageOf(b) === s).length, s, STAGE_VAR[s]));
+}
+function buildCard(b) {
+  const c = el('div', 'card'); c.tabIndex = 0;
+  c.style.setProperty('--pc', 'var(' + STAGE_VAR[stageOf(b)] + ')');
+  c.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target === c) openSheet(b.id); });
+  const meta = el('div', 'meta');
+  meta.append(el('span', 'chip', b.sector || 'Other'));
+  if (b.priority) meta.append(el('span', 'prio-' + b.priority, b.priority + ' priority'));
+  c.append(meta, el('h3', null, b.build || 'Untitled build'));
+  if (b.next_step) c.append(el('div', 'ns', 'Next: ' + b.next_step));
+  const foot = el('div', 'card-foot'); const left = el('div', 'meta');
+  const ts = taskStats(b);
+  if (ts.n) { const m = el('span'); const bar = el('span', 'mini'); const f = el('i'); f.style.width = (ts.d / ts.n * 100) + '%'; bar.append(f); m.append(bar, ' ' + ts.d + '/' + ts.n); left.append(m); }
+  if (b.target) left.append(el('span', null, 'Target ' + niceMonth(b.target)));
+  foot.append(left);
+  const i = STAGES.indexOf(stageOf(b));
+  if (i < STAGES.length - 1) {
+    const adv = el('button', 'adv', 'Move to ' + STAGES[i + 1] + ' →'); adv.type = 'button';
+    adv.addEventListener('click', (e) => { e.stopPropagation(); adv.disabled = true; patchBuild(b.id, { stage: STAGES[i + 1] }).then(() => toast('Moved to ' + STAGES[i + 1])).catch(() => { adv.disabled = false; }); });
+    foot.append(adv);
+  }
+  c.append(foot);
+  c.addEventListener('click', () => openSheet(b.id));
+  return c;
+}
+function renderBuilds() {
+  $('n-builds').textContent = S.builds.length;
+  renderPipeline();
+  $('vw-board').setAttribute('aria-pressed', S.view === 'board' ? 'true' : 'false');
+  $('vw-list').setAttribute('aria-pressed', S.view === 'list' ? 'true' : 'false');
+  const body = $('builds-body'); body.replaceChildren();
+  if (!S.builds.length) {
+    const e = el('div', 'empty'); e.append(el('h3', null, 'No builds yet'), el('p', null, 'A build is any project you want to make happen: a business, a school programme, a farm, an app. Add one and track it from idea to launch.'));
+    const row = el('div', 'toolbar'); row.style.justifyContent = 'center';
+    const b = el('button', 'btn primary', 'New build'); b.type = 'button'; b.addEventListener('click', () => openSheet(null));
+    const x = el('button', 'btn', 'Add an example'); x.type = 'button'; x.addEventListener('click', () => addExample().then(() => toast('Example added. Open it to edit or delete it.')));
+    row.append(b, x); e.append(row); body.append(e); return;
+  }
+  const rows = filtered();
+  if (!rows.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'Nothing matches'), el('p', null, 'Clear the search or pick another stage.')); body.append(e); return; }
+  if (S.view === 'board') {
+    const board = el('div', 'board');
+    const stages = S.stage ? [S.stage] : STAGES;
+    for (const s of stages) {
+      const col = el('div', 'col'); col.style.setProperty('--pc', 'var(' + STAGE_VAR[s] + ')');
+      const items = rows.filter((b) => stageOf(b) === s);
+      const h = el('div', 'col-h'); const t = el('span'); t.append(el('i', 'dot'), ' ' + s); t.style.display = 'inline-flex'; t.style.alignItems = 'center'; t.style.gap = '6px';
+      h.append(t, el('span', null, String(items.length))); col.append(h);
+      if (!items.length) col.append(el('div', 'col-empty', 'No builds here'));
+      for (const b of items) col.append(buildCard(b));
+      board.append(col);
+    }
+    body.append(board);
+  } else {
+    const wrap = el('div', 'tablewrap'); const t = el('table'); const th = el('thead'); const tr = el('tr');
+    for (const [h, cls] of [['Build'], ['Stage'], ['Priority', 'hide-sm'], ['Target', 'hide-sm'], ['Tasks', 'hide-sm'], ['Next step', 'hide-sm']]) { const x = el('th', cls, h); tr.append(x); }
+    th.append(tr); const tb = el('tbody');
+    for (const b of rows) {
+      const r = el('tr', 'click'); r.tabIndex = 0;
+      const n = el('td'); n.append(el('div', null, b.build)); const sub = el('div', 'meta'); sub.append(b.sector || ''); n.append(sub);
+      const st = el('td', 'num'); const d = el('i', 'dot'); d.style.setProperty('--pc', 'var(' + STAGE_VAR[stageOf(b)] + ')'); st.append(d, ' ' + stageOf(b));
+      const pr = el('td', 'hide-sm prio-' + (b.priority || ''), b.priority || '');
+      const tg = el('td', 'num hide-sm', niceMonth(b.target));
+      const ts = taskStats(b); const tk = el('td', 'num hide-sm', ts.n ? ts.d + '/' + ts.n : '');
+      const nx = el('td', 'dim hide-sm', b.next_step || '');
+      r.append(n, st, pr, tg, tk, nx);
+      r.addEventListener('click', () => openSheet(b.id));
+      r.addEventListener('keydown', (e) => { if (e.key === 'Enter') openSheet(b.id); });
+      tb.append(r);
+    }
+    t.append(th, tb); wrap.append(t); body.append(wrap);
+  }
+}
+
+/* ---------- Sheet ---------- */
+let notesT = null; let lastFocus = null;
+function openSheet(id) {
+  lastFocus = document.activeElement;
+  S.open = id === null ? 'new' : id;
+  renderSheet(true);
+  const sc = $('scrim'), sh = $('sheet');
+  sc.hidden = false; sh.hidden = false;
+  requestAnimationFrame(() => { sc.classList.add('on'); sh.classList.add('on'); const f = sh.querySelector('input, textarea, button'); if (f) f.focus(); });
+}
+function closeSheet() {
+  if (S.open && S.open !== 'new') flushNotes();
+  S.open = null;
+  const sc = $('scrim'), sh = $('sheet');
+  sc.classList.remove('on'); sh.classList.remove('on');
+  setTimeout(() => { if (!S.open) { sc.hidden = true; sh.hidden = true; $('sheet-b').replaceChildren(); $('sheet-f').replaceChildren(); } }, 240);
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+function flushNotes() { if (notesT) { clearTimeout(notesT.t); notesT.fn(); notesT = null; } }
+function field(label, input) { const f = el('div', 'fld'); const l = el('label', null, label); if (input.id) l.htmlFor = input.id; f.append(l, input); return f; }
+function selectOf(id, opts, val) { const s = el('select'); s.id = id; for (const o of opts) { const op = new Option(o, o); s.append(op); } s.value = val || opts[0]; return s; }
+
+function renderSheet(force) {
+  if (!S.open) return;
+  const body = $('sheet-b'), foot = $('sheet-f');
+  if (!force && S.open === 'new') return;
+  const ae = document.activeElement;
+  const keepFocus = !force && ae && ae.id && $('sheet').contains(ae) ? { id: ae.id, value: ae.value, a: ae.selectionStart, z: ae.selectionEnd } : null;
+  const scroll = force ? 0 : body.scrollTop;
+  body.replaceChildren(); foot.replaceChildren();
+  queueMicrotask(() => {
+    body.scrollTop = scroll;
+    if (!keepFocus) return;
+    const n = $(keepFocus.id); if (!n) return;
+    if (typeof keepFocus.value === 'string' && 'value' in n && n.type !== 'checkbox' && n.tagName !== 'SELECT') n.value = keepFocus.value;
+    n.focus({ preventScroll: true });
+    try { if (keepFocus.a != null) n.setSelectionRange(keepFocus.a, keepFocus.z); } catch (e) {}
+  });
+  if (S.open === 'new') {
+    $('sheet-title').textContent = 'New build';
+    const name = el('input', 'big'); name.id = 'f-name'; name.placeholder = 'Name your build'; name.maxLength = 80;
+    const sector = selectOf('f-sector', SECTORS, 'Education & tech');
+    const prio = selectOf('f-prio', PRIOS, 'Medium');
+    const vision = el('textarea'); vision.id = 'f-vision'; vision.placeholder = 'What will this achieve, and for whom?';
+    const next = el('input'); next.id = 'f-next'; next.placeholder = 'The first concrete action';
+    const target = el('input'); target.id = 'f-target'; target.type = 'month';
+    const msg = el('div', 'err');
+    const row = el('div', 'row2'); row.append(field('Sector', sector), field('Priority', prio));
+    body.append(field('Build', name), row, field('Vision', vision), field('Next step', next), field('Target month', target), msg);
+    const save = el('button', 'btn primary', 'Add build'); save.type = 'button';
+    save.addEventListener('click', () => {
+      if (!name.value.trim()) { msg.textContent = 'Give the build a name first.'; name.focus(); return; }
+      save.disabled = true;
+      createBuild({ build: name.value.trim(), sector: sector.value, priority: prio.value, vision: vision.value.trim(), next_step: next.value.trim(), target: target.value || '', stage: 'Idea' })
+        .then(() => { toast('Build added'); closeSheet(); }).catch(() => { save.disabled = false; });
+    });
+    name.addEventListener('input', () => { msg.textContent = ''; });
+    const cancel = el('button', 'btn ghost', 'Cancel'); cancel.type = 'button'; cancel.addEventListener('click', closeSheet);
+    foot.append(cancel, save);
+    return;
+  }
+  const b = S.builds.find((x) => x.id === S.open);
+  if (!b) { $('sheet-title').textContent = 'Build'; body.append(el('p', 'note', 'This build was removed.')); return; }
+  $('sheet-title').textContent = 'Build';
+  const name = el('input', 'big'); name.id = 'e-name'; name.value = b.build || ''; name.maxLength = 80;
+  name.addEventListener('change', () => { const v = name.value.trim(); if (v && v !== b.build) patchBuild(b.id, { build: v }).then(() => toast('Renamed')).catch(() => {}); });
+  body.append(field('Build', name));
+
+  const stWrap = el('div', 'fld'); stWrap.append(el('span', 'lbl', 'Stage'));
+  const st = el('div', 'stages'); st.setAttribute('role', 'group'); st.setAttribute('aria-label', 'Stage');
+  for (const s of STAGES) {
+    const x = el('button', null, s); x.type = 'button';
+    x.style.setProperty('--pc', 'var(' + STAGE_VAR[s] + ')');
+    x.setAttribute('aria-pressed', stageOf(b) === s ? 'true' : 'false');
+    x.addEventListener('click', () => { if (stageOf(b) !== s) patchBuild(b.id, { stage: s }).then(() => toast('Stage: ' + s)).catch(() => {}); });
+    st.append(x);
+  }
+  stWrap.append(st); body.append(stWrap);
+
+  const sector = selectOf('e-sector', SECTORS.includes(b.sector) ? SECTORS : [b.sector].concat(SECTORS), b.sector || 'Other');
+  sector.addEventListener('change', () => patchBuild(b.id, { sector: sector.value }).catch(() => {}));
+  const prio = selectOf('e-prio', PRIOS, b.priority || 'Medium');
+  prio.addEventListener('change', () => patchBuild(b.id, { priority: prio.value }).catch(() => {}));
+  const row = el('div', 'row2'); row.append(field('Sector', sector), field('Priority', prio)); body.append(row);
+
+  const target = el('input'); target.type = 'month'; target.id = 'e-target'; target.value = b.target || '';
+  target.addEventListener('change', () => patchBuild(b.id, { target: target.value || '' }).catch(() => {}));
+  const added = el('input'); added.id = 'e-added'; added.value = niceDate(b.added); added.disabled = true;
+  const row2 = el('div', 'row2'); row2.append(field('Target month', target), field('Added', added)); body.append(row2);
+
+  const vision = el('textarea'); vision.id = 'e-vision'; vision.value = b.vision || '';
+  vision.addEventListener('change', () => patchBuild(b.id, { vision: vision.value.trim() }).catch(() => {}));
+  body.append(field('Vision', vision));
+
+  const next = el('textarea'); next.id = 'e-next'; next.value = b.next_step || ''; next.style.minHeight = '60px';
+  next.addEventListener('change', () => patchBuild(b.id, { next_step: next.value.trim() }).catch(() => {}));
+  body.append(field('Next step', next));
+
+  const tw = el('div', 'fld'); const ts = taskStats(b);
+  tw.append(el('span', 'lbl', 'Tasks' + (ts.n ? ' · ' + ts.d + ' of ' + ts.n + ' done' : '')));
+  const list = el('div', 'tasks');
+  const tasks = Array.isArray(b.tasks) ? b.tasks.map((t) => ({ text: String(t.text || ''), done: !!t.done })) : [];
+  tasks.forEach((t, i) => {
+    const r = el('div', 'task' + (t.done ? ' done' : ''));
+    const cb = el('input'); cb.type = 'checkbox'; cb.checked = t.done; cb.id = 'e-task-' + i;
+    cb.addEventListener('change', () => { const nt = tasks.map((x, j) => j === i ? { text: x.text, done: cb.checked } : x); patchBuild(b.id, { tasks: nt }).catch(() => {}); });
+    const tx = el('span', null, t.text); tx.addEventListener('click', () => { cb.click(); });
+    const del = el('button', null, '✕'); del.type = 'button'; del.setAttribute('aria-label', 'Remove task');
+    del.addEventListener('click', () => { patchBuild(b.id, { tasks: tasks.filter((x, j) => j !== i) }).catch(() => {}); });
+    r.append(cb, tx, del); list.append(r);
+  });
+  const add = el('div', 'addtask'); const ti = el('input'); ti.id = 'e-newtask'; ti.placeholder = 'Add a task'; ti.maxLength = 140;
+  const ab = el('button', 'btn', 'Add'); ab.type = 'button';
+  const doAdd = () => { const v = ti.value.trim(); if (!v) { ti.focus(); return; } ti.value = ''; patchBuild(b.id, { tasks: tasks.concat([{ text: v, done: false }]) }).then(() => { const n = $('e-newtask'); if (n) n.focus(); }).catch(() => {}); };
+  ab.addEventListener('click', doAdd); ti.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doAdd(); } });
+  add.append(ti, ab); tw.append(list, add); body.append(tw);
+
+  const notes = el('textarea'); notes.id = 'e-notes'; notes.value = b.notes || ''; notes.placeholder = 'Contacts, costs, decisions, anything to remember'; notes.style.minHeight = '110px';
+  const savedLbl = el('span', 'saved', b.updated_at ? 'Saved ' + new Date(b.updated_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '');
+  notes.addEventListener('input', () => {
+    if (notesT) clearTimeout(notesT.t);
+    const fn = () => { const live = $('e-notes'); const v = live ? live.value : notes.value; return patchBuild(b.id, { notes: v }).then(() => { const l = document.querySelector('#sheet-f .saved'); if (l) l.textContent = 'Notes saved'; }).catch(() => {}); };
+    notesT = { fn, t: setTimeout(() => { notesT = null; fn(); }, 900) };
+    savedLbl.textContent = 'Saving…';
+  });
+  notes.addEventListener('blur', flushNotes);
+  body.append(field('Notes', notes));
+
+  const del = el('button', 'btn danger', 'Delete build'); del.type = 'button';
+  let armed = false;
+  del.addEventListener('click', () => {
+    if (!armed) { armed = true; del.textContent = 'Tap again to delete'; setTimeout(() => { armed = false; del.textContent = 'Delete build'; }, 4000); return; }
+    removeBuild(b.id).then(() => { toast('Build deleted'); closeSheet(); }).catch(() => {});
+  });
+  foot.append(del, savedLbl);
 }
 
 /* ---------- Today ---------- */
@@ -905,8 +1216,8 @@ function drawHBars(box, rows, fmtV) {
 
 /* ---------- Invest ---------- */
 const INV = { amount: 1000000, monthly: 0, years: 10, infl: null, scen: 'mid' };
-try { const s = JSON.parse(localStorage.getItem('nd-invest') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(INV)) if (k in s) INV[k] = s[k]; } catch (e) {}
-const saveInv = () => { try { localStorage.setItem('nd-invest', JSON.stringify(INV)); } catch (e) {} };
+try { const s = JSON.parse(localStorage.getItem('n1-invest') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(INV)) if (k in s) INV[k] = s[k]; } catch (e) {}
+const saveInv = () => { try { localStorage.setItem('n1-invest', JSON.stringify(INV)); } catch (e) {} };
 const rs = (n) => 'Rs ' + Math.round(Number(n) || 0).toLocaleString('en-IN');
 const lakh = (n) => (Number(n) / 1e5).toLocaleString('en-IN', { maximumFractionDigits: 1 }) + ' lakh';
 const INV_COLORS = ['--st-exploring', '--st-launched', '--st-planning', '--accent', '--faint', '--c6'];
@@ -1069,7 +1380,7 @@ for (const [id, key, int] of [['inv-amount', 'amount', true], ['inv-monthly', 'm
 document.querySelectorAll('#inv-scen [data-scen]').forEach((b) => b.addEventListener('click', () => { INV.scen = b.dataset.scen; saveInv(); renderInvest(); }));
 
 /* ---------- Routing ---------- */
-const TABS = ['today', 'business', 'nepse', 'invest', 'economy', 'projects'];
+const TABS = ['today', 'builds', 'business', 'nepse', 'invest', 'economy', 'projects'];
 function show(tab, push) {
   if (!TABS.includes(tab)) tab = 'today';
   S.tab = tab;
@@ -1081,11 +1392,25 @@ function show(tab, push) {
   if (tab === 'business') renderBusiness();
   if (tab === 'nepse') renderNepse();
   if (tab === 'invest') renderInvest();
+  if (tab === 'builds') renderBuilds();
+  const asof = $('asof'); asof.hidden = tab === 'builds' || !asof.textContent;
   window.scrollTo(0, 0);
 }
 
 document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => show(b.dataset.tab, true)));
 window.addEventListener('hashchange', () => show(location.hash.slice(1), false));
+$('new-build').addEventListener('click', () => openSheet(null));
+$('q').addEventListener('input', (e) => { S.q = e.target.value; renderBuilds(); });
+$('sort').addEventListener('change', (e) => { S.sort = e.target.value; renderBuilds(); });
+$('vw-board').addEventListener('click', () => { S.view = 'board'; try { localStorage.setItem('n1-view', 'board'); } catch (e) {} renderBuilds(); });
+$('vw-list').addEventListener('click', () => { S.view = 'list'; try { localStorage.setItem('n1-view', 'list'); } catch (e) {} renderBuilds(); });
+$('sheet-close').addEventListener('click', closeSheet);
+$('scrim').addEventListener('click', closeSheet);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && S.open) closeSheet(); });
+/* Keep two open tabs of the site in step. */
+window.addEventListener('storage', (e) => { if (e.key === LKEY) { S.builds = loadLocal(); renderBuilds(); if (S.open) renderSheet(false); } });
+try { const v = localStorage.getItem('n1-view'); if (v === 'list' || v === 'board') S.view = v; } catch (e) {}
+S.builds = loadLocal(); renderBuilds();
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (S.tab === 'economy') renderEconomy(); if (S.tab === 'projects') renderProjects(); if (S.tab === 'nepse') renderNepse(); if (S.tab === 'invest') renderInvest(); }); } catch (e) {}
 let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (S.tab === 'economy') { drawScenarios(); drawGrowth(); drawStructure(); } if (S.tab === 'nepse') renderNepse(); if (S.tab === 'invest') renderInvest(); }, 150); });
 document.querySelectorAll('[data-range]').forEach((b) => b.addEventListener('click', () => { S.range = Number(b.dataset.range); renderNepse(); }));

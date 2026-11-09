@@ -1,57 +1,61 @@
-# Nepal Dashboard
+# Nepal in 1
 
-A personal dashboard for building in Nepal: key projects for a school and community in Kanchanpur, a daily news brief, business, NEPSE, investment planning, the economy, and national pride projects.
+**All of Nepal in one place:** news, the stock market, business, investment options, the economy and national projects, on one fast page that works on any phone.
 
-**Live version:** runs as a Claude artifact on claude.ai, where it saves your builds and refreshes its data every day.
-**This repo:** the backup and version history of its code.
+Nepal in 1 is a public website, kept separate from any personal dashboard. Every story and figure links to its source.
 
-## What's inside
+## What's on it
+
+| Tab | What you get |
+|---|---|
+| **Today in Nepal** | The day's key stories from across the country, filterable by topic, each with why it matters |
+| **Business** | Key indicators, company news and upcoming business dates |
+| **NEPSE** | Index chart (1M / 3M / all), sector moves, top gainers, losers and most traded, a fundamentals watchlist for banks, IPOs and share issues |
+| **Invest** | A calculator comparing fixed deposits, savings bonds, NEPSE, gold and land: lump sum or monthly, low / expected / high, after tax and inflation; plus places to watch for property |
+| **Economy** | GDP paths to 2036, IMF and ADB forecasts, what the economy is made of, hydropower export progress, a growth scorecard |
+| **National projects** | Progress, cost and status of 25 national pride and major projects, by sector |
+
+Light and dark mode follow the device setting. Nothing is tracked. The calculator remembers its inputs only in the visitor's own browser.
+
+## How it's built
+
+No framework and no build step: just two files.
 
 | Path | What it is |
 |---|---|
-| `dashboard/index.html` | The whole app: one HTML file with its styles and script inside |
-| `dashboard/public.json` | A snapshot of the daily data (news, business, NEPSE, invest, places) |
-| `scripts/check.mjs` | A quick health check for the two files above |
-| `.github/workflows/check.yml` | Runs that check on GitHub every time the dashboard changes |
-| `docs/slsa-generic-generator.yml` | A parked SLSA provenance workflow, not active (see below) |
+| `site/index.html` | The whole site: layout, styles and script in one file |
+| `site/data.json` | The data: news, business, NEPSE, investment rates, places |
+| `scripts/check.mjs` | Health check: valid data, every tab wired up, script has no syntax errors |
+| `.github/workflows/check.yml` | Runs the check on GitHub every time the site changes |
+| `docs/slsa-generic-generator.yml` | Parked workflow for signing downloadable releases (not active) |
 
-## The eight tabs
+The economy and national-project figures live inside `index.html`. Everything that changes daily lives in `data.json`.
 
-1. **Key builds:** your projects on a board (Idea → Exploring → Planning → Building → Launched), with tasks, notes and a daily news signal
-2. **Today in Nepal:** the morning news brief, with Sudurpashchim stories first
-3. **Ideas:** opportunities from the day's news; add one to your builds with a tap
-4. **Business:** indicators, company news and upcoming business events
-5. **NEPSE:** index chart, sector moves, top gainers and losers, a fundamentals watchlist, IPOs
-6. **Invest:** a growth calculator, a plan splitter (starts at Rs 5 crore) and places to watch for property
-7. **Economy:** GDP paths to 2036, growth forecasts, the hydropower export tracker, a growth scorecard
-8. **National projects:** progress on 25 big projects, with Sudurpashchim highlighted
+### Run it on your computer
 
-## How it works
+```sh
+cd site && python3 -m http.server 8000
+# open http://localhost:8000
+```
 
-- **On claude.ai** the page uses Claude's shared database. Builds sit in the `builds` collection. The daily data sits in `feed/today`, `business/today`, `market/nepse`, `market/watchlist`, `invest/options`, `invest/places` and `invest/plan`. Claude's scheduled tasks refresh the data around 6:34 each morning and at 4 pm on NEPSE trading days.
-- **Anywhere else** the page switches to *device mode*. It reads `public.json` for the data and saves builds only in that browser. To preview it locally:
+### Update the data
 
-  ```sh
-  cd dashboard && python3 -m http.server 8000   # then open http://localhost:8000
-  ```
+Replace `site/data.json` with a fresh version that has the same shape, then:
 
-Your builds and plan are **not** in this repo. They live only in the database on claude.ai.
+```sh
+node scripts/check.mjs   # should end with "Site check passed."
+```
 
-## Making changes
+Commit and push. GitHub runs the same check.
 
-1. Edit `dashboard/index.html`, or ask Claude to.
-2. Run `node scripts/check.mjs`. It should end with "Dashboard check passed."
-3. Commit and push. GitHub runs the same check.
-4. Publish the updated file back to the artifact so the live version gets the change.
+## Roadmap
 
-Keep the artifact and this repo in step. If you change the dashboard on claude.ai, save the new version here too.
+1. **Go live.** Publish `site/` on GitHub Pages (needs a public repo or a paid plan), Netlify or Cloudflare Pages. All are free for a site this size.
+2. **Automatic data refresh.** A scheduled GitHub workflow that rebuilds `data.json` every morning and after each NEPSE close.
+3. **Nepali language.** A नेपाली / English switch.
+4. **More of Nepal:** weather and air quality by city, exchange rates, gold and silver prices, a festival and holiday calendar, a province-by-province view.
+5. **Share cards.** A one-tap image of the day's NEPSE close or top story, for Facebook, Viber and X.
 
-## Growing it
+## Disclaimer
 
-Ideas for next steps, roughly smallest first:
-
-- **Regular backups:** each time the dashboard changes on claude.ai, ask Claude to save it here, so every version is kept.
-- **Back up your builds:** export the `builds` collection to a JSON file here now and then, in case it's ever lost.
-- **Split the file:** once the app gets bigger, move the CSS and JavaScript into their own files so changes are easier to review.
-- **A public site:** GitHub Pages can serve `dashboard/` as a website. It needs a public repo or a paid plan, and the data stays frozen unless a workflow refreshes `public.json`.
-- **A downloadable app:** if you ever ship an installable version, turn on `docs/slsa-generic-generator.yml`. It signs your release files so people can check they're genuine. To use it, move it to `.github/workflows/`, put the release files in an `artifacts/` folder and update the generator version.
+For general information only. Nothing here is investment, financial or legal advice. Projections are not promises; market investments can lose money.

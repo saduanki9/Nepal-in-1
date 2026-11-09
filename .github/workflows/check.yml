@@ -1,12 +1,12 @@
-name: Dashboard check
+name: Site check
 
-# Runs on every push and pull request that touches the dashboard,
-# so a broken file is caught before it is copied back to Claude.
+# Runs on every push and pull request that touches the site,
+# so a broken file is caught before it goes live.
 on:
   push:
-    paths: ['dashboard/**', 'scripts/**', '.github/workflows/check.yml']
+    paths: ['site/**', 'scripts/**', '.github/workflows/check.yml']
   pull_request:
-    paths: ['dashboard/**', 'scripts/**', '.github/workflows/check.yml']
+    paths: ['site/**', 'scripts/**', '.github/workflows/check.yml']
   workflow_dispatch:
 
 permissions:

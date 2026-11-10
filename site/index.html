@@ -294,6 +294,28 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .wrow b { font-weight: 600; }
 .wrow p { margin: 0; color: var(--muted); }
 .wrow .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.hero { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 28px 28px 24px; display: grid; gap: 18px; }
+.hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 5vw, 46px); line-height: 1.06; margin: 0; text-wrap: balance; }
+.hero .lede { margin: 0; color: var(--muted); max-width: 60ch; font-size: 16px; }
+.hero .ask { display: grid; grid-template-columns: minmax(0, 260px) auto auto; gap: 12px; align-items: end; }
+.hero .ask .btn { min-height: 44px; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; counter-reset: st; }
+.steps li { counter-increment: st; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; display: grid; gap: 4px; }
+.steps li::before { content: counter(st); font-family: var(--display); font-size: 26px; color: var(--accent); line-height: 1; }
+.steps b { font-size: 15px; }
+.steps span { font-size: 14px; color: var(--muted); }
+.mini-idea { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; display: grid; gap: 8px; align-content: start; text-align: left; width: 100%; cursor: pointer; }
+.mini-idea:hover { border-color: var(--line-strong); box-shadow: var(--shadow); }
+.mini-idea.pick { border: 2px solid var(--accent); padding: 15px 17px; }
+.mini-idea h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 21px; line-height: 1.15; }
+.mini-idea .nums { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; color: var(--muted); }
+.mini-idea .nums b { display: block; font-size: 17px; color: var(--fg); font-variant-numeric: tabular-nums; }
+.links3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+.qlink { background: var(--raise); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 4px; text-align: left; width: 100%; }
+.qlink:hover { border-color: var(--line-strong); }
+.qlink .k { font-size: 12px; color: var(--muted); }
+.qlink b { font-size: 15px; font-weight: 600; line-height: 1.35; }
+@media (max-width: 560px) { .hero { padding: 20px 18px; } .hero .ask { grid-template-columns: 1fr; } }
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
 .toast { position: fixed; z-index: 50; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100% - 32px); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
@@ -327,6 +349,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       <div class="when" id="when"><b id="when-date">Today</b><span id="when-fy">Fiscal year</span><span class="upd" id="when-upd"></span></div>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" id="tab-start" data-tab="start" aria-selected="false">Start here</button>
       <button class="tab" role="tab" id="tab-today" data-tab="today" aria-selected="false">Today in Nepal<span class="n" id="n-today">0</span></button>
       <button class="tab" role="tab" id="tab-builds" data-tab="builds" aria-selected="false">My builds<span class="n" id="n-builds">0</span></button>
       <button class="tab" role="tab" id="tab-mentor" data-tab="mentor" aria-selected="false">Mentor</button>
@@ -341,6 +364,28 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 
 <main class="wrap">
   <div id="asof" class="banner" role="status" hidden style="margin-bottom:18px"></div>
+
+  <section class="view" id="v-start" aria-labelledby="tab-start" hidden>
+    <div class="hero">
+      <p class="eyebrow" style="margin:0">Nepal in 1</p>
+      <h1>What could you build with your money?</h1>
+      <p class="lede">Tell us how much you can put in. We show real businesses from Nepal studies, sized to your budget: what it costs to start, what it could earn, and your first steps. Then track your plan in My builds.</p>
+      <div class="ask">
+        <div class="fld"><label for="start-budget">Money you can put in (Rs)</label><input id="start-budget" type="number" min="0" step="50000" inputmode="numeric"></div>
+        <div class="fld"><span class="lbl" id="start-where-l">Where</span><div class="seg" role="group" aria-labelledby="start-where-l" id="start-where"><button type="button" data-where="all">Anywhere</button><button type="button" data-where="terai">Terai</button><button type="button" data-where="hills">Hills</button></div></div>
+        <button class="btn primary" type="button" id="start-go">See all businesses</button>
+      </div>
+    </div>
+    <div class="grid" id="start-ideas"></div>
+    <ol class="steps">
+      <li><b>Pick your budget</b><span>Any amount. Every business is sized to it.</span></li>
+      <li><b>Compare businesses</b><span>Money to start, profit a month, payback, risk, and the study behind each figure.</span></li>
+      <li><b>Track your plan</b><span>Add one to My builds. Its first steps become your task list, saved privately on your phone.</span></li>
+    </ol>
+    <h2 class="sec">Also on Nepal in 1</h2>
+    <div class="links3" id="start-links"></div>
+    <p class="foot">Business figures are estimates from published studies, not promises. Check local prices before spending money.</p>
+  </section>
 
   <section class="view" id="v-today" aria-labelledby="tab-today" hidden>
     <div class="head">
@@ -631,7 +676,7 @@ const PROJECTS = [
   ['Nijgadh International Airport', 'Airports', 'Madhesh', 0, null, 'Not started']
 ].map(([name, sector, province, progress, cost, status]) => ({ name, sector, province, progress, cost, status }));
 
-const S = { builds: [], stage: null, q: '', sort: 'stage', view: 'board', open: null, feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, mentor: null, loaded: false, bizf: 'all', range: 66, tab: 'today', news: 'all', proj: 'all' };
+const S = { builds: [], stage: null, q: '', sort: 'stage', view: 'board', open: null, feed: null, biz: null, nepse: null, watch: null, invest: null, places: null, mentor: null, loaded: false, bizf: 'all', range: 66, tab: 'start', news: 'all', proj: 'all' };
 const liveNote = () => 'Not in this update yet.';
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
@@ -660,7 +705,7 @@ function header() {
   $('when-fy').textContent = fiscalYear(t);
   const r = lastRefresh();
   $('when-upd').textContent = r ? 'Updated ' + stamp(r) : '';
-  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = S.tab === 'builds' || S.tab === 'mentor'; }
+  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = S.tab === 'builds' || S.tab === 'mentor' || S.tab === 'start'; }
 }
 
 let toastT;
@@ -1567,15 +1612,60 @@ $('mentor-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, M
 $('mentor-sort').addEventListener('change', (e) => { MEN.sort = e.target.value; saveMen(); renderMentor(); });
 document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderMentor(); }));
 
+/* ---------- Start here ----------
+   The front door: one question (budget), three sized businesses, then links to the rest. Shares MEN with the Mentor tab. */
+function renderStart() {
+  const bi = $('start-budget'); if (document.activeElement !== bi) bi.value = String(MEN.budget);
+  document.querySelectorAll('#start-where [data-where]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.where === MEN.where)));
+  const box = $('start-ideas'); box.replaceChildren();
+  const d = S.mentor;
+  const ideas = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
+  if (!ideas.length) { const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No businesses listed yet' : 'Loading businesses')); box.append(e); }
+  else {
+    const budget = Math.max(0, Number(MEN.budget) || 0);
+    const rows = ideas.filter((o) => MEN.where === 'all' || (Array.isArray(o.regions) && o.regions.includes(MEN.where))).map((o) => ({ o, c: mentorCalc(o, budget) }));
+    const fit = rows.filter((x) => x.c.fits);
+    const pick = fit.filter((x) => x.o.risk !== 'High').sort((a, b) => b.c.ret - a.c.ret)[0];
+    const rest = fit.filter((x) => x !== pick).sort((a, b) => b.c.ret - a.c.ret);
+    const top = (pick ? [pick] : []).concat(rest).slice(0, 3);
+    if (!top.length) {
+      const cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
+      const e = el('div', 'empty');
+      e.append(el('h3', null, 'Nothing fits this budget yet'), el('p', null, cheap ? 'The smallest way to start is ' + cheap.o.name.toLowerCase() + ', from about ' + rs(cheap.c.minStart) + '.' : 'Try a larger amount, or choose Anywhere.'));
+      box.append(e);
+    }
+    for (const x of top) {
+      const c = el('button', 'mini-idea' + (x === pick ? ' pick' : '')); c.type = 'button';
+      const meta = el('div', 'meta'); meta.append(riskPill(x.o.risk)); if (x === pick) meta.append(el('span', 'pick-badge', "Mentor's pick"));
+      const nums = el('div', 'nums');
+      const num = (k, v) => { const s = el('span'); s.append(el('b', null, v), k); nums.append(s); };
+      num('to start', rs(x.c.start)); num('profit a month', about(x.c.month));
+      c.append(meta, el('h3', null, x.o.name), el('span', 'meta', sizeText(x.o, x.c.n)), nums);
+      c.addEventListener('click', () => { menFold.set(x.o.id + ':advice', true); show('mentor', true); });
+      box.append(c);
+    }
+  }
+  const links = $('start-links'); links.replaceChildren();
+  const ql = (k, text, tab) => { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', k), el('b', null, text)); b.addEventListener('click', () => show(tab, true)); links.append(b); };
+  const news = S.feed && Array.isArray(S.feed.news) ? S.feed.news.slice().sort((a, b) => String(b.date).localeCompare(String(a.date))) : [];
+  ql('Today in Nepal', news[0] ? news[0].headline : 'The day’s news, with why it matters', 'today');
+  const ix = S.nepse && S.nepse.index;
+  ql('NEPSE', ix ? 'Closed at ' + Number(ix.close).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' (' + signed(ix.pct, 2) + '%) on ' + niceDate(S.nepse.as_of) : 'Index, top movers and IPOs', 'nepse');
+  ql('Invest', 'Compare fixed deposits, bonds, NEPSE, gold and land for your money', 'invest');
+}
+$('start-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderStart(); });
+document.querySelectorAll('#start-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderStart(); }));
+$('start-go').addEventListener('click', () => show('mentor', true));
+
 /* ---------- Routing ---------- */
-const TABS = ['today', 'builds', 'mentor', 'business', 'nepse', 'invest', 'economy', 'projects'];
+const TABS = ['start', 'today', 'builds', 'mentor', 'business', 'nepse', 'invest', 'economy', 'projects'];
 /* Anonymous visit counting (GoatCounter). Page loads count by themselves; tab switches are counted here.
    Does nothing if the counter is blocked or not loaded. */
 function countView(tab) {
   try { if (window.goatcounter && typeof window.goatcounter.count === 'function') window.goatcounter.count({ path: location.pathname + '#' + tab, title: 'Nepal in 1: ' + tab }); } catch (e) {}
 }
 function show(tab, push) {
-  if (!TABS.includes(tab)) tab = 'today';
+  if (!TABS.includes(tab)) tab = 'start';
   S.tab = tab;
   for (const t of TABS) { $('v-' + t).hidden = t !== tab; $('tab-' + t).setAttribute('aria-selected', t === tab ? 'true' : 'false'); }
   if (push && location.hash.slice(1) !== tab) location.hash = tab;
@@ -1588,7 +1678,8 @@ function show(tab, push) {
   if (tab === 'invest') renderInvest();
   if (tab === 'builds') renderBuilds();
   if (tab === 'mentor') renderMentor();
-  const asof = $('asof'); asof.hidden = tab === 'builds' || tab === 'mentor' || !asof.textContent;
+  if (tab === 'start') renderStart();
+  const asof = $('asof'); asof.hidden = tab === 'builds' || tab === 'mentor' || tab === 'start' || !asof.textContent;
   window.scrollTo(0, 0);
 }
 
@@ -1613,7 +1704,7 @@ document.querySelectorAll('[data-range]').forEach((b) => b.addEventListener('cli
 header();
 setInterval(header, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) header(); });
-S.tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'today';
+S.tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
 show(S.tab, false);
 
 loadData();

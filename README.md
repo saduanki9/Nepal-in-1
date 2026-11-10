@@ -80,15 +80,6 @@ The page works out how many units the visitor's budget covers, then multiplies. 
 
 Below the sized businesses, the Mentor has 13 sector guides covering business across Nepal: farming, import and export, retail and wholesale, IT and online services, tourism, small manufacturing and food processing, construction and real estate, transport, education, health and pharmacy, energy, finance and cooperatives, and investing in shares. Each gives the key public numbers with sources, the first steps (registrations and licences), and what to watch out for. They give **no profit estimate**, because profit depends on the exact product, place and owner. Data lives in `mentor.sectors` in `site/data.json`; `scripts/check.mjs` checks every guide has first steps and that every number has a source. Registration details summarised from advisers' guides are labelled as such on the page.
 
-### Weekly market prices
-
-Every Sunday at 09:02 Nepal time, the **Weekly market prices** workflow reads Kalimati market's daily wholesale prices for tunnel-grown tomato, Nepali banana, rohu carp and chhari fish, saves them in `site/data.json` (`mentor.market`) and publishes the site. It runs on GitHub's free runners and uses no Claude usage.
-
-- Each Mentor card for tomatoes, bananas and fish shows this week's price, its range, and the change over about 4 weeks.
-- When a price is up 10% or more over 4 weeks, the Start page shows it as the "Opportunity of the week".
-- Prices are wholesale in Kathmandu, higher than the farm-gate prices the profit studies use, so they are shown next to the study profit and never change it.
-- If Kalimati can't be read, the run fails, GitHub emails the repo owner, and the site keeps the previous prices. To run it by hand: Actions → Weekly market prices → Run workflow, or `python3 scripts/update_prices.py`.
-
 ## Hosting
 
 The site is published with GitHub Pages at **https://saduanki9.github.io/Nepal-in-1/**

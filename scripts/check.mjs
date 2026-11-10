@@ -38,6 +38,10 @@ if (data) {
     else if ((s.numbers || []).some((n) => !n.label || !n.value || !n.source_url)) fail('sector guide "' + s.id + '" has a number without a label, value or source');
   }
   if (secs.length) ok(secs.length + ' sector guides are complete');
+  // Growth table: every row needs a level, a figure and an https source.
+  const grow = data.mentor && data.mentor.growth && Array.isArray(data.mentor.growth.items) ? data.mentor.growth.items : [];
+  const badG = grow.filter((x) => !['strong', 'moderate', 'caution'].includes(x.level) || !x.name || !x.value || !/^https:\/\//.test(String(x.source_url || '')) || (x.sector && !secs.some((s) => s.id === x.sector)));
+  if (badG.length) fail('growth rows missing a level, figure, source or sector: ' + badG.map((x) => x.name || '?').join(', ')); else if (grow.length) ok(grow.length + ' growth rows are complete');
 }
 
 // 2. Page has a title and every tab has a matching section.

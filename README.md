@@ -76,6 +76,10 @@ The page works out how many units the visitor's budget covers, then multiplies. 
 
 **Adding a business:** add an entry to `mentor.ideas` in `site/data.json` with figures from a Nepal study you have read in full, then run `node scripts/check.mjs`. The weekly rotation picks it up by itself.
 
+### Sector guides
+
+Below the sized businesses, the Mentor has 13 sector guides covering business across Nepal: farming, import and export, retail and wholesale, IT and online services, tourism, small manufacturing and food processing, construction and real estate, transport, education, health and pharmacy, energy, finance and cooperatives, and investing in shares. Each gives the key public numbers with sources, the first steps (registrations and licences), and what to watch out for. They give **no profit estimate**, because profit depends on the exact product, place and owner. Data lives in `mentor.sectors` in `site/data.json`; `scripts/check.mjs` checks every guide has first steps and that every number has a source. Registration details summarised from advisers' guides are labelled as such on the page.
+
 ### Weekly market prices
 
 Every Sunday at 09:02 Nepal time, the **Weekly market prices** workflow reads Kalimati market's daily wholesale prices for tunnel-grown tomato, Nepali banana, rohu carp and chhari fish, saves them in `site/data.json` (`mentor.market`) and publishes the site. It runs on GitHub's free runners and uses no Claude usage.

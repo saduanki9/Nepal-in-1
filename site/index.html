@@ -316,11 +316,6 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .qlink .k { font-size: 12px; color: var(--muted); }
 .qlink b { font-size: 15px; font-weight: 600; line-height: 1.35; }
 @media (max-width: 560px) { .hero { padding: 20px 18px; } .hero .ask { grid-template-columns: 1fr; } }
-.mkt { background: var(--raise); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px; font-size: 14px; }
-.mkt .k { font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: .02em; }
-.mkt .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; }
-.mkt .row b { font-weight: 600; font-variant-numeric: tabular-nums; }
-.mkt .fine { font-size: 12px; }
 .opp { border: 1px solid var(--ok); background: var(--surface); border-radius: var(--r); padding: 14px 18px; display: grid; gap: 4px; text-align: left; width: 100%; }
 .opp:hover { box-shadow: var(--shadow); }
 .opp .k { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ok); font-weight: 700; }
@@ -344,6 +339,27 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .sector ol, .sector ul { margin-bottom: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; }
 .sector .k2 { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
 .sector .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.growth { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.g-row { display: grid; grid-template-columns: 92px minmax(0, 1.25fr) minmax(0, 1.5fr) 190px; gap: 4px 18px; align-items: center; padding: 12px 18px; border-top: 1px solid var(--line); }
+.g-row:first-child { border-top: 0; }
+.g-head { background: var(--raise); padding-block: 9px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.g-lvl { justify-self: start; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; }
+.g-lvl.strong { color: var(--ok); } .g-lvl.moderate { color: var(--warn); } .g-lvl.caution { color: var(--bad); }
+.g-main { display: grid; gap: 1px; min-width: 0; }
+.g-main b { font-size: 15px; font-weight: 600; }
+.g-main .fig { font-size: 13px; color: var(--muted); }
+.g-main .fig strong { color: var(--fg); font-variant-numeric: tabular-nums; font-weight: 600; }
+.g-ideas { font-size: 13px; color: var(--fg); min-width: 0; }
+.g-act { display: flex; gap: 12px; align-items: center; justify-self: end; white-space: nowrap; }
+.g-act button { border: 0; background: transparent; padding: 0; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line-strong); }
+.g-act button:hover { color: var(--fg); }
+@media (max-width: 760px) {
+  .g-head { display: none; }
+  .g-row { grid-template-columns: 1fr auto; padding: 12px 14px; }
+  .g-lvl { grid-row: 1; grid-column: 2; justify-self: end; }
+  .g-main { grid-row: 1; grid-column: 1; }
+  .g-ideas, .g-act { grid-column: 1 / -1; justify-self: start; }
+}
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
 .toast { position: fixed; z-index: 50; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100% - 32px); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
@@ -470,6 +486,9 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     </div>
     <div class="tiles" id="mentor-tiles"></div>
     <div class="grid" id="mentor-body"></div>
+    <h2 class="sec" id="growth-h">Where the growth is</h2>
+    <p class="sec-note" id="growth-note"></p>
+    <div class="growth" id="growth-body" role="table" aria-labelledby="growth-h"></div>
     <h2 class="sec" id="sectors-h">Sector guides: business across Nepal</h2>
     <p class="sec-note" id="sectors-note"></p>
     <div class="chips" id="sector-chips" role="group" aria-label="Filter sectors"></div>
@@ -1538,30 +1557,6 @@ function landText(o, n) {
   const a = n * (Number(o.area_factor) || 0);
   return String(o.land).replace('{n}', Number(n).toLocaleString('en-IN')).replace('{a}', a.toLocaleString('en-IN', { maximumFractionDigits: 1 }));
 }
-/* Weekly Kalimati prices (mentor.market), shown only while recent. */
-function marketFresh(days) {
-  const m = S.mentor && S.mentor.market;
-  if (!m || !m.as_of || !Array.isArray(m.items)) return null;
-  const age = (new Date(today() + 'T00:00:00Z') - new Date(String(m.as_of).slice(0, 10) + 'T00:00:00Z')) / 864e5;
-  return isFinite(age) && age >= 0 && age <= days ? m : null;
-}
-function marketBox(o) {
-  const m = marketFresh(21); if (!m) return null;
-  const items = m.items.filter((x) => x && x.idea === o.id && isFinite(x.avg));
-  if (!items.length) return null;
-  const box = el('div', 'mkt');
-  box.append(el('span', 'k', 'This week at Kalimati' + (m.bs_date ? ' (' + m.bs_date + ')' : '')));
-  for (const x of items) {
-    const r = el('div', 'row');
-    const ch = x.change_4w == null ? 'first weeks of tracking' : x.change_4w > 0 ? 'up ' + fmt1(x.change_4w) + '% in 4 weeks' : x.change_4w < 0 ? 'down ' + fmt1(-x.change_4w) + '% in 4 weeks' : 'same as 4 weeks ago';
-    r.append(el('span', null, x.label), el('b', null, 'Rs ' + fmt0(x.avg) + '/' + x.unit)); box.append(r);
-    box.append(el('span', 'fine' + (x.change_4w > 0 ? ' up' : x.change_4w < 0 ? ' down' : ''), ch + ' · range Rs ' + fmt0(x.min) + ' to ' + fmt0(x.max)));
-  }
-  const f = el('span', 'fine'); f.append((m.note || '') + ' ');
-  const u = safeUrl(m.source_url); if (u) { const a = el('a', 'src', 'Kalimati prices ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; f.append(a); }
-  box.append(f);
-  return box;
-}
 const spanText = (y) => y < 1 ? Math.max(1, Math.round(y * 12)) + ' months' : fmt1(y) + ' years';
 function adoptIdea(o, c) {
   const size = sizeText(o, c.n), steps = Array.isArray(o.steps) ? o.steps : [];
@@ -1603,7 +1598,6 @@ function mentorCard(o, c, pick, featured) {
   card.append(dl);
   card.append(el('p', 'fine', c.low != null && c.high != null ? 'Studies range from ' + about(c.low / 12) + ' to ' + about(c.high / 12) + ' a month at this size.' : 'Only one study gives a profit figure, so there is no range.'));
   const land = landText(o, c.n); if (land) card.append(el('p', 'fine', 'You need: ' + land));
-  const mk = marketBox(o); if (mk) card.append(mk);
   const fold = (key, title, fill) => {
     const d = el('details'), k = o.id + key, s = el('summary', null, title);
     d.open = menFold.has(k) ? menFold.get(k) : (pick && key === ':advice');
@@ -1674,12 +1668,41 @@ function renderMentor() {
       r.append(srcs); box.append(r);
     }
   }
+  renderGrowth();
   renderSectors();
   foot.textContent = (d.disclaimer || '') + ' Money to start is the set-up cost plus the running costs of the first batch or year. Sizes stay between a smallest sensible size and a largest size for each business.';
 }
 $('mentor-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderMentor(); });
 $('mentor-sort').addEventListener('change', (e) => { MEN.sort = e.target.value; saveMen(); renderMentor(); });
 document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderMentor(); }));
+
+/* ---------- Where the growth is (mentor.growth): one ranked row per sector, a figure and a source each ---------- */
+const G_LEVEL = { strong: 'Strong', moderate: 'Moderate', caution: 'Careful' };
+function renderGrowth() {
+  const box = $('growth-body'); box.replaceChildren();
+  const g = S.mentor && S.mentor.growth; const items = g && Array.isArray(g.items) ? g.items.filter((x) => x && G_LEVEL[x.level]) : [];
+  $('growth-h').hidden = box.hidden = !items.length; $('growth-note').textContent = g && g.note ? g.note + (g.as_of ? ' Figures gathered ' + niceDate(g.as_of) + '.' : '') : '';
+  if (!items.length) return;
+  const head = el('div', 'g-row g-head'); head.setAttribute('role', 'row');
+  for (const h of ['Growth', 'Sector and signal', 'Ideas to explore', '']) { const c = el('span', null, h); c.setAttribute('role', 'columnheader'); head.append(c); }
+  box.append(head);
+  for (const x of items) {
+    const r = el('div', 'g-row'); r.setAttribute('role', 'row');
+    const lvl = el('span', 'g-lvl ' + x.level, G_LEVEL[x.level]); lvl.setAttribute('role', 'cell');
+    const main = el('div', 'g-main'); main.setAttribute('role', 'cell');
+    const fig = el('span', 'fig'); fig.append(el('strong', null, x.value || ''), ' ' + (x.label || ''));
+    main.append(el('b', null, x.name || ''), fig);
+    const ideas = el('div', 'g-ideas', (Array.isArray(x.ideas) ? x.ideas : []).join(' · ')); ideas.setAttribute('role', 'cell');
+    const act = el('div', 'g-act'); act.setAttribute('role', 'cell');
+    const u = safeUrl(x.source_url); if (u) { const a = el('a', 'src', (x.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; act.append(a); }
+    if (x.sector) {
+      const b = el('button', null, 'Guide'); b.type = 'button'; b.setAttribute('aria-label', 'Open the ' + (x.name || '') + ' sector guide');
+      b.addEventListener('click', () => { sectorTag = 'all'; secOpen.add(x.sector); renderSectors(); const c = $('sector-' + x.sector); if (c) c.scrollIntoView({ block: 'start' }); });
+      act.append(b);
+    }
+    r.append(lvl, main, ideas, act); box.append(r);
+  }
+}
 
 /* ---------- Sector guides (mentor.sectors): what it takes to start, key public numbers, no profit estimate ---------- */
 let sectorTag = 'all';
@@ -1733,14 +1756,6 @@ function renderStart() {
   const box = $('start-ideas'); box.replaceChildren();
   const d = S.mentor;
   const oppBox = $('start-opp'); oppBox.replaceChildren();
-  const mk = marketFresh(14);
-  const op = mk && mk.opportunity;
-  if (op && d && Array.isArray(d.ideas) && d.ideas.some((o) => o.id === op.idea)) {
-    const b = el('button', 'opp'); b.type = 'button';
-    b.append(el('span', 'k', 'Opportunity of the week'), el('b', null, op.headline || ''), el('span', null, (op.why || '') + ' Source: Kalimati market' + (mk.bs_date ? ', ' + mk.bs_date : '') + '.'));
-    b.addEventListener('click', () => { menFold.set(op.idea + ':advice', true); MEN.where = 'all'; saveMen(); show('mentor', true); });
-    oppBox.append(b);
-  }
   const wkList = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
   const wk = weekBusiness(wkList);
   if (wk) {
@@ -1786,6 +1801,8 @@ function renderStart() {
   ql('NEPSE', ix ? 'Closed at ' + Number(ix.close).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' (' + signed(ix.pct, 2) + '%) on ' + niceDate(S.nepse.as_of) : 'Index, top movers and IPOs', 'nepse');
   ql('Invest', 'Compare fixed deposits, bonds, NEPSE, gold and land for your money', 'invest');
   const nSec = S.mentor && S.mentor.sectors && Array.isArray(S.mentor.sectors.items) ? S.mentor.sectors.items.length : 0;
+  const nG = S.mentor && S.mentor.growth && Array.isArray(S.mentor.growth.items) ? S.mentor.growth.items.filter((x) => x.level === 'strong').length : 0;
+  if (nG) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Where the growth is'), el('b', null, nG + ' sectors with the strongest growth signals, from remittance services to IT and energy')); b.addEventListener('click', () => { show('mentor', true); requestAnimationFrame(() => { const h = $('growth-h'); if (h) h.scrollIntoView({ block: 'start' }); }); }); links.append(b); }
   if (nSec) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Sector guides'), el('b', null, nSec + ' sectors from trade and IT to tourism and hydropower: how to start, and the key numbers')); b.addEventListener('click', () => { show('mentor', true); requestAnimationFrame(() => { const h = $('sectors-h'); if (h) h.scrollIntoView({ block: 'start' }); }); }); links.append(b); }
 }
 $('start-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderStart(); });

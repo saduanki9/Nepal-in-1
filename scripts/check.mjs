@@ -38,14 +38,10 @@ if (data) {
     else if ((s.numbers || []).some((n) => !n.label || !n.value || !n.source_url)) fail('sector guide "' + s.id + '" has a number without a label, value or source');
   }
   if (secs.length) ok(secs.length + ' sector guides are complete');
-  // Weekly market prices are optional, but when present every price must be a real number and the source a real link.
-  const mk = data.mentor && data.mentor.market;
-  if (mk) {
-    const items = Array.isArray(mk.items) ? mk.items : [];
-    const bad = !/^\d{4}-\d{2}-\d{2}$/.test(String(mk.as_of || '')) || !/^https:\/\//.test(String(mk.source_url || '')) || !items.length
-      || items.some((x) => !ideas.some((o) => o.id === x.idea) || [x.avg, x.min, x.max].some((n) => typeof n !== 'number' || !(n > 0)) || !(x.min <= x.avg && x.avg <= x.max));
-    if (bad) fail('mentor.market has a missing or invalid price, date or source'); else ok('mentor.market has ' + items.length + ' prices from ' + mk.as_of);
-  }
+  // Growth table: every row needs a level, a figure and an https source.
+  const grow = data.mentor && data.mentor.growth && Array.isArray(data.mentor.growth.items) ? data.mentor.growth.items : [];
+  const badG = grow.filter((x) => !['strong', 'moderate', 'caution'].includes(x.level) || !x.name || !x.value || !/^https:\/\//.test(String(x.source_url || '')) || (x.sector && !secs.some((s) => s.id === x.sector)));
+  if (badG.length) fail('growth rows missing a level, figure, source or sector: ' + badG.map((x) => x.name || '?').join(', ')); else if (grow.length) ok(grow.length + ' growth rows are complete');
 }
 
 // 2. Page has a title and every tab has a matching section.

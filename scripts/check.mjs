@@ -29,6 +29,15 @@ if (data) {
     else if (!srcs.length || srcs.some((s) => !/^https:\/\//.test(String(s.url || '')))) fail('mentor business "' + o.id + '" needs https source links');
     else ok('mentor business "' + o.id + '" is complete');
   }
+  // Sector guides: every guide needs a name, summary and first steps, and every link must be https.
+  const secs = data.mentor && data.mentor.sectors && Array.isArray(data.mentor.sectors.items) ? data.mentor.sectors.items : [];
+  for (const s of secs) {
+    const links = (s.sources || []).map((x) => x.url).concat((s.numbers || []).map((n) => n.source_url)).filter((u) => u);
+    if (!s.id || !s.name || !s.summary || !Array.isArray(s.start) || !s.start.length) fail('sector guide "' + (s.id || '?') + '" is missing its name, summary or first steps');
+    else if (links.some((u) => !/^https:\/\//.test(u))) fail('sector guide "' + s.id + '" has a link that is not https');
+    else if ((s.numbers || []).some((n) => !n.label || !n.value || !n.source_url)) fail('sector guide "' + s.id + '" has a number without a label, value or source');
+  }
+  if (secs.length) ok(secs.length + ' sector guides are complete');
   // Weekly market prices are optional, but when present every price must be a real number and the source a real link.
   const mk = data.mentor && data.mentor.market;
   if (mk) {

@@ -324,8 +324,26 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .opp { border: 1px solid var(--ok); background: var(--surface); border-radius: var(--r); padding: 14px 18px; display: grid; gap: 4px; text-align: left; width: 100%; }
 .opp:hover { box-shadow: var(--shadow); }
 .opp .k { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ok); font-weight: 700; }
+#start-opp { display: grid; gap: 14px; }
+#start-opp:empty { display: none; }
+.opp.week { border-color: var(--st-exploring); }
+.opp.week .k { color: var(--st-exploring); }
 .opp b { font-size: 17px; line-height: 1.3; }
 .opp span { font-size: 14px; color: var(--muted); }
+.sector { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.sector h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 21px; line-height: 1.15; }
+.sector p { margin: 0; font-size: 14px; color: var(--muted); }
+.sector .nums { display: grid; gap: 8px; }
+.sector .num { border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 2px; }
+.sector .num .k { font-size: 12px; color: var(--muted); }
+.sector .num b { font-size: 18px; font-variant-numeric: tabular-nums; }
+.sector .num span { font-size: 12px; color: var(--faint); }
+.sector details { border-top: 1px solid var(--line); padding-top: 10px; }
+.sector summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.sector details > * + * { margin-top: 8px; }
+.sector ol, .sector ul { margin-bottom: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; }
+.sector .k2 { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
+.sector .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; }
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
 .toast { position: fixed; z-index: 50; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100% - 32px); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
@@ -452,6 +470,10 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     </div>
     <div class="tiles" id="mentor-tiles"></div>
     <div class="grid" id="mentor-body"></div>
+    <h2 class="sec" id="sectors-h">Sector guides: business across Nepal</h2>
+    <p class="sec-note" id="sectors-note"></p>
+    <div class="chips" id="sector-chips" role="group" aria-label="Filter sectors"></div>
+    <div class="grid narrow" id="sector-body"></div>
     <div class="panel" id="mentor-watch-panel" hidden>
       <h3>Looked at, but no numbers yet</h3>
       <p class="note">Businesses people often ask about, where the published figures are too thin to size to your budget.</p>
@@ -1552,17 +1574,26 @@ function adoptIdea(o, c) {
     vision: 'Run ' + size + ' and earn about ' + about(c.month) + ' a month once it is running.',
     next_step: steps[0] || '', tasks: steps.map((x) => ({ text: String(x), done: false })), notes: notes.join('\n'), from_mentor: o.id });
 }
-function mentorCard(o, c, pick) {
+const pickable = (x) => x.o.risk !== 'High' && x.o.profit && x.o.profit.low != null;
+/* Business of the week: a different Mentor business each week, starting each Sunday (Nepal time). Same for every visitor. */
+function weekBusiness(ideas) {
+  if (!ideas.length) return null;
+  const sun = new Date('2026-11-08T00:00:00Z');
+  const n = Math.floor((new Date(today() + 'T00:00:00Z') - sun) / (7 * 864e5));
+  return ideas[((n % ideas.length) + ideas.length) % ideas.length];
+}
+function mentorCard(o, c, pick, featured) {
   const card = el('article', 'idea' + (pick ? ' pick' : ''));
   const meta = el('div', 'meta'); meta.append(el('span', 'chip', o.sector || 'Business'), riskPill(o.risk));
   if (pick) meta.append(el('span', 'pick-badge', "Mentor's pick"));
+  if (featured) meta.append(el('span', 'status open', 'Business of the week'));
   if (!c.fits) meta.append(el('span', 'status bad', 'Above your budget'));
   card.append(meta, el('h3', null, o.name));
   const size = sizeText(o, c.n);
   card.append(el('p', null, !c.fits ? 'Needs about ' + rs(c.start) + ' for the smallest sensible size: ' + size + '.'
     : c.capped ? 'Your money covers more than the largest size we plan for: ' + size + '. That uses ' + rs(c.start) + '.'
     : 'With ' + rs(MEN.budget) + ' you could run ' + size + '.'));
-  if (pick) card.append(el('p', 'why', 'Best return on your money among the lower-risk options that fit your budget and place.'));
+  if (pick) card.append(el('p', 'why', 'Best return on your money among the lower-risk options that fit your budget and place, and that have more than one study figure behind them.'));
   const dl = el('dl', 'mgrid');
   const row = (k, v, sub) => { const d = el('div'); const dd = el('dd', null, v); if (sub) dd.append(el('small', null, sub)); d.append(el('dt', null, k), dd); dl.append(d); };
   row('Money to start', rs(c.start), c.setup > 0 ? rs(c.setup) + ' set-up, the rest runs the first ' + (o.cycle || 'year') : 'Runs the first ' + (o.cycle || 'year') + '. No set-up cost.');
@@ -1618,7 +1649,7 @@ function renderMentor() {
   const by = { profit: (a, b) => b.c.month - a.c.month, return: (a, b) => b.c.ret - a.c.ret, start: (a, b) => a.c.minStart - b.c.minStart }[MEN.sort] || ((a, b) => b.c.ret - a.c.ret);
   rows.sort((a, b) => (b.c.fits - a.c.fits) || by(a, b));
   const fit = rows.filter((x) => x.c.fits);
-  const pick = fit.filter((x) => x.o.risk !== 'High').sort((a, b) => b.c.ret - a.c.ret)[0];
+  const pick = fit.filter(pickable).sort((a, b) => b.c.ret - a.c.ret)[0];
   if (pick) rows = [pick].concat(rows.filter((x) => x !== pick));
   const tile = (k, v, s) => { const x = el('div', 'tile'); x.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(x); };
   if (fit.length) {
@@ -1631,7 +1662,8 @@ function renderMentor() {
     tile('Nothing fits this budget yet', rs(cheap.c.minStart), 'is the least you need: ' + cheap.o.name + ', ' + sizeText(cheap.o, cheap.o.scale.min));
   }
   if (!rows.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'Nothing listed for this place yet'), el('p', null, 'Choose Anywhere to see every business.')); body.append(e); }
-  for (const x of rows) body.append(mentorCard(x.o, x.c, x === pick));
+  const wk = weekBusiness(ideas);
+  for (const x of rows) body.append(mentorCard(x.o, x.c, x === pick, wk && x.o.id === wk.id));
   const watch = d && Array.isArray(d.watch) ? d.watch : [];
   if (watch.length) {
     wp.hidden = false; const box = $('mentor-watch'); box.replaceChildren();
@@ -1642,11 +1674,56 @@ function renderMentor() {
       r.append(srcs); box.append(r);
     }
   }
+  renderSectors();
   foot.textContent = (d.disclaimer || '') + ' Money to start is the set-up cost plus the running costs of the first batch or year. Sizes stay between a smallest sensible size and a largest size for each business.';
 }
 $('mentor-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderMentor(); });
 $('mentor-sort').addEventListener('change', (e) => { MEN.sort = e.target.value; saveMen(); renderMentor(); });
 document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderMentor(); }));
+
+/* ---------- Sector guides (mentor.sectors): what it takes to start, key public numbers, no profit estimate ---------- */
+let sectorTag = 'all';
+const secOpen = new Set();
+function renderSectors() {
+  const body = $('sector-body'), chips = $('sector-chips'); body.replaceChildren(); chips.replaceChildren();
+  const sec = S.mentor && S.mentor.sectors; const items = sec && Array.isArray(sec.items) ? sec.items : [];
+  $('sectors-note').textContent = sec && sec.note ? sec.note : '';
+  $('sectors-h').hidden = !items.length;
+  if (!items.length) return;
+  const tags = ['all'].concat([...new Set(items.map((x) => x.tag).filter(Boolean))]);
+  for (const g of tags) {
+    const n = g === 'all' ? items.length : items.filter((x) => x.tag === g).length;
+    const b = el('button', 'fchip', (g === 'all' ? 'All sectors' : g) + ' · ' + n); b.type = 'button';
+    b.setAttribute('aria-pressed', String(sectorTag === g)); b.addEventListener('click', () => { sectorTag = g; renderSectors(); }); chips.append(b);
+  }
+  for (const s of items.filter((x) => sectorTag === 'all' || x.tag === sectorTag)) {
+    const c = el('article', 'sector'); c.id = 'sector-' + s.id;
+    const meta = el('div', 'meta'); meta.append(el('span', 'chip', s.tag || 'Sector')); c.append(meta, el('h3', null, s.name), el('p', null, s.summary || ''));
+    const nums = el('div', 'nums');
+    for (const n of (Array.isArray(s.numbers) ? s.numbers : [])) {
+      const r = el('div', 'num'); r.append(el('span', 'k', n.label), el('b', null, n.value));
+      const sub = el('span', null, (n.note || '') + ' '); const u = safeUrl(n.source_url);
+      if (u) { const a = el('a', 'src', (n.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; sub.append(a); }
+      r.append(sub); nums.append(r);
+    }
+    if (nums.childNodes.length) c.append(nums);
+    const dt = el('details'); dt.open = secOpen.has(s.id);
+    const sm = el('summary', null, 'How to start and what to watch'); sm.addEventListener('click', () => { if (dt.open) secOpen.delete(s.id); else secOpen.add(s.id); });
+    dt.append(sm);
+    const list = (label, arr, tag) => { if (!Array.isArray(arr) || !arr.length) return; dt.append(el('div', 'k2', label)); const l = el(tag); for (const x of arr) l.append(el('li', null, x)); dt.append(l); };
+    list('First steps', s.start, 'ol'); list('Watch out', s.risks, 'ul');
+    const srcs = el('div', 'srcs');
+    for (const x of (Array.isArray(s.sources) ? s.sources : [])) { const u = safeUrl(x.url); if (u) { const a = el('a', 'src', (x.name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; srcs.append(a); } }
+    if (srcs.childNodes.length) dt.append(srcs);
+    c.append(dt);
+    if (s.tab && TABS.includes(s.tab)) {
+      const b = el('button', 'btn', s.tab_label || 'Open'); b.type = 'button';
+      b.addEventListener('click', () => { if (s.tab === 'mentor') { const top = $('mentor-body'); if (top) top.scrollIntoView({ block: 'start' }); } else show(s.tab, true); });
+      c.append(b);
+    }
+    body.append(c);
+  }
+}
 
 /* ---------- Start here ----------
    The front door: one question (budget), three sized businesses, then links to the rest. Shares MEN with the Mentor tab. */
@@ -1664,13 +1741,24 @@ function renderStart() {
     b.addEventListener('click', () => { menFold.set(op.idea + ':advice', true); MEN.where = 'all'; saveMen(); show('mentor', true); });
     oppBox.append(b);
   }
+  const wkList = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
+  const wk = weekBusiness(wkList);
+  if (wk) {
+    const c = mentorCalc(wk, Math.max(0, Number(MEN.budget) || 0));
+    const b = el('button', 'opp week'); b.type = 'button';
+    const line = c.fits ? 'With ' + rs(MEN.budget) + ': ' + sizeText(wk, c.n) + ', about ' + rs(c.start) + ' to start and ' + about(c.month) + ' profit a month.'
+      : 'Smallest way to start: ' + sizeText(wk, wk.scale.min) + ', about ' + rs(c.minStart) + '.';
+    b.append(el('span', 'k', 'Business of the week'), el('b', null, wk.name), el('span', null, (wk.why || '') + ' ' + line));
+    b.addEventListener('click', () => { menFold.set(wk.id + ':advice', true); show('mentor', true); });
+    oppBox.append(b);
+  }
   const ideas = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
   if (!ideas.length) { const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No businesses listed yet' : 'Loading businesses')); box.append(e); }
   else {
     const budget = Math.max(0, Number(MEN.budget) || 0);
     const rows = ideas.filter((o) => MEN.where === 'all' || (Array.isArray(o.regions) && o.regions.includes(MEN.where))).map((o) => ({ o, c: mentorCalc(o, budget) }));
     const fit = rows.filter((x) => x.c.fits);
-    const pick = fit.filter((x) => x.o.risk !== 'High').sort((a, b) => b.c.ret - a.c.ret)[0];
+    const pick = fit.filter(pickable).sort((a, b) => b.c.ret - a.c.ret)[0];
     const rest = fit.filter((x) => x !== pick).sort((a, b) => b.c.ret - a.c.ret);
     const top = (pick ? [pick] : []).concat(rest).slice(0, 3);
     if (!top.length) {
@@ -1697,6 +1785,8 @@ function renderStart() {
   const ix = S.nepse && S.nepse.index;
   ql('NEPSE', ix ? 'Closed at ' + Number(ix.close).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' (' + signed(ix.pct, 2) + '%) on ' + niceDate(S.nepse.as_of) : 'Index, top movers and IPOs', 'nepse');
   ql('Invest', 'Compare fixed deposits, bonds, NEPSE, gold and land for your money', 'invest');
+  const nSec = S.mentor && S.mentor.sectors && Array.isArray(S.mentor.sectors.items) ? S.mentor.sectors.items.length : 0;
+  if (nSec) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Sector guides'), el('b', null, nSec + ' sectors from trade and IT to tourism and hydropower: how to start, and the key numbers')); b.addEventListener('click', () => { show('mentor', true); requestAnimationFrame(() => { const h = $('sectors-h'); if (h) h.scrollIntoView({ block: 'start' }); }); }); links.append(b); }
 }
 $('start-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderStart(); });
 document.querySelectorAll('#start-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderStart(); }));

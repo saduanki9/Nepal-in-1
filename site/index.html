@@ -413,9 +413,9 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     <div class="hero">
       <p class="eyebrow" style="margin:0">Nepal in 1</p>
       <h1>What could you build with your money?</h1>
-      <p class="lede">Tell us how much you can put in. We show real businesses from Nepal studies, sized to your budget: what it costs to start, what it could earn, and your first steps. Then track your plan in My builds.</p>
+      <p class="lede">Real businesses from Nepal studies, each shown at the size it needs to start: the money it takes, what it could earn, and your first steps. Enter any amount to see what your money could build. Then track your plan in My builds.</p>
       <div class="ask">
-        <div class="fld"><label for="start-budget">Money you can put in (Rs)</label><input id="start-budget" type="number" min="0" step="50000" inputmode="numeric"></div>
+        <div class="fld"><label for="start-budget">Your budget (Rs), optional</label><input id="start-budget" type="number" min="0" step="10000" inputmode="numeric" placeholder="Any amount"></div>
         <div class="fld"><span class="lbl" id="start-where-l">Where</span><div class="seg" role="group" aria-labelledby="start-where-l" id="start-where"><button type="button" data-where="all">Anywhere</button><button type="button" data-where="terai">Terai</button><button type="button" data-where="hills">Hills</button></div></div>
         <button class="btn primary" type="button" id="start-go">See all businesses</button>
       </div>
@@ -476,13 +476,13 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       <div>
         <p class="eyebrow" id="mentor-eyebrow">Business mentor</p>
         <h1>What could you build?</h1>
-        <p>Businesses with published cost and profit studies from Nepal, sized to the money you have. Each one shows what it costs to start, what it could earn, and what to do first. Add one to My builds to start tracking it.</p>
+        <p>Businesses with published cost and profit studies from Nepal. Each starts at the smallest size the studies support, so you can see what it really takes. Enter your own budget to size them to your money. A new Mentor's pick every Sunday. Add one to My builds to start tracking it.</p>
       </div>
     </div>
     <div class="panel calc">
-      <div class="fld"><label for="mentor-budget">Money you can put in (Rs)</label><input id="mentor-budget" type="number" min="0" step="50000" inputmode="numeric"></div>
+      <div class="fld"><label for="mentor-budget">Your budget (Rs), optional</label><input id="mentor-budget" type="number" min="0" step="10000" inputmode="numeric" placeholder="Any amount"></div>
       <div class="fld"><span class="lbl" id="mentor-where-l">Where</span><div class="seg" role="group" aria-labelledby="mentor-where-l" id="mentor-where"><button type="button" data-where="all">Anywhere</button><button type="button" data-where="terai">Terai</button><button type="button" data-where="hills">Hills</button></div></div>
-      <div class="fld"><label for="mentor-sort">Show first</label><select id="mentor-sort"><option value="return">Best return on your money</option><option value="profit">Most profit a month</option><option value="start">Lowest money to start</option></select></div>
+      <div class="fld"><label for="mentor-sort">Show first</label><select id="mentor-sort"><option value="start">Lowest money to start</option><option value="profit">Most profit a month</option><option value="return">Best return on your money</option></select></div>
     </div>
     <div class="tiles" id="mentor-tiles"></div>
     <div class="grid" id="mentor-body"></div>
@@ -1532,18 +1532,22 @@ document.querySelectorAll('#inv-scen [data-scen]').forEach((b) => b.addEventList
 /* ---------- Mentor ----------
    Sizes each business to the visitor's budget. All figures come from data.json (mentor.ideas):
    setup and first_cycle are rupees per unit, cost_year and profit are rupees per unit a year. */
-const MEN = { budget: 500000, where: 'all', sort: 'return' };
-try { const s = JSON.parse(localStorage.getItem('n1-mentor') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(MEN)) if (k in s) MEN[k] = s[k]; } catch (e) {}
-const saveMen = () => { try { localStorage.setItem('n1-mentor', JSON.stringify(MEN)); } catch (e) {} };
+/* budget null = not set: every business shows its own starting size. Any amount the visitor types sizes them to it. */
+const MEN = { budget: null, where: 'all', sort: 'start' };
+try { const s = JSON.parse(localStorage.getItem('n1-mentor-v2') || 'null'); if (s && typeof s === 'object') for (const k of Object.keys(MEN)) if (k in s) MEN[k] = s[k]; } catch (e) {}
+const saveMen = () => { try { localStorage.setItem('n1-mentor-v2', JSON.stringify(MEN)); } catch (e) {} };
+const hasBudget = () => MEN.budget != null && isFinite(MEN.budget) && MEN.budget > 0;
+const budgetFrom = (v) => v === '' ? null : Math.max(0, Math.round(Number(v) || 0));
 const menFold = new Map();
 const about = (n) => rs(Math.round(Number(n) / 100) * 100);
 function mentorCalc(o, budget) {
   const per = Number(o.setup) + Number(o.first_cycle), sc = o.scale || { min: 1, max: 1, step: 1 }, p = o.profit || {};
-  let n = Math.floor(Math.max(0, budget) / per / sc.step) * sc.step;
+  const sized = budget != null && budget > 0;
+  let n = sized ? Math.floor(budget / per / sc.step) * sc.step : sc.min;
   const fits = n >= sc.min;
   n = fits ? Math.min(n, sc.max) : sc.min;
   const start = n * per, setup = n * Number(o.setup), mid = n * Number(p.mid);
-  return { n, fits, minStart: sc.min * per, capped: fits && n === sc.max && budget >= (sc.max + sc.step) * per, start, setup, mid, month: mid / 12,
+  return { n, fits, sized, minStart: sc.min * per, capped: sized && fits && n === sc.max && budget >= (sc.max + sc.step) * per, start, setup, mid, month: mid / 12,
     low: p.low == null ? null : n * p.low, high: p.high == null ? null : n * p.high,
     ret: start ? mid / start * 100 : 0, payback: setup > 0 && mid > 0 ? setup / mid : 0,
     back: (Number(o.cost_year) + Number(p.mid)) / Number(o.cost_year) * 100 };
@@ -1569,26 +1573,25 @@ function adoptIdea(o, c) {
     vision: 'Run ' + size + ' and earn about ' + about(c.month) + ' a month once it is running.',
     next_step: steps[0] || '', tasks: steps.map((x) => ({ text: String(x), done: false })), notes: notes.join('\n'), from_mentor: o.id });
 }
-const pickable = (x) => x.o.risk !== 'High' && x.o.profit && x.o.profit.low != null;
-/* Business of the week: a different Mentor business each week, starting each Sunday (Nepal time). Same for every visitor. */
+/* Mentor's pick of the week: a different business every Sunday (Nepal time), the same for every visitor. */
 function weekBusiness(ideas) {
   if (!ideas.length) return null;
   const sun = new Date('2026-11-08T00:00:00Z');
   const n = Math.floor((new Date(today() + 'T00:00:00Z') - sun) / (7 * 864e5));
   return ideas[((n % ideas.length) + ideas.length) % ideas.length];
 }
-function mentorCard(o, c, pick, featured) {
+function mentorCard(o, c, pick) {
   const card = el('article', 'idea' + (pick ? ' pick' : ''));
   const meta = el('div', 'meta'); meta.append(el('span', 'chip', o.sector || 'Business'), riskPill(o.risk));
-  if (pick) meta.append(el('span', 'pick-badge', "Mentor's pick"));
-  if (featured) meta.append(el('span', 'status open', 'Business of the week'));
+  if (pick) meta.append(el('span', 'pick-badge', "Mentor's pick this week"));
   if (!c.fits) meta.append(el('span', 'status bad', 'Above your budget'));
   card.append(meta, el('h3', null, o.name));
   const size = sizeText(o, c.n);
-  card.append(el('p', null, !c.fits ? 'Needs about ' + rs(c.start) + ' for the smallest sensible size: ' + size + '.'
+  card.append(el('p', null, !c.sized ? 'Starts from about ' + rs(c.start) + ' with ' + size + '. Enter a budget above to size it to your money.'
+    : !c.fits ? 'Needs about ' + rs(c.start) + ' for the smallest sensible size: ' + size + '.'
     : c.capped ? 'Your money covers more than the largest size we plan for: ' + size + '. That uses ' + rs(c.start) + '.'
     : 'With ' + rs(MEN.budget) + ' you could run ' + size + '.'));
-  if (pick) card.append(el('p', 'why', 'Best return on your money among the lower-risk options that fit your budget and place, and that have more than one study figure behind them.'));
+  if (pick) card.append(el('p', 'why', 'This week\u2019s pick from the Mentor. A different business is picked every Sunday, so over the weeks you see them all.'));
   const dl = el('dl', 'mgrid');
   const row = (k, v, sub) => { const d = el('div'); const dd = el('dd', null, v); if (sub) dd.append(el('small', null, sub)); d.append(el('dt', null, k), dd); dl.append(d); };
   row('Money to start', rs(c.start), c.setup > 0 ? rs(c.setup) + ' set-up, the rest runs the first ' + (o.cycle || 'year') : 'Runs the first ' + (o.cycle || 'year') + '. No set-up cost.');
@@ -1632,21 +1635,27 @@ function mentorCard(o, c, pick, featured) {
 function renderMentor() {
   const d = S.mentor, body = $('mentor-body'), tiles = $('mentor-tiles'), foot = $('mentor-foot'), wp = $('mentor-watch-panel');
   body.replaceChildren(); tiles.replaceChildren(); foot.replaceChildren(); wp.hidden = true;
-  const bi = $('mentor-budget'); if (document.activeElement !== bi) bi.value = String(MEN.budget);
+  const bi = $('mentor-budget'); if (document.activeElement !== bi) bi.value = hasBudget() ? String(MEN.budget) : '';
   $('mentor-sort').value = MEN.sort;
   document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.where === MEN.where)));
   $('mentor-eyebrow').textContent = d && d.as_of ? 'Business mentor · figures gathered ' + niceDate(d.as_of) : 'Business mentor';
   const ideas = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
   if (!ideas.length) { const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No businesses listed yet' : 'Loading the mentor')); body.append(e); return; }
-  const budget = Math.max(0, Number(MEN.budget) || 0);
+  const budget = hasBudget() ? MEN.budget : null;
   let rows = ideas.filter((o) => MEN.where === 'all' || (Array.isArray(o.regions) && o.regions.includes(MEN.where))).map((o) => ({ o, c: mentorCalc(o, budget) }));
-  const by = { profit: (a, b) => b.c.month - a.c.month, return: (a, b) => b.c.ret - a.c.ret, start: (a, b) => a.c.minStart - b.c.minStart }[MEN.sort] || ((a, b) => b.c.ret - a.c.ret);
+  const by = { profit: (a, b) => b.c.month - a.c.month, return: (a, b) => b.c.ret - a.c.ret, start: (a, b) => a.c.minStart - b.c.minStart }[MEN.sort] || ((a, b) => a.c.minStart - b.c.minStart);
   rows.sort((a, b) => (b.c.fits - a.c.fits) || by(a, b));
   const fit = rows.filter((x) => x.c.fits);
-  const pick = fit.filter(pickable).sort((a, b) => b.c.ret - a.c.ret)[0];
+  const wk = weekBusiness(ideas);
+  const pick = wk && rows.find((x) => x.o.id === wk.id);
   if (pick) rows = [pick].concat(rows.filter((x) => x !== pick));
   const tile = (k, v, s) => { const x = el('div', 'tile'); x.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(x); };
-  if (fit.length) {
+  if (!budget && rows.length) {
+    const cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
+    tile('Cheapest to start', rs(cheap.c.minStart), cheap.o.name + ' · ' + sizeText(cheap.o, cheap.o.scale.min));
+    tile('Businesses', String(rows.length), 'Each with costs and profit from Nepal studies');
+    if (wk) tile("Mentor's pick this week", wk.name, 'A new pick every Sunday');
+  } else if (fit.length) {
     const top = fit.slice().sort((a, b) => b.c.month - a.c.month)[0], best = fit.slice().sort((a, b) => b.c.ret - a.c.ret)[0], cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
     tile('Most profit a month', about(top.c.month), top.o.name + ' · ' + (top.o.risk || '') + ' risk');
     tile('Best return a year', Math.round(best.c.ret) + '%', best.o.name + ' · ' + (best.o.risk || '') + ' risk');
@@ -1656,8 +1665,7 @@ function renderMentor() {
     tile('Nothing fits this budget yet', rs(cheap.c.minStart), 'is the least you need: ' + cheap.o.name + ', ' + sizeText(cheap.o, cheap.o.scale.min));
   }
   if (!rows.length) { const e = el('div', 'empty'); e.append(el('h3', null, 'Nothing listed for this place yet'), el('p', null, 'Choose Anywhere to see every business.')); body.append(e); }
-  const wk = weekBusiness(ideas);
-  for (const x of rows) body.append(mentorCard(x.o, x.c, x === pick, wk && x.o.id === wk.id));
+  for (const x of rows) body.append(mentorCard(x.o, x.c, x === pick));
   const watch = d && Array.isArray(d.watch) ? d.watch : [];
   if (watch.length) {
     wp.hidden = false; const box = $('mentor-watch'); box.replaceChildren();
@@ -1672,7 +1680,7 @@ function renderMentor() {
   renderSectors();
   foot.textContent = (d.disclaimer || '') + ' Money to start is the set-up cost plus the running costs of the first batch or year. Sizes stay between a smallest sensible size and a largest size for each business.';
 }
-$('mentor-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderMentor(); });
+$('mentor-budget').addEventListener('input', (e) => { MEN.budget = budgetFrom(e.target.value); saveMen(); renderMentor(); });
 $('mentor-sort').addEventListener('change', (e) => { MEN.sort = e.target.value; saveMen(); renderMentor(); });
 document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderMentor(); }));
 
@@ -1751,7 +1759,7 @@ function renderSectors() {
 /* ---------- Start here ----------
    The front door: one question (budget), three sized businesses, then links to the rest. Shares MEN with the Mentor tab. */
 function renderStart() {
-  const bi = $('start-budget'); if (document.activeElement !== bi) bi.value = String(MEN.budget);
+  const bi = $('start-budget'); if (document.activeElement !== bi) bi.value = hasBudget() ? String(MEN.budget) : '';
   document.querySelectorAll('#start-where [data-where]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.where === MEN.where)));
   const box = $('start-ideas'); box.replaceChildren();
   const d = S.mentor;
@@ -1759,23 +1767,22 @@ function renderStart() {
   const wkList = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
   const wk = weekBusiness(wkList);
   if (wk) {
-    const c = mentorCalc(wk, Math.max(0, Number(MEN.budget) || 0));
+    const c = mentorCalc(wk, hasBudget() ? MEN.budget : null);
     const b = el('button', 'opp week'); b.type = 'button';
-    const line = c.fits ? 'With ' + rs(MEN.budget) + ': ' + sizeText(wk, c.n) + ', about ' + rs(c.start) + ' to start and ' + about(c.month) + ' profit a month.'
-      : 'Smallest way to start: ' + sizeText(wk, wk.scale.min) + ', about ' + rs(c.minStart) + '.';
-    b.append(el('span', 'k', 'Business of the week'), el('b', null, wk.name), el('span', null, (wk.why || '') + ' ' + line));
+    const line = c.sized && c.fits ? 'With ' + rs(MEN.budget) + ': ' + sizeText(wk, c.n) + ', about ' + rs(c.start) + ' to start and ' + about(c.month) + ' profit a month.'
+      : 'Starts from about ' + rs(c.minStart) + ' with ' + sizeText(wk, wk.scale.min) + ', for about ' + about(mentorCalc(wk, null).month) + ' profit a month.';
+    b.append(el('span', 'k', "Mentor's pick this week"), el('b', null, wk.name), el('span', null, (wk.why || '') + ' ' + line));
     b.addEventListener('click', () => { menFold.set(wk.id + ':advice', true); show('mentor', true); });
     oppBox.append(b);
   }
   const ideas = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
   if (!ideas.length) { const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No businesses listed yet' : 'Loading businesses')); box.append(e); }
   else {
-    const budget = Math.max(0, Number(MEN.budget) || 0);
-    const rows = ideas.filter((o) => MEN.where === 'all' || (Array.isArray(o.regions) && o.regions.includes(MEN.where))).map((o) => ({ o, c: mentorCalc(o, budget) }));
+    const budget = hasBudget() ? MEN.budget : null;
+    const rows = ideas.filter((o) => MEN.where === 'all' || (Array.isArray(o.regions) && o.regions.includes(MEN.where)) ).filter((o) => !wk || o.id !== wk.id).map((o) => ({ o, c: mentorCalc(o, budget) }));
     const fit = rows.filter((x) => x.c.fits);
-    const pick = fit.filter(pickable).sort((a, b) => b.c.ret - a.c.ret)[0];
-    const rest = fit.filter((x) => x !== pick).sort((a, b) => b.c.ret - a.c.ret);
-    const top = (pick ? [pick] : []).concat(rest).slice(0, 3);
+    const pick = null;
+    const top = fit.slice().sort(budget ? (a, b) => b.c.ret - a.c.ret : (a, b) => a.c.minStart - b.c.minStart).slice(0, 3);
     if (!top.length) {
       const cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
       const e = el('div', 'empty');
@@ -1788,7 +1795,7 @@ function renderStart() {
       const nums = el('div', 'nums');
       const num = (k, v) => { const s = el('span'); s.append(el('b', null, v), k); nums.append(s); };
       num('to start', rs(x.c.start)); num('profit a month', about(x.c.month));
-      c.append(meta, el('h3', null, x.o.name), el('span', 'meta', sizeText(x.o, x.c.n)), nums);
+      c.append(meta, el('h3', null, x.o.name), el('span', 'meta', (budget ? '' : 'Starts with ') + sizeText(x.o, x.c.n)), nums);
       c.addEventListener('click', () => { menFold.set(x.o.id + ':advice', true); show('mentor', true); });
       box.append(c);
     }
@@ -1805,7 +1812,7 @@ function renderStart() {
   if (nG) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Where the growth is'), el('b', null, nG + ' sectors with the strongest growth signals, from remittance services to IT and energy')); b.addEventListener('click', () => { show('mentor', true); requestAnimationFrame(() => { const h = $('growth-h'); if (h) h.scrollIntoView({ block: 'start' }); }); }); links.append(b); }
   if (nSec) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Sector guides'), el('b', null, nSec + ' sectors from trade and IT to tourism and hydropower: how to start, and the key numbers')); b.addEventListener('click', () => { show('mentor', true); requestAnimationFrame(() => { const h = $('sectors-h'); if (h) h.scrollIntoView({ block: 'start' }); }); }); links.append(b); }
 }
-$('start-budget').addEventListener('input', (e) => { MEN.budget = Math.max(0, Math.round(Number(e.target.value) || 0)); saveMen(); renderStart(); });
+$('start-budget').addEventListener('input', (e) => { MEN.budget = budgetFrom(e.target.value); saveMen(); renderStart(); });
 document.querySelectorAll('#start-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderStart(); }));
 $('start-go').addEventListener('click', () => show('mentor', true));
 

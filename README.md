@@ -45,13 +45,16 @@ cd site && python3 -m http.server 8000
 
 ### Update the data
 
-Replace `site/data.json` with a fresh version that has the same shape, then:
+The data updates itself twice a day. A scheduled Claude task reads the public data that the Nepal Dashboard publishes (news, business, NEPSE, watchlist, investment rates, places) and runs:
 
 ```sh
-node scripts/check.mjs   # should end with "Site check passed."
+python3 scripts/update_data.py public.json   # writes site/data.json
+node scripts/check.mjs                       # should end with "Site check passed."
 ```
 
-Commit and push. GitHub runs the same check.
+then commits to `main`, which publishes the site. The script keeps only public parts, keeps the Mentor section as it is, refuses to go backwards in time, and stops if a story is written to one person ("you", "your") so it can be reworded first. If anything fails, nothing is published.
+
+To update by hand, run the same two commands with a fresh `public.json`, then commit and push.
 
 ### How the mentor's numbers work
 
@@ -81,11 +84,10 @@ After that, every change to `site/` on `main` goes live by itself within a minut
 
 1. **Check the mentor's figures** against the full papers and current local prices, and add more businesses.
 2. **Back up and move builds.** Export builds to a file and import them on another device.
-3. **Automatic data refresh.** A scheduled GitHub workflow that rebuilds `data.json` every morning and after each NEPSE close.
-4. **A custom domain,** such as a `.com.np` address, in place of the `github.io` one.
-5. **Nepali language.** A नेपाली / English switch.
-6. **More of Nepal:** weather and air quality by city, exchange rates, gold and silver prices, a festival and holiday calendar, a province-by-province view.
-7. **Share cards.** A one-tap image of the day's NEPSE close or top story, for Facebook, Viber and X.
+3. **A custom domain,** such as a `.com.np` address, in place of the `github.io` one.
+4. **Nepali language.** A नेपाली / English switch.
+5. **More of Nepal:** weather and air quality by city, exchange rates, gold and silver prices, a festival and holiday calendar, a province-by-province view.
+6. **Share cards.** A one-tap image of the day's NEPSE close or top story, for Facebook, Viber and X.
 
 ## Disclaimer
 

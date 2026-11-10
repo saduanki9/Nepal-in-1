@@ -767,13 +767,14 @@ const asObj = (x) => x && typeof x === 'object' && !Array.isArray(x) ? x : null;
 function loadData() {
   const ctl = typeof AbortController === 'function' ? new AbortController() : null;
   const t = setTimeout(() => { if (ctl) ctl.abort(); }, 10000);
-  fetch('data.json?t=' + Date.now(), { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
-    .then((r) => r.ok ? r.json() : null).catch(() => null)
-    .then((d) => {
+  const get = (f) => fetch(f + '?t=' + Date.now(), { cache: 'no-store', signal: ctl ? ctl.signal : undefined }).then((r) => r.ok ? r.json() : null).catch(() => null);
+  /* data.json: daily news, business, NEPSE, invest. mentor.json: the Mentor, updated on its own (weekly suggestions). */
+  Promise.all([get('data.json'), get('mentor.json')]).then(([d, m]) => {
       clearTimeout(t);
-      if (asObj(d)) { S.feed = asObj(d.feed); S.biz = asObj(d.business); S.nepse = asObj(d.nepse); S.watch = asObj(d.watch); S.invest = asObj(d.invest); S.places = asObj(d.places); S.mentor = asObj(d.mentor); }
+      if (asObj(d)) { S.feed = asObj(d.feed); S.biz = asObj(d.business); S.nepse = asObj(d.nepse); S.watch = asObj(d.watch); S.invest = asObj(d.invest); S.places = asObj(d.places); }
+      S.mentor = asObj(m);
       S.loaded = true;
-      const ix = S.nepse && S.nepse.index; $('n-nepse').textContent = ix ? Math.round(ix.close).toLocaleString('en') : '\u2013';
+      const ix = S.nepse && S.nepse.index; $('n-nepse').textContent = ix ? Math.round(ix.close).toLocaleString('en') : '–';
       $('n-today').textContent = S.feed && Array.isArray(S.feed.news) ? S.feed.news.length : 0;
       header(); show(S.tab, false);
     });

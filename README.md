@@ -31,7 +31,8 @@ No framework and no build step: just two files.
 | Path | What it is |
 |---|---|
 | `site/index.html` | The whole site: layout, styles and script in one file |
-| `site/data.json` | The data: news, business, NEPSE, investment rates, places, mentor businesses |
+| `site/data.json` | The daily data: news, business, NEPSE, investment rates, places |
+| `site/mentor.json` | The Mentor: businesses, growth table and sector guides (updated separately, so weekly suggestions never clash with the daily data) |
 | `scripts/check.mjs` | Health check: valid data, every tab wired up, script has no syntax errors |
 | `.github/workflows/check.yml` | Runs the check on GitHub every time the site changes |
 | `.github/workflows/deploy.yml` | Publishes `site/` to GitHub Pages every time it changes on `main` |
@@ -61,7 +62,7 @@ To update by hand, run the same two commands with a fresh `public.json`, then co
 
 ### How the mentor's numbers work
 
-Each business in `data.json` under `mentor.ideas` has four figures per unit (one hive, one tunnel, one kattha, one bird):
+Each business in `site/mentor.json` under `ideas` has four figures per unit (one hive, one tunnel, one kattha, one bird):
 
 - `setup`: the one-off cost to build or buy it
 - `first_cycle`: running costs until the first sale (a batch for chickens, a year for the others)
@@ -74,17 +75,17 @@ The page works out how many units the visitor's budget covers, then multiplies. 
 
 **Budget:** there is no default budget. Each business is shown at its starting size (from about Rs 22,200 for 2 ropani of ginger), so anyone can see what it takes. A visitor's own budget, if entered, sizes every business to it and is remembered only in their browser.
 
-**Mentor's pick of the week** rotates through all the businesses in order, changing each Sunday (Nepal time). It is worked out in the page from the date, so it needs no job or data update, and any business added to `mentor.ideas` joins the rotation.
+**Mentor's pick of the week** rotates through all the businesses in order, changing each Sunday (Nepal time). It is worked out in the page from the date, so it needs no job or data update, and any business added to `ideas` in `site/mentor.json` joins the rotation.
 
-**Adding a business:** add an entry to `mentor.ideas` in `site/data.json` with figures from a Nepal study you have read in full, then run `node scripts/check.mjs`. The weekly rotation picks it up by itself.
+**Adding a business:** add an entry to `ideas` in `site/mentor.json` with figures from a Nepal study you have read in full, then run `node scripts/check.mjs`. The weekly rotation picks it up by itself.
 
 ### Where the growth is
 
-A compact table on the Mentor ranks sectors as Strong, Moderate or Careful by what the latest official figures show: remittances, IT service exports, electricity exports, the trade gap, school numbers, tourist arrivals, growth, EV imports, cooperative savings and NEPSE's year. Each row has one figure with its source, ideas to explore, and a link to the sector guide. It gives no profit estimates. Data lives in `mentor.growth` in `site/data.json`; `scripts/check.mjs` checks every row has a level, a figure and a source.
+A compact table on the Mentor ranks sectors as Strong, Moderate or Careful by what the latest official figures show: remittances, IT service exports, electricity exports, the trade gap, school numbers, tourist arrivals, growth, EV imports, cooperative savings and NEPSE's year. Each row has one figure with its source, ideas to explore, and a link to the sector guide. It gives no profit estimates. Data lives in `growth` in `site/mentor.json`; `scripts/check.mjs` checks every row has a level, a figure and a source.
 
 ### Sector guides
 
-Below the sized businesses, the Mentor has 13 sector guides covering business across Nepal: farming, import and export, retail and wholesale, IT and online services, tourism, small manufacturing and food processing, construction and real estate, transport, education, health and pharmacy, energy, finance and cooperatives, and investing in shares. Each gives the key public numbers with sources, the first steps (registrations and licences), and what to watch out for. They give **no profit estimate**, because profit depends on the exact product, place and owner. Data lives in `mentor.sectors` in `site/data.json`; `scripts/check.mjs` checks every guide has first steps and that every number has a source. Registration details summarised from advisers' guides are labelled as such on the page.
+Below the sized businesses, the Mentor has 13 sector guides covering business across Nepal: farming, import and export, retail and wholesale, IT and online services, tourism, small manufacturing and food processing, construction and real estate, transport, education, health and pharmacy, energy, finance and cooperatives, and investing in shares. Each gives the key public numbers with sources, the first steps (registrations and licences), and what to watch out for. They give **no profit estimate**, because profit depends on the exact product, place and owner. Data lives in `sectors` in `site/mentor.json`; `scripts/check.mjs` checks every guide has first steps and that every number has a source. Registration details summarised from advisers' guides are labelled as such on the page.
 
 ## Hosting
 

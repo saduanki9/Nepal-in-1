@@ -1,0 +1,985 @@
+{
+ "as_of": "2026-11-10",
+ "disclaimer": "These are estimates built from published studies of farms that were already running. For each business the main figures were checked against the full paper; where a figure comes from elsewhere, the card says so. A new farm may earn less at first, and prices change. Profit is before income tax and before paying yourself for your own work. Check today's local prices and talk to at least two working farmers before spending money. This is general information, not financial advice.",
+ "ideas": [
+  {
+   "id": "banana",
+   "name": "Banana farm",
+   "sector": "Agriculture",
+   "risk": "Medium",
+   "regions": [
+    "terai"
+   ],
+   "where": "Terai and inner Terai. The studies are from Chitwan.",
+   "size": [
+    "{n} kattha of bananas",
+    "{n} kattha of bananas"
+   ],
+   "scale": {
+    "min": 3,
+    "max": 200,
+    "step": 1
+   },
+   "cycle": "year",
+   "setup": 0,
+   "first_cycle": 10300,
+   "cost_year": 10300,
+   "profit": {
+    "low": 4600,
+    "mid": 5200,
+    "high": 7000
+   },
+   "land": "{n} kattha of farmland with irrigation. The costs include renting it.",
+   "evidence": "A 2025 study of 135 Chitwan banana farms, read in full",
+   "why": "A 2025 study of 135 Chitwan banana farms found every size of farm made a profit, about Rs 152 back for every Rs 100 spent, even after paying land rent. There is no shed or pond to build, so your money goes into the crop.",
+   "steps": [
+    "Visit two banana farms nearby and ask what they earned per kattha last year",
+    "Find land with irrigation and agree the rent in writing",
+    "Line up a buyer or wholesaler before you plant",
+    "Buy disease-free plants from a trusted nursery"
+   ],
+   "watch": [
+    "The first bunches take about a year, so you need money to live on until then.",
+    "Costs include about Rs 2,300 per kattha a year for land rent. On land you own, profit is higher by about that much.",
+    "Wind, floods and plant disease can wipe out a crop."
+   ],
+   "basis": "From a 2025 study of 135 Chitwan banana farms: costs of Rs 10,263 per kattha a year (including Rs 2,276 land rent), sales of Rs 15,475, and profit of Rs 5,212. The cautious and good cases are the study's small farms (under 10 kattha, Rs 4,637) and large farms (over 40 kattha, Rs 6,997). No set-up cost is counted beyond the year's costs.",
+   "sources": [
+    {
+     "name": "Shrestha et al. 2025, Chitwan (full paper)",
+     "url": "https://www.nepjol.info/index.php/janr/article/view/88870"
+    },
+    {
+     "name": "Shrestha et al. 2018, Chitwan",
+     "url": "https://core.ac.uk/download/201774374.pdf"
+    }
+   ]
+  },
+  {
+   "id": "bees",
+   "name": "Beekeeping for honey",
+   "sector": "Agriculture",
+   "risk": "Medium",
+   "regions": [
+    "terai",
+    "hills"
+   ],
+   "where": "Terai and mid-hills with flowering crops or forest nearby.",
+   "size": [
+    "{n} hive",
+    "{n} hives"
+   ],
+   "scale": {
+    "min": 5,
+    "max": 200,
+    "step": 5
+   },
+   "cycle": "year",
+   "setup": 8000,
+   "first_cycle": 3900,
+   "cost_year": 5800,
+   "profit": {
+    "low": 3300,
+    "mid": 6800,
+    "high": 6800
+   },
+   "land": "A place to keep {n} hives. Bees feed on other people's crops and forest, so you need little land of your own.",
+   "evidence": "A 2026 study of 60 Chitwan beekeepers, read in full, and an earlier Chitwan study",
+   "why": "Bees need little land, and a 2026 study of 60 commercial Chitwan beekeepers found Rs 217 back for every Rs 100 spent, with 28 kg of honey per hive a year. An earlier Chitwan study found less, Rs 156, so the cautious case uses that.",
+   "steps": [
+    "Work a honey season with an experienced beekeeper before buying hives",
+    "Get a written price for hives with bees from two suppliers",
+    "Map where the bees will feed in each season and how you will move them",
+    "Agree a buyer for your honey, or plan how to sell it yourself"
+   ],
+   "watch": [
+    "Bee disease and pests were the worst problem in the 2026 study, followed by pesticide spraying and too little forage.",
+    "The Rs 8,000 price for a hive with bees comes from a beekeepers' federation interview, not the study. Check today's price.",
+    "The study's beekeepers ran 71 hives on average and most had over 10 years' experience. Start smaller and learn first."
+   ],
+   "basis": "From a 2026 study of 60 Chitwan beekeepers (data from 2025): running costs of Rs 3,885 per hive a year plus Rs 1,939 of equipment wear, sales of Rs 12,644 (honey at Rs 425 a kg, and beeswax), so profit is Rs 6,821 per hive. The cautious case, Rs 3,300, is from an earlier Chitwan study. Set-up is Rs 8,000 a hive with bees, the price a Federation of Beekeeping Nepal coordinator gave.",
+   "sources": [
+    {
+     "name": "Agriculture Development Journal 2026, Chitwan (full paper)",
+     "url": "https://www.nepjol.info/index.php/adj/article/view/97458"
+    },
+    {
+     "name": "B360 Nepal: The money in honey",
+     "url": "https://b360nepal.com/the-money-in-honey/"
+    }
+   ]
+  },
+  {
+   "id": "tomato",
+   "name": "Tomatoes in plastic tunnels",
+   "sector": "Agriculture",
+   "risk": "Medium",
+   "regions": [
+    "hills"
+   ],
+   "where": "Hills and valleys near a town market. The studies are from the Kathmandu Valley.",
+   "size": [
+    "{n} tomato tunnel",
+    "{n} tomato tunnels"
+   ],
+   "scale": {
+    "min": 1,
+    "max": 30,
+    "step": 1
+   },
+   "cycle": "year",
+   "setup": 23650,
+   "first_cycle": 26300,
+   "cost_year": 33600,
+   "profit": {
+    "low": 21000,
+    "mid": 26400,
+    "high": 30000
+   },
+   "land": "About {a} ropani of flat land with water, three tunnels to a ropani. Each tunnel is 28 by 5 metres. The costs include renting the land.",
+   "area_factor": 0.333,
+   "evidence": "A 2024 study of 150 Kathmandu tunnel farms, read in full",
+   "why": "A 28 by 5 metre bamboo and plastic tunnel costs about Rs 23,600 to build. A 2024 study of 150 Kathmandu farms found Rs 177 back for every Rs 100 spent, after land rent and tunnel wear.",
+   "steps": [
+    "Visit tunnel farmers nearby and ask what price they got each month last year",
+    "Get a quote for one 28 by 5 metre bamboo tunnel with plastic sheet",
+    "Check you have water through the dry months",
+    "Start with one or two tunnels and add more after the first season"
+   ],
+   "watch": [
+    "Prices swing a lot. An earlier thesis in Chandragiri recorded Rs 5 to Rs 130 a kilo, and its farmers kept far less than this study's.",
+    "These farms sell into the Kathmandu market. Prices and costs elsewhere will differ, so ask local tunnel farmers.",
+    "Wind storms can destroy tunnels. Selling when everyone else sells gets the lowest price."
+   ],
+   "basis": "From a 2024 study of 150 farms in Chandragiri, Tarakeshwar and Kirtipur: a 28 by 5 metre tunnel costs Rs 23,648 to build, and three fit on a ropani. Per hectare a year, costs were Rs 19.8 lakh (including land rent, tunnel wear and loan interest) and profit was Rs 15.5 lakh. We converted these to one tunnel (about 59 to a hectare): costs of about Rs 33,600 and profit of about Rs 26,400 a year. The cautious and good cases are Kirtipur and Tarakeshwar.",
+   "sources": [
+    {
+     "name": "Journal of Agriculture and Environment 2026, Kathmandu (full paper)",
+     "url": "https://www.nepjol.info/index.php/AEJ/article/view/98400"
+    },
+    {
+     "name": "Chandragiri thesis, Tribhuvan University",
+     "url": "https://elibrary.tucl.edu.np/items/123f671e-5012-490b-8881-de5b0afe4b5e"
+    }
+   ]
+  },
+  {
+   "id": "broiler",
+   "name": "Broiler chicken farm",
+   "sector": "Agriculture",
+   "risk": "High",
+   "regions": [
+    "terai",
+    "hills"
+   ],
+   "where": "Near a town with a chick and feed supplier.",
+   "size": [
+    "{n} broiler chicken a batch",
+    "{n} broiler chickens a batch"
+   ],
+   "scale": {
+    "min": 200,
+    "max": 5000,
+    "step": 100
+   },
+   "cycle": "batch",
+   "setup": 320,
+   "first_cycle": 373,
+   "cost_year": 1865,
+   "profit": {
+    "low": 484,
+    "mid": 500,
+    "high": 584
+   },
+   "land": "A shed of about {n} square feet, away from houses.",
+   "evidence": "A study of 120 Rupandehi broiler farms, read in full. Shed cost from Indian project models.",
+   "why": "Chickens sell in about six weeks, so money comes back faster than in any other option here. A study of 120 Rupandehi farms found about Rs 100 profit per bird per batch, or Rs 127 back for every Rs 100 spent. That is a thin margin, so one bad batch hurts.",
+   "steps": [
+    "Work a full batch on someone else's farm first",
+    "Get written prices for day-old chicks and feed from two suppliers",
+    "Get a local quote for the shed, because our figure comes from Indian models",
+    "Agree a buyer before the chicks arrive"
+   ],
+   "watch": [
+    "A drop in the chicken price or a disease outbreak can turn a batch into a loss.",
+    "The shed cost is converted from Indian project models at Rs 1.6 per Indian rupee. Get a local quote.",
+    "The study's survey is from 2020. Feed and chick prices have changed since."
+   ],
+   "basis": "From a study of 120 Rupandehi farms (2020 survey): costs of Rs 373 a bird per batch on small farms (under 1,000 birds), sales of Rs 474 (birds, manure and feed bags), so profit is Rs 100 a bird. Medium and large farms made Rs 97 and Rs 117. We assume five batches a year. Shed and equipment are Rs 320 a bird, converted from Indian model projects.",
+   "sources": [
+    {
+     "name": "Journal of Agriculture and Natural Resources 2023, Rupandehi (full paper)",
+     "url": "https://www.nepjol.info/index.php/janr/article/view/71942"
+    },
+    {
+     "name": "NCDC India model broiler project",
+     "url": "https://www.ncdc.in/documents/downloads/191508052020.Sample_DPR_Broiler-Farming.pdf"
+    }
+   ]
+  },
+  {
+   "id": "fish",
+   "name": "Carp fish pond",
+   "sector": "Agriculture",
+   "risk": "Medium",
+   "regions": [
+    "terai"
+   ],
+   "where": "Terai. The studies are from Bara, Kanchanpur, Siraha and Chitwan.",
+   "size": [
+    "a {n}-kattha fish pond",
+    "a {n}-kattha fish pond"
+   ],
+   "scale": {
+    "min": 3,
+    "max": 100,
+    "step": 1
+   },
+   "cycle": "year",
+   "setup": 47000,
+   "first_cycle": 29500,
+   "cost_year": 32900,
+   "profit": {
+    "low": 13200,
+    "mid": 22500,
+    "high": 31200
+   },
+   "land": "{n} kattha for the pond, plus room for its banks. The costs include renting the land.",
+   "evidence": "A study of 90 Bara fish farms, read in full, and a 2025 Kanchanpur study",
+   "why": "A study of 90 Bara fish farms found ponds clearly profitable after paying land rent: Rs 167 back for every Rs 100 for table-size carp, and Rs 197 for small \"chhari\" fish. If you can lease a pond that is already dug, you skip the biggest cost.",
+   "steps": [
+    "Look for an existing pond to lease before paying to dig one",
+    "Visit the nearest hatchery and ask about fingerling prices and supply",
+    "Get a digging quote for your soil and check the pond will hold water all year",
+    "Ask working farmers what feed costs them, since feed is the largest running cost"
+   ],
+   "watch": [
+    "Digging a new pond is the biggest cost. Lease an existing pond if you can.",
+    "In Bara, middlemen set the price, so farmers kept less of the profit.",
+    "The cautious case is from a 2025 Kanchanpur study, which found lower returns than Bara."
+   ],
+   "basis": "From a study of 90 Bara farms (2019 survey): costs of Rs 9.72 lakh per hectare a year, including land rent (21%), feed and labour. Profit per hectare was Rs 6.66 lakh for table-size carp and Rs 9.21 lakh for chhari. We converted these to one kattha (about 29.5 to a hectare): costs of about Rs 32,900 and profit of Rs 22,500 (carp) or Rs 31,200 (chhari). The cautious case applies a 2025 Kanchanpur study's return of Rs 140 per Rs 100 to the same cost. Digging uses a government rate of Rs 93 per cubic metre and a 1.5 metre deep pond.",
+   "sources": [
+    {
+     "name": "Journal of Agriculture and Natural Resources 2019, Bara (full paper)",
+     "url": "https://www.nepjol.info/index.php/janr/article/view/26061"
+    },
+    {
+     "name": "Kanchanpur polyculture study, 2025",
+     "url": "https://www.archive.conscientiabeam.com/index.php/70/article/view/4041"
+    }
+   ]
+  },
+  {
+   "id": "ginger",
+   "name": "Ginger",
+   "sector": "Agriculture",
+   "risk": "Medium",
+   "regions": [
+    "hills"
+   ],
+   "where": "Mid-hills with upland (bari) fields. The study is from Surkhet.",
+   "size": [
+    "{n} ropani of ginger",
+    "{n} ropani of ginger"
+   ],
+   "scale": {
+    "min": 2,
+    "max": 40,
+    "step": 1
+   },
+   "cycle": "year",
+   "setup": 0,
+   "first_cycle": 11100,
+   "cost_year": 11100,
+   "profit": {
+    "low": null,
+    "mid": 7100,
+    "high": null
+   },
+   "land": "{n} ropani of upland (bari). Land rent is not counted.",
+   "evidence": "A 2026 study of 100 Surkhet ginger growers, read in full",
+   "why": "Ginger grows on ordinary upland with no shed or tunnel to build. A 2026 study of 100 growers in Surkhet found Rs 164 back for every Rs 100 spent: about 520 kg a ropani, sold at Rs 35 a kilo.",
+   "steps": [
+    "Talk to two ginger growers and a local trader about this year's price",
+    "Buy healthy seed rhizome from a trusted source, since seed is the biggest cost",
+    "Plan to store or slice some ginger so you don't have to sell in the harvest rush",
+    "Agree a buyer before harvest"
+   ],
+   "watch": [
+    "Prices swing a lot, and everyone harvests in Asoj and Kartik, when prices are lowest.",
+    "Land rent is not counted. If you rent land, profit is lower.",
+    "Rhizome rot and other diseases can cut yields sharply."
+   ],
+   "basis": "From a 2026 study of 100 ginger growers in Bheriganga, Surkhet: costs of Rs 11,061 per ropani a year (seed rhizome 32%, manure 22%), and 520 kg sold at a farm-gate price of Rs 35 a kg for Rs 18,185, so profit is Rs 7,124 per ropani. Only one study gives a profit figure here, so there is no range.",
+   "sources": [
+    {
+     "name": "Journal of Agriculture and Resource Management 2026, Surkhet (full paper)",
+     "url": "https://www.nepjol.info/index.php/jarm/article/view/96524"
+    }
+   ]
+  },
+  {
+   "id": "goats",
+   "name": "Goat farm",
+   "sector": "Agriculture",
+   "risk": "Medium",
+   "regions": [
+    "terai",
+    "hills"
+   ],
+   "where": "Terai and hills, with grazing or fodder land. The study is from Banke.",
+   "size": [
+    "a 10-goat herd",
+    "{n} herds of 10 goats"
+   ],
+   "scale": {
+    "min": 1,
+    "max": 10,
+    "step": 1
+   },
+   "cycle": "year",
+   "setup": 147000,
+   "first_cycle": 104600,
+   "cost_year": 128000,
+   "profit": {
+    "low": null,
+    "mid": 28000,
+    "high": null
+   },
+   "land": "A dry, raised shed and grazing or fodder land for {n}0 goats. Family labour and home-grown fodder are not counted.",
+   "evidence": "A 2025 survey of 95 goat-keeping households in Banke, read in full",
+   "why": "Goats sell well at Dashain and Tihar and need little cash to run. A 2025 survey of 95 households in Banke found a 10-goat farm makes about Rs 28,000 a year, Rs 122 back for every Rs 100 spent, when the family does the daily care and grows its own green fodder.",
+   "steps": [
+    "Visit two goat farms and ask what their goats sold for at Dashain",
+    "Plan your fodder, since growing your own keeps costs down",
+    "Buy healthy does from a known breeder and have a vet check them",
+    "Build a dry, raised shed before the animals arrive"
+   ],
+   "watch": [
+    "The profit counts no pay for the family's daily work. Hiring that work out would wipe out most of it.",
+    "Disease and feed costs were farmers' biggest worries in the survey.",
+    "Set-up takes about 5 years to earn back at this profit."
+   ],
+   "basis": "From a 2025 survey of 95 goat-keeping households in Khajura, Banke, worked by the study into a standard 10-goat farm. Setting up costs Rs 60,000 for a shed, Rs 15,000 for equipment and Rs 72,000 for 9 breeding goats. Running costs are Rs 1,02,286 a year (bought feed, vet care, casual labour, water and electricity) plus Rs 2,300 insurance. Selling 8 goats a year at Rs 19,500 brings Rs 1,56,000, so profit after equipment and stock wear is Rs 28,014. Only one study gives a profit figure here, so there is no range.",
+   "sources": [
+    {
+     "name": "Journal of Agriculture and Forestry University 2026, Banke (full paper)",
+     "url": "https://nepjol.info/index.php/jafu/article/view/95391"
+    },
+    {
+     "name": "Kathmandu goat enterprise study, 2023",
+     "url": "https://nepjol.info/index.php/IJSSM/article/view/54226"
+    }
+   ]
+  }
+ ],
+ "watch": [
+  {
+   "name": "Dairy cows and buffalo",
+   "finding": "A Chitwan study found cow farms got Rs 144 back for every Rs 100 spent, but buffalo-only farms made a small loss. A Kaski study found the opposite: Rs 181 for buffalo and Rs 118 for cattle. We found no reliable current price for an improved cow, so there is no start-up figure.",
+   "sources": [
+    {
+     "name": "Chitwan dairy study",
+     "url": "https://nepjol.info/index.php/adj/article/view/51619"
+    },
+    {
+     "name": "Kaski dairy study, 2025",
+     "url": "https://tas.scione.com/cms/abstract.php?id=376"
+    }
+   ]
+  },
+  {
+   "name": "Large cardamom",
+   "finding": "A 2018 study of 90 growers in Ilam, Panchthar and Taplejung found it profitable, earning back its set-up in about 4 years. But the first harvest only comes in year 3 or 4, and the price, set largely by Indian buyers, swings widely. Its sums rest on 2017 prices, so we have left the numbers out.",
+   "sources": [
+    {
+     "name": "Journal of Agriculture and Natural Resources 2018",
+     "url": "https://nepjol.info/index.php/janr/article/view/22224"
+    }
+   ]
+  },
+  {
+   "name": "Oyster mushrooms",
+   "finding": "A Kathmandu Valley study found that returns from mushroom tunnels are falling, and that a tunnel must sell 692 kg just to cover its costs. Recent cost figures come mostly from blogs, so we have left the numbers out.",
+   "sources": [
+    {
+     "name": "Acharya and Dhungel, 2021",
+     "url": "https://ideas.repec.org/p/hal/journl/hal-05188160.html"
+    }
+   ]
+  },
+  {
+   "name": "Homestay",
+   "finding": "In a survey of 22 homestay households in Bardia, the average household earned about Rs 9,000 a month, and those who invested least earned the most back per rupee. The survey is from 2015, so today's costs will be higher.",
+   "sources": [
+    {
+     "name": "Kathmandu Post, 2015",
+     "url": "https://kathmandupost.com/money/2015/06/29/homestay-boosts-incomes-living-standards-in-bardia"
+    }
+   ]
+  }
+ ],
+ "sectors": {
+  "as_of": "2026-11-10",
+  "note": "Sector guides show what it takes to start and the key public numbers. They give no profit estimate, because profit depends on the exact product, place and owner. Registration steps are summarised from official offices and advisers' guides; check the current rules and fees with the office before you apply.",
+  "items": [
+   {
+    "id": "agriculture",
+    "name": "Farming and agribusiness",
+    "tag": "Agriculture",
+    "summary": "About a quarter of Nepal's economy. Seven farm businesses in the Mentor above come with costs, profit and first steps sized to your budget.",
+    "numbers": [
+     {
+      "label": "Share of GDP",
+      "value": "24%",
+      "note": "Agriculture, FY 2082/83 estimate (Economic Survey)",
+      "source_name": "Kantipur",
+      "source_url": "https://ekantipur.com/business/2026/05/27/en/economic-survey-08283-economy-expected-to-expand-by-385-percent-32-21.html"
+     }
+    ],
+    "start": [
+     "Pick a business above and read its first steps",
+     "Talk to two farmers already doing it",
+     "Register with your ward or municipality if you will sell regularly",
+     "Ask the local agriculture office about subsidies and training"
+    ],
+    "risks": [
+     "Weather, floods and disease",
+     "Prices fall when everyone sells at once",
+     "Middlemen take a big share of the price"
+    ],
+    "tab": "mentor",
+    "tab_label": "See the sized farm businesses",
+    "sources": []
+   },
+   {
+    "id": "trade",
+    "name": "Import and export trading",
+    "tag": "Trade",
+    "summary": "Nepal imports far more than it exports, so there is room both for importers and for anyone who can grow exports or make at home what is now imported.",
+    "numbers": [
+     {
+      "label": "Imports, FY 2082/83",
+      "value": "Rs 2,096 arba",
+      "note": "Exports were Rs 315 arba, a gap of Rs 1,781 arba",
+      "source_name": "Ratopati",
+      "source_url": "https://english.ratopati.com/story/71521/nepals-total-foreign-trade-exceeded-24-trillion-in-one-year"
+     },
+     {
+      "label": "Biggest import",
+      "value": "Petroleum",
+      "note": "Rs 297 arba in the first 11 months; exports of soybean oil, cardamom and noodles were growing",
+      "source_name": "Ratopati",
+      "source_url": "https://english.ratopati.com/story/56954/trade-deficit-increased-by-11-percent-in-eight-months"
+     }
+    ],
+    "start": [
+     "Register the business: a sole firm or partnership with the Department of Commerce or your municipality, or a company online with the Office of the Company Registrar",
+     "Get a PAN from the Inland Revenue Department, and register for VAT if your turnover passes the limit or your trade requires it. Importers are reported to need VAT from the first sale",
+     "Get an EXIM code from the Department of Customs through the Nepal National Single Window, and renew it every year",
+     "Open a bank account for letters of credit and foreign payments, and find a customs agent",
+     "Start with one product and one supplier you can visit"
+    ],
+    "risks": [
+     "Customs duties and rules change with each budget",
+     "Competition from goods brought in informally across the open border",
+     "Forex and payment rules: payments must go through banks"
+    ],
+    "sources": [
+     {
+      "name": "Nepal National Single Window",
+      "url": "https://nnsw.gov.np/"
+     },
+     {
+      "name": "EXIM code process (ICT Frame)",
+      "url": "https://ictframe.com/nepals-exim-code-registration-and-renewal-process"
+     }
+    ]
+   },
+   {
+    "id": "retail",
+    "name": "Retail shop and wholesale",
+    "tag": "Trade",
+    "summary": "Spending drives Nepal's economy, so shops, distributors and wholesalers are everywhere. Margins are thin, and location and stock control decide who survives.",
+    "numbers": [
+     {
+      "label": "Consumption",
+      "value": "About 90% of GDP",
+      "note": "Household and government spending, FY 2025/26",
+      "source_name": "Himal Press: Economic Survey 2025/26 highlights",
+      "source_url": "https://en.himalpress.com/major-highlights-of-economic-survey-2025-26/"
+     }
+    ],
+    "start": [
+     "Register the business: a sole firm or partnership with the Department of Commerce or your municipality, or a company online with the Office of the Company Registrar",
+     "Get a PAN from the Inland Revenue Department, and register for VAT if your turnover passes the limit or your trade requires it. Advisers report the VAT limit at Rs 30 lakh turnover for services and mixed businesses; check with the tax office",
+     "Register with your ward or municipality and renew each year",
+     "Agree credit terms with two suppliers before you stock up",
+     "Keep daily sales and stock records from day one"
+    ],
+    "risks": [
+     "Selling on credit (udharo) ties up your cash",
+     "Rent and slow-moving stock eat thin margins",
+     "Competition from online sellers and bigger stores"
+    ],
+    "sources": [
+     {
+      "name": "Inland Revenue Department",
+      "url": "https://ird.gov.np/"
+     },
+     {
+      "name": "VAT thresholds 2082/83 (Law Alpine)",
+      "url": "https://lawalpine.com/blog/vat-in-nepal-rates-and-thresholds-2082-83"
+     }
+    ]
+   },
+   {
+    "id": "it",
+    "name": "IT and online services",
+    "tag": "Services",
+    "summary": "Software, design, data and online work sold abroad bring dollars into Nepal with little start-up money. Skill and reliable delivery are the main capital.",
+    "numbers": [
+     {
+      "label": "IT and telecom service exports",
+      "value": "Rs 22.33 arba",
+      "note": "FY 2024/25, 9.4% of all service exports",
+      "source_name": "Kathmandu Post",
+      "source_url": "https://kathmandupost.com/money/2026/07/20/foreign-study-costs-outpace-growth-in-nepal-s-service-exports"
+     }
+    ],
+    "start": [
+     "Build a portfolio of three real projects",
+     "Register as a firm or company and get a PAN once clients pay regularly",
+     "Receive payments through a bank so the income counts as an export and stays legal",
+     "Start with one client market and one service you do well"
+    ],
+    "risks": [
+     "Global competition on price",
+     "Receiving foreign payments can be slow; informal channels such as hundi are illegal",
+     "Client concentration: losing one big client hurts"
+    ],
+    "sources": [
+     {
+      "name": "Nepal Rastra Bank",
+      "url": "https://www.nrb.org.np/"
+     }
+    ]
+   },
+   {
+    "id": "tourism",
+    "name": "Tourism and hospitality",
+    "tag": "Services",
+    "summary": "Homestays, guiding, trekking agencies, hotels and restaurants. Arrivals are back above one million a year, but the season and a few big markets decide the year.",
+    "numbers": [
+     {
+      "label": "Foreign tourists, 2025",
+      "value": "11,58,459",
+      "note": "Up about 1% on 2024; India the largest market (Nepal Tourism Board)",
+      "source_name": "Kantipur",
+      "source_url": "https://ekantipur.com/news/2026/01/02/en/more-than-1158-million-tourists-entered-nepal-in-2025-58-19.html"
+     }
+    ],
+    "start": [
+     "Homestay: register with your municipality or province under local homestay rules",
+     "Trekking or travel agency: register a company, get PAN and VAT, then a licence from the Department of Tourism. It needs an office and licensed guides",
+     "Advisers report a deposit and capital requirement for agencies; confirm the current amounts with the Department of Tourism",
+     "List on booking sites and ask every guest for a review"
+    ],
+    "risks": [
+     "Seasons: spring and autumn carry the year",
+     "Disasters, strikes or a bad news story can empty bookings",
+     "Dependence on a few source countries"
+    ],
+    "sources": [
+     {
+      "name": "Department of Tourism",
+      "url": "https://tourism.gov.np/"
+     }
+    ]
+   },
+   {
+    "id": "manufacturing",
+    "name": "Small manufacturing and food processing",
+    "tag": "Industry",
+    "summary": "Making at home what Nepal now imports: food, packaging, furniture, construction materials. Industry is a small slice of the economy, which leaves room to grow.",
+    "numbers": [
+     {
+      "label": "Industry's share of GDP",
+      "value": "About 13%",
+      "note": "FY 2081/82 projection, against 62% for services",
+      "source_name": "Loksewa Tayari summary",
+      "source_url": "https://loksewatayariapp.com/blog/nepal-in-2082-bs-a-comprehensive-socio-economic-and-policy-update"
+     }
+    ],
+    "start": [
+     "Register the industry with the Department of Cottage and Small Industries (cottage and small) or the Department of Industry (larger)",
+     "Get a PAN from the Inland Revenue Department, and register for VAT if your turnover passes the limit or your trade requires it",
+     "For food products, get a licence from the Department of Food Technology and Quality Control",
+     "Test-sell a small batch to shops before buying machines"
+    ],
+    "risks": [
+     "Cheaper imports from India and China",
+     "Power cuts in the dry season",
+     "Working capital tied up in raw materials and unpaid invoices"
+    ],
+    "sources": [
+     {
+      "name": "Department of Cottage and Small Industries",
+      "url": "https://dcsi.gov.np/"
+     }
+    ]
+   },
+   {
+    "id": "construction",
+    "name": "Construction and real estate",
+    "tag": "Industry",
+    "summary": "Building, contracting, materials and land. Big projects and towns keep demand going, but payments are often late and land prices move slowly.",
+    "numbers": [
+     {
+      "label": "Economic growth, FY 2082/83",
+      "value": "3.85%",
+      "note": "Expected; construction and manufacturing were under pressure",
+      "source_name": "Kantipur",
+      "source_url": "https://ekantipur.com/business/2026/05/27/en/economic-survey-08283-economy-expected-to-expand-by-385-percent-32-21.html"
+     }
+    ],
+    "start": [
+     "Contractors need a construction business licence in the class that matches the size of work",
+     "Register the business: a sole firm or partnership with the Department of Commerce or your municipality, or a company online with the Office of the Company Registrar",
+     "For land, read the Places section in the Invest tab first",
+     "Never pay for land before checking the ownership papers at the land revenue office"
+    ],
+    "risks": [
+     "Late payment on government work",
+     "Cement and steel price swings",
+     "Monsoon stops sites for months"
+    ],
+    "tab": "invest",
+    "tab_label": "Places to watch for property",
+    "sources": []
+   },
+   {
+    "id": "transport",
+    "name": "Transport and logistics",
+    "tag": "Services",
+    "summary": "Moving goods and people: trucks, buses, delivery, warehousing and customs clearing. Every imported item has to be moved, so steady demand follows trade.",
+    "numbers": [
+     {
+      "label": "Goods traded, FY 2082/83",
+      "value": "Rs 2,412 arba",
+      "note": "Imports and exports together, up 15.9%",
+      "source_name": "Sharehub Nepal",
+      "source_url": "https://sharehubnepal.com/news/168872-corporatekhabarcom-foreign-trade-exceeds-npr-24-trillion-in-last-fiscal-year-trade-deficit-at-npr-1781-trillion"
+     }
+    ],
+    "start": [
+     "Register the business: a sole firm or partnership with the Department of Commerce or your municipality, or a company online with the Office of the Company Registrar",
+     "Get vehicle registration and route permits from the transport management office",
+     "Get a PAN from the Inland Revenue Department, and register for VAT if your turnover passes the limit or your trade requires it",
+     "Insure every vehicle and load",
+     "Start with one route or one regular customer"
+    ],
+    "risks": [
+     "Fuel prices",
+     "Road closures in the monsoon",
+     "Route syndicates and permit delays"
+    ],
+    "sources": []
+   },
+   {
+    "id": "education",
+    "name": "Education and training",
+    "tag": "Services",
+    "summary": "Schools, coaching, language classes and skills training. Private schools keep growing, but a new law brings fee rules and scholarship quotas.",
+    "numbers": [
+     {
+      "label": "Private schools",
+      "value": "8,941",
+      "note": "Against 25,623 community schools (Economic Survey 2025/26)",
+      "source_name": "Kathmandu Post",
+      "source_url": "https://kathmandupost.com/national/2026/06/02/community-schools-shrink-as-private-education-expands-in-nepal"
+     }
+    ],
+    "start": [
+     "A school needs approval from the local government under education law, and registers as a company or a trust",
+     "Coaching or training: register a firm, get a PAN, and check local permission rules",
+     "Vocational courses can seek CTEVT affiliation",
+     "Start with one subject or skill where results are easy to show"
+    ],
+    "risks": [
+     "Fee rules and scholarship quotas under the new school law",
+     "Staff turnover",
+     "Reputation spreads by word of mouth, both ways"
+    ],
+    "sources": []
+   },
+   {
+    "id": "health",
+    "name": "Health and pharmacy",
+    "tag": "Services",
+    "summary": "Pharmacies, clinics, labs and care services. Demand is steady everywhere, but this sector is the most tightly licensed.",
+    "numbers": [],
+    "start": [
+     "A pharmacy needs a licence from the Department of Drug Administration under the Drug Act, and a registered pharmacist or assistant pharmacist",
+     "Clinics and labs need approval from the health authorities; confirm the current rules with the Ministry of Health and Population or your province",
+     "Register the business: a sole firm or partnership with the Department of Commerce or your municipality, or a company online with the Office of the Company Registrar",
+     "Plan premises to meet the standards that are inspected"
+    ],
+    "risks": [
+     "Licences can be suspended for breaking rules",
+     "Medicine price controls",
+     "Qualified staff are hard to keep in rural areas"
+    ],
+    "sources": [
+     {
+      "name": "Department of Drug Administration",
+      "url": "https://www.dda.gov.np/"
+     }
+    ]
+   },
+   {
+    "id": "energy",
+    "name": "Energy and hydropower",
+    "tag": "Energy",
+    "summary": "Nepal's biggest long-term bet. Small businesses can install solar and electrical systems; savers mostly take part by buying hydropower shares.",
+    "numbers": [
+     {
+      "label": "Installed capacity",
+      "value": "4,296 MW",
+      "note": "May 2026; aim of 28,500 MW by 2035",
+      "source_name": "Ceotab",
+      "source_url": "https://ceotab.com/nepals-power-generation-capacity-nears-4500-mw/"
+     },
+     {
+      "label": "Electricity exports, FY 2025/26",
+      "value": "Rs 29.3 arba",
+      "note": "3.88 billion units sold to India and Bangladesh; a net electricity trade surplus of Rs 18.76 arba",
+      "source_name": "Kathmandu Post",
+      "source_url": "https://kathmandupost.com/money/2026/07/24/nepal-records-rs18-76-billion-electricity-trade-surplus-in-fiscal-2025-26"
+     }
+    ],
+    "start": [
+     "Solar or electrical contracting: register a firm, get a PAN, and hire licensed electricians",
+     "To invest instead, see the hydropower sector in the NEPSE tab",
+     "Apply for hydropower IPOs through MeroShare once you have a demat account"
+    ],
+    "risks": [
+     "Floods: 13 projects in the Trishuli valley were damaged in 2026",
+     "Dry-season shortages and imports",
+     "Hydropower shares swing widely"
+    ],
+    "tab": "nepse",
+    "tab_label": "Open the NEPSE tab",
+    "sources": []
+   },
+   {
+    "id": "finance",
+    "name": "Finance, savings and cooperatives",
+    "tag": "Finance",
+    "summary": "Banks, insurers and cooperatives. Starting one needs a licence and large capital, so most people take part as savers, agents or investors.",
+    "numbers": [
+     {
+      "label": "Savings stuck in troubled cooperatives",
+      "value": "About Rs 46 arba",
+      "note": "Owed to about 76,000 depositors in 2026; refunds are slow",
+      "source_name": "Nepse Trading",
+      "source_url": "https://nepsetrading.com/news/around-npr-46-billion-still-pending-82-more-depositors-receive-refunds"
+     }
+    ],
+    "start": [
+     "To save, compare fixed deposits and bonds in the Invest tab",
+     "Before putting money in a cooperative, check it is registered and ask for its latest audited accounts",
+     "Agent work (insurance, remittance) needs a licence from the regulator for that service"
+    ],
+    "risks": [
+     "Cooperative failures: savings above Rs 5 lakh were not covered by the 2026 refund order",
+     "Promises of unusually high interest are a warning sign",
+     "Only Nepal Rastra Bank licensed banks and finance companies take public deposits"
+    ],
+    "tab": "invest",
+    "tab_label": "Compare savings options",
+    "sources": []
+   },
+   {
+    "id": "investing",
+    "name": "Investing in shares by sector",
+    "tag": "Investing",
+    "summary": "Owning part of Nepali companies through NEPSE: banks, hydropower, insurance, microfinance, manufacturing and more. Returns swing from year to year.",
+    "numbers": [
+     {
+      "label": "NEPSE, FY 2082/83",
+      "value": "Down 7.05%",
+      "note": "Closed at 2,597.80, after rising 24.74% the year before",
+      "source_name": "ShareSansar",
+      "source_url": "https://www.sharesansar.com/newsdetail/nepse-yearly-performance-highlights-falls-705-in-fy-208283-ending-at-259780-2026-07-16"
+     }
+    ],
+    "start": [
+     "Open a demat account and MeroShare login with a depository participant (most banks offer this)",
+     "Open a trading account with a licensed broker",
+     "Start with IPOs and a few sectors you understand; see today's sector moves in the NEPSE tab"
+    ],
+    "risks": [
+     "Share prices can fall a long way",
+     "Hype and tips on social media",
+     "Money you need within a few years is safer in a fixed deposit"
+    ],
+    "tab": "nepse",
+    "tab_label": "Open the NEPSE tab",
+    "sources": []
+   }
+  ]
+ },
+ "growth": {
+  "as_of": "2026-11-10",
+  "note": "Ranked by how strongly the latest official figures point to growth. These are directions to explore, not profit estimates.",
+  "items": [
+   {
+    "level": "strong",
+    "sector": null,
+    "name": "Services for migrant families",
+    "value": "Rs 2,363 arba",
+    "label": "Remittances in FY 2082/83, up 37% (from NRB annual data)",
+    "ideas": [
+     "Pre-departure skills and language classes",
+     "Savings guidance for remittance families",
+     "Help for returnees starting a business"
+    ],
+    "source_name": "Ratopati",
+    "source_url": "https://english.ratopati.com/story/76530/235-trillion-remittances-entered-in-one-year-371-percent-more-than-last-year"
+   },
+   {
+    "level": "strong",
+    "sector": "it",
+    "name": "IT and online services",
+    "value": "Rs 22.33 arba",
+    "label": "IT and telecom service exports, FY 2024/25, against a Rs 300 arba goal",
+    "ideas": [
+     "Outsourcing for foreign clients",
+     "Digital marketing for Nepali businesses",
+     "Coding and design training"
+    ],
+    "source_name": "Kathmandu Post",
+    "source_url": "https://kathmandupost.com/money/2026/07/20/foreign-study-costs-outpace-growth-in-nepal-s-service-exports"
+   },
+   {
+    "level": "strong",
+    "sector": "energy",
+    "name": "Energy and the electric switch",
+    "value": "Rs 29.3 arba",
+    "label": "Record electricity exports, FY 2025/26, with 4,296 MW installed",
+    "ideas": [
+     "Solar installation",
+     "Electrical contracting",
+     "Electric cooking and appliance sales"
+    ],
+    "source_name": "Kathmandu Post",
+    "source_url": "https://kathmandupost.com/money/2026/07/24/nepal-records-rs18-76-billion-electricity-trade-surplus-in-fiscal-2025-26"
+   },
+   {
+    "level": "strong",
+    "sector": "manufacturing",
+    "name": "Making what Nepal imports",
+    "value": "Rs 1,781 arba",
+    "label": "Trade gap in FY 2082/83; noodle and soybean oil exports are growing",
+    "ideas": [
+     "Food processing",
+     "Animal feed",
+     "Packaging and local brands"
+    ],
+    "source_name": "Ratopati",
+    "source_url": "https://english.ratopati.com/story/71521/nepals-total-foreign-trade-exceeded-24-trillion-in-one-year"
+   },
+   {
+    "level": "strong",
+    "sector": "education",
+    "name": "Education and skills",
+    "value": "8,941",
+    "label": "Private schools and rising, while families spend heavily on study abroad",
+    "ideas": [
+     "Test preparation",
+     "Vocational and technical training",
+     "Career counselling"
+    ],
+    "source_name": "Kathmandu Post",
+    "source_url": "https://kathmandupost.com/national/2026/06/02/community-schools-shrink-as-private-education-expands-in-nepal"
+   },
+   {
+    "level": "moderate",
+    "sector": "tourism",
+    "name": "Tourism",
+    "value": "11.58 lakh",
+    "label": "Foreign tourists in 2025, up 1%; 2026 is Nepal's ASEAN tourism year",
+    "ideas": [
+     "Homestays",
+     "Guiding for Southeast Asian visitors"
+    ],
+    "source_name": "Kantipur",
+    "source_url": "https://ekantipur.com/news/2026/01/02/en/more-than-1158-million-tourists-entered-nepal-in-2025-58-19.html"
+   },
+   {
+    "level": "moderate",
+    "sector": "agriculture",
+    "name": "Farming",
+    "value": "24%",
+    "label": "Share of GDP; the Mentor's 7 farm businesses all show study profits",
+    "ideas": [
+     "Beekeeping",
+     "Tunnel vegetables",
+     "Ginger, with processing"
+    ],
+    "source_name": "Kantipur",
+    "source_url": "https://ekantipur.com/business/2026/05/27/en/economic-survey-08283-economy-expected-to-expand-by-385-percent-32-21.html"
+   },
+   {
+    "level": "caution",
+    "sector": "construction",
+    "name": "Construction and real estate",
+    "value": "3.85%",
+    "label": "Expected economic growth in FY 2082/83; construction is under pressure",
+    "ideas": [
+     "Wait for clearer demand before investing"
+    ],
+    "source_name": "Kantipur",
+    "source_url": "https://ekantipur.com/business/2026/05/27/en/economic-survey-08283-economy-expected-to-expand-by-385-percent-32-21.html"
+   },
+   {
+    "level": "caution",
+    "sector": "energy",
+    "name": "Electric vehicle services",
+    "value": "−6%",
+    "label": "EV imports in the first 7 months of FY 2082/83 against a year earlier (5,894 vehicles)",
+    "ideas": [
+     "Grow EV servicing step by step"
+    ],
+    "source_name": "Ratopati",
+    "source_url": "https://english.ratopati.com/story/49567/ev-imports-worth-rs-14-billion-in-7-months"
+   },
+   {
+    "level": "caution",
+    "sector": "finance",
+    "name": "Cooperatives",
+    "value": "Rs 46 arba",
+    "label": "Savings still stuck in troubled cooperatives in 2026",
+    "ideas": [
+     "Don't deposit in or start a cooperative"
+    ],
+    "source_name": "Nepse Trading",
+    "source_url": "https://nepsetrading.com/news/around-npr-46-billion-still-pending-82-more-depositors-receive-refunds"
+   },
+   {
+    "level": "caution",
+    "sector": "investing",
+    "name": "Shares",
+    "value": "−7.05%",
+    "label": "NEPSE in FY 2082/83, after +24.74% the year before",
+    "ideas": [
+     "Treat shares as long-term saving"
+    ],
+    "source_name": "ShareSansar",
+    "source_url": "https://www.sharesansar.com/newsdetail/nepse-yearly-performance-highlights-falls-705-in-fy-208283-ending-at-259780-2026-07-16"
+   }
+  ]
+ }
+}

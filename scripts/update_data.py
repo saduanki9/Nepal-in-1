@@ -11,7 +11,7 @@ What it does:
 - keeps only public parts: the news (not the school ideas), business, NEPSE,
   watchlist, investment rates and places
 - removes the "local" (your province) flags and the internal updated_by fields
-- keeps the site's own "mentor" section exactly as it is
+- never touches the Mentor, which lives in site/mentor.json
 - refuses to go backwards: if the source is not newer than the last update,
   nothing is written
 
@@ -102,9 +102,6 @@ def main():
     if flagged:
         fail("these items speak to one person; reword them in the source and run again:\n  " + "\n  ".join(flagged))
 
-    if "mentor" not in cur:
-        fail("current site data has no mentor section to keep")
-    out["mentor"] = cur["mentor"]
 
     SITE_DATA.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print("WROTE site/data.json: %d news, %d business stories, NEPSE close of %s"

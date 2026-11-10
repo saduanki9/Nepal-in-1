@@ -72,6 +72,15 @@ The page works out how many units the visitor's budget covers, then multiplies. 
 
 **How solid are they?** In November 2026 the main figures for all five businesses were checked against the full papers (beekeeping: Chitwan 2026, 60 farms; bananas: Chitwan 2025, 135 farms; tunnel tomatoes: Kathmandu 2024, 150 farms; broilers: Rupandehi 2020 survey, 120 farms; carp ponds: Bara 2019 survey, 90 farms). Some figures still come from elsewhere and say so on the page: the price of a hive with bees, the broiler shed cost (Indian project models), the pond digging rate, and the cautious cases for bees and fish. Conversions from per hectare to per tunnel or per kattha, and the assumption of five chicken batches a year, are ours. Businesses without solid figures (dairy, goats, mushrooms, homestays) are listed without numbers.
 
+### Weekly market prices
+
+Every Sunday at 09:02 Nepal time, the **Weekly market prices** workflow reads Kalimati market's daily wholesale prices for tunnel-grown tomato, Nepali banana, rohu carp and chhari fish, saves them in `site/data.json` (`mentor.market`) and publishes the site. It runs on GitHub's free runners and uses no Claude usage.
+
+- Each Mentor card for tomatoes, bananas and fish shows this week's price, its range, and the change over about 4 weeks.
+- When a price is up 10% or more over 4 weeks, the Start page shows it as the "Opportunity of the week".
+- Prices are wholesale in Kathmandu, higher than the farm-gate prices the profit studies use, so they are shown next to the study profit and never change it.
+- If Kalimati can't be read, the run fails, GitHub emails the repo owner, and the site keeps the previous prices. To run it by hand: Actions → Weekly market prices → Run workflow, or `python3 scripts/update_prices.py`.
+
 ## Hosting
 
 The site is published with GitHub Pages at **https://saduanki9.github.io/Nepal-in-1/**

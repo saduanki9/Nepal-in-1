@@ -561,6 +561,9 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     <p class="foot">Progress from the National Planning Commission report (April 2026), Arun-3 from January 2026, Kathmandu–Terai Expressway target from the Nepali Army. Status notes summarised by Claude.</p>
   </section>
 </main>
+<footer class="wrap" style="padding-block: 0 32px">
+  <p class="foot">Visits are counted anonymously with GoatCounter: no cookies and no names. Builds you add stay on your own device and are never sent anywhere. Nothing here is investment or financial advice.</p>
+</footer>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
@@ -1559,11 +1562,17 @@ document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.addEven
 
 /* ---------- Routing ---------- */
 const TABS = ['today', 'builds', 'mentor', 'business', 'nepse', 'invest', 'economy', 'projects'];
+/* Anonymous visit counting (GoatCounter). Page loads count by themselves; tab switches are counted here.
+   Does nothing if the counter is blocked or not loaded. */
+function countView(tab) {
+  try { if (window.goatcounter && typeof window.goatcounter.count === 'function') window.goatcounter.count({ path: location.pathname + '#' + tab, title: 'Nepal in 1: ' + tab }); } catch (e) {}
+}
 function show(tab, push) {
   if (!TABS.includes(tab)) tab = 'today';
   S.tab = tab;
   for (const t of TABS) { $('v-' + t).hidden = t !== tab; $('tab-' + t).setAttribute('aria-selected', t === tab ? 'true' : 'false'); }
   if (push && location.hash.slice(1) !== tab) location.hash = tab;
+  if (push) countView(tab);
   if (tab === 'economy') renderEconomy();
   if (tab === 'projects') renderProjects();
   if (tab === 'today') renderToday();
@@ -1603,5 +1612,6 @@ show(S.tab, false);
 loadData();
 })();
 </script>
+<script data-goatcounter="https://nepalin1.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>

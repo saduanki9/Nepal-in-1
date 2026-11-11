@@ -49,16 +49,18 @@ cd site && python3 -m http.server 8000
 
 ### Update the data
 
-The data updates itself twice a day. A scheduled Claude task reads the public data that the Nepal Dashboard publishes (news, business, NEPSE, watchlist, investment rates, places) and runs:
+The data updates itself once a day, at about 4:47 pm Nepal time, after the NEPSE close. A scheduled Claude task researches the day's news, business, NEPSE, watchlist prices and investment rates from public sources (every item keeps its link), writes them to a file and runs:
 
 ```sh
-python3 scripts/update_data.py public.json   # writes site/data.json
-node scripts/check.mjs                       # should end with "Site check passed."
+python3 scripts/update_data.py today.json   # writes site/data.json
+node scripts/check.mjs                      # should end with "Site check passed."
 ```
 
-then commits to `main`, which publishes the site. The script keeps only public parts, keeps the Mentor section as it is, refuses to go backwards in time, and stops if a story is written to one person ("you", "your") so it can be reworded first. If anything fails, nothing is published.
+then commits to `main`, which publishes the site. The script keeps only public parts, never touches the Mentor (`site/mentor.json`), refuses to go backwards in time, and stops if a story is written to one person ("you", "your") so it can be reworded first. If anything fails, nothing is published and the site keeps its previous data.
 
-To update by hand, run the same two commands with a fresh `public.json`, then commit and push.
+A second task runs every Sunday morning and suggests one new, sourced addition to the Mentor on the branch `mentor-weekly`. It goes live only after it is reviewed and merged.
+
+To update by hand, run the same two commands with a fresh file in the same shape, then commit and push.
 
 ### How the mentor's numbers work
 

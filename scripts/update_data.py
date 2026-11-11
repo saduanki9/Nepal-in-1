@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Refresh site/data.json from the Nepal Dashboard's public data.
+"""Refresh site/data.json from the daily research file.
 
 Usage:
     python3 scripts/update_data.py SOURCE.json
 
-SOURCE.json is the dashboard's published public.json:
+SOURCE.json is the file the daily research task writes:
     {"generated_at", "feed", "business", "nepse", "watch", "invest", "places"}
 
 What it does:
-- keeps only public parts: the news (not the school ideas), business, NEPSE,
+- keeps only public parts: the news (not any "ideas" list), business, NEPSE,
   watchlist, investment rates and places
-- removes the "local" (your province) flags and the internal updated_by fields
+- removes any "local" flags and internal updated_by fields
 - never touches the Mentor, which lives in site/mentor.json
 - refuses to go backwards: if the source is not newer than the last update,
   nothing is written

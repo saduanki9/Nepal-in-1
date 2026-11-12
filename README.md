@@ -11,7 +11,7 @@ Nepal in 1 is a public website, kept separate from any personal dashboard. Every
 | **Start here** | The front page: one question (how much can you put in?), the three best-fitting businesses with money to start and profit a month, and links to the rest |
 | **Today in Nepal** | The day's key stories from across the country, filterable by topic, each with why it matters |
 | **My builds** | A personal project board for each visitor: add a build, move it from Idea to Launched, track tasks, notes and a target month |
-| **Mentor** | Seven businesses with published Nepal cost and profit studies (beekeeping, bananas, tunnel tomatoes, broilers, carp ponds, ginger, goats). Each opens at the smallest size the studies support, with the money it needs to start, profit a month, payback, first steps and what to watch out for. Visitors can enter any budget (optional) to size them to their money. A new Mentor's pick every Sunday. One tap adds a business to My builds with its first steps as tasks |
+| **Mentor** | Seven businesses with published Nepal cost and profit studies (beekeeping, bananas, tunnel tomatoes, broilers, carp ponds, ginger, goats). Each opens at the smallest size the studies support, with the money it needs to start, profit a month, payback, first steps and what to watch out for. Visitors can enter any budget (optional) to size them to their money. A new Mentor's pick every Sunday. Below them: a growth table and sector guides for every part of Nepal's economy, refreshed weekly One tap adds a business to My builds with its first steps as tasks |
 | **Business** | Key indicators, company news and upcoming business dates |
 | **NEPSE** | Index chart (1M / 3M / all), sector moves, top gainers, losers and most traded, a fundamentals watchlist for banks, IPOs and share issues |
 | **Invest** | A calculator comparing fixed deposits, savings bonds, NEPSE, gold and land: lump sum or monthly, low / expected / high, after tax and inflation; plus places to watch for property |
@@ -58,7 +58,14 @@ node scripts/check.mjs                      # should end with "Site check passed
 
 then commits to `main`, which publishes the site. The script keeps only public parts, never touches the Mentor (`site/mentor.json`), refuses to go backwards in time, and stops if a story is written to one person ("you", "your") so it can be reworded first. If anything fails, nothing is published and the site keeps its previous data.
 
-A second task runs every Sunday morning and suggests one new, sourced addition to the Mentor on the branch `mentor-weekly`. It goes live only after it is reviewed and merged.
+Two weekly tasks keep the slower-moving parts fresh:
+
+| When (Nepal time) | Task | Publishes |
+|---|---|---|
+| Saturday, 9:13 am | **Invest refresh:** fixed deposit rates, savings bond issues, inflation, NEPSE growth, gold, land and rent figures, tax changes and places to watch | Straight to `main`, like the daily update |
+| Sunday, 10:23 am | **Mentor refresh:** newer official figures for every growth row and sector guide, plus a new business or sector guide when a solid source exists | To the branch `mentor-weekly`; it goes live only after it is reviewed and merged |
+
+The tasks are spaced out so no two run close together.
 
 To update by hand, run the same two commands with a fresh file in the same shape, then commit and push.
 
@@ -73,7 +80,7 @@ Each business in `site/mentor.json` under `ideas` has four figures per unit (one
 
 The page works out how many units the visitor's budget covers, then multiplies. Every business lists its sources and explains its sums under "How these numbers are worked out".
 
-**How solid are they?** The main figures for every business were checked against the full papers in November 2026: beekeeping (Chitwan 2026, 60 farms), bananas (Chitwan 2025, 135 farms), tunnel tomatoes (Kathmandu 2024, 150 farms), broilers (Rupandehi, 2020 survey, 120 farms), carp ponds (Bara, 2019 survey, 90 farms), ginger (Surkhet 2026, 100 growers) and goats (Banke, 2025 survey, 95 households). Some figures come from elsewhere and say so on the page: the price of a hive with bees, the broiler shed cost (Indian project models), the pond digging rate, and the cautious cases for bees and fish. Conversions from per hectare to per tunnel or per kattha, and the assumption of five chicken batches a year, are ours. Ginger and goats rest on one study each, so they show no range and can't be the Mentor's pick. Looked at and left without numbers: dairy, large cardamom, mushrooms and homestays (thin or dated figures), cauliflower (a 2024 study whose sales don't match its own yield and price) and potato (the only recent study covers remote Mustang).
+**How solid are they?** The main figures for every business were checked against the full papers in November 2026: beekeeping (Chitwan 2026, 60 farms), bananas (Chitwan 2025, 135 farms), tunnel tomatoes (Kathmandu 2024, 150 farms), broilers (Rupandehi, 2020 survey, 120 farms), carp ponds (Bara, 2019 survey, 90 farms), ginger (Surkhet 2026, 100 growers) and goats (Banke, 2025 survey, 95 households). Some figures come from elsewhere and say so on the page: the price of a hive with bees, the broiler shed cost (Indian project models), the pond digging rate, and the cautious cases for bees and fish. Conversions from per hectare to per tunnel or per kattha, and the assumption of five chicken batches a year, are ours. Ginger and goats rest on one study each, so they show no range and can't be the Mentor's pick. Looked at and left without numbers: dairy, large cardamom, mushrooms and homestays (thin or dated figures), cauliflower and cucumber (studies whose sales don't match their own yield and price) and potato (the only recent study covers remote Mustang).
 
 **Budget:** there is no default budget. Each business is shown at its starting size (from about Rs 22,200 for 2 ropani of ginger), so anyone can see what it takes. A visitor's own budget, if entered, sizes every business to it and is remembered only in their browser.
 
@@ -87,7 +94,7 @@ A compact table on the Mentor ranks sectors as Strong, Moderate or Careful by wh
 
 ### Sector guides
 
-Below the sized businesses, the Mentor has 13 sector guides covering business across Nepal: farming, import and export, retail and wholesale, IT and online services, tourism, small manufacturing and food processing, construction and real estate, transport, education, health and pharmacy, energy, finance and cooperatives, and investing in shares. Each gives the key public numbers with sources, the first steps (registrations and licences), and what to watch out for. They give **no profit estimate**, because profit depends on the exact product, place and owner. Data lives in `sectors` in `site/mentor.json`; `scripts/check.mjs` checks every guide has first steps and that every number has a source. Registration details summarised from advisers' guides are labelled as such on the page.
+Below the sized businesses, the Mentor has 14 sector guides covering business across Nepal: farming, import and export, retail and wholesale, IT and online services, tourism, small manufacturing and food processing, construction and real estate, transport, education, health and pharmacy, energy, finance and cooperatives, investing in shares, and media, film and creative work. The weekly Mentor refresh updates their figures and can add a guide. Each gives the key public numbers with sources, the first steps (registrations and licences), and what to watch out for. They give **no profit estimate**, because profit depends on the exact product, place and owner. Data lives in `sectors` in `site/mentor.json`; `scripts/check.mjs` checks every guide has first steps and that every number has a source. Registration details summarised from advisers' guides are labelled as such on the page.
 
 ## Hosting
 

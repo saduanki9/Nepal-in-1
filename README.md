@@ -36,6 +36,7 @@ No framework and no build step: just two files.
 | `site/data.json` | The daily data: news, business, NEPSE, investment rates, places |
 | `site/mentor.json` | The Mentor: businesses, growth table and sector guides (updated separately, so weekly suggestions never clash with the daily data) |
 | `scripts/check.mjs` | Health check: valid data, every tab wired up, script has no syntax errors |
+| `scripts/browser-check.mjs` | Opens the site in a real browser at small-phone, phone, tablet and desktop size and checks every feature can be reached and shows content |
 | `.github/workflows/check.yml` | Runs the check on GitHub every time the site changes |
 | `.github/workflows/deploy.yml` | Publishes `site/` to GitHub Pages every time it changes on `main` |
 | `docs/slsa-generic-generator.yml` | Parked workflow for signing downloadable releases (not active) |
@@ -107,7 +108,12 @@ One-time setup, in the repo's settings on GitHub:
 1. **Settings → General → Danger Zone → Change visibility → Public.** Free GitHub accounts can only publish Pages sites from public repos.
 2. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
 
-After that, every change to `site/` on `main` goes live by itself within a minute or two. The deploy runs the health check first and stops if it fails. To publish again by hand, open the **Actions** tab, pick **Deploy site** and tap **Run workflow**.
+After that, every change to `site/` on `main` goes live by itself within a minute or two. Before publishing, the deploy runs two checks and stops if either fails, so the previous version stays live:
+
+1. **Health check** (`scripts/check.mjs`): valid data, every tab wired up and listed in the Menu, no script errors.
+2. **Browser check** (`scripts/browser-check.mjs`): at four screen sizes, every feature must open from the Menu, from its tab, from a direct link and from the Start page, show content, and not scroll sideways.
+
+**Visitors always get the newest version.** The deploy stamps a version into the page and writes `version.json`. If a phone is holding an older cached copy, the page reloads itself once when opened; if a new version is published while the page is open, it offers a "Refresh" button. To publish again by hand, open the **Actions** tab, pick **Deploy site** and tap **Run workflow**.
 
 ## Roadmap
 

@@ -21,3 +21,7 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/check.mjs
+      - name: Check every feature in a real browser (phone, tablet, desktop)
+        run: |
+          npm install --no-save --no-audit --no-fund playwright-core@1.48.2
+          node scripts/browser-check.mjs || node scripts/browser-check.mjs

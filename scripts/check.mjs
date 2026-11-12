@@ -71,6 +71,16 @@ if (noDesc.length) fail('these tabs have no Menu description in FEATURE_DESC: ' 
 const stamps = html.split('__BUILD__').length - 1;
 if (stamps === 1) ok('version stamp placeholder is in place'); else fail('index.html must contain the version placeholder exactly once (found ' + stamps + ')');
 
+// 2c. The home-screen app details: a valid manifest whose icons exist.
+try {
+  const man = JSON.parse(readFileSync('site/manifest.webmanifest', 'utf8'));
+  const missing = (man.icons || []).map((i) => i.src).concat(['icon-180.png']).filter((f) => { try { readFileSync('site/' + f); return false; } catch { return true; } });
+  if (!man.name || !man.start_url || !(man.icons || []).length) fail('manifest.webmanifest needs a name, start_url and icons');
+  else if (missing.length) fail('home-screen icons are missing: ' + missing.join(', '));
+  else if (!html.includes('rel="manifest"')) fail('index.html does not link the manifest');
+  else ok('home-screen app manifest and icons are in place');
+} catch (e) { fail('manifest.webmanifest is missing or not valid JSON: ' + e.message); }
+
 // 3. Inline JavaScript parses.
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
 const dir = mkdtempSync(join(tmpdir(), 'nd-check-'));

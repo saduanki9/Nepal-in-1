@@ -17,6 +17,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://saduanki9.github.io/Nepal-in-1/">
 <meta name="theme-color" content="#13203f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nepal in 1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-3 0 32 32'%3E%3Cpath d='M2 1 L24 14 H9 L24 30 H2 Z' fill='%23c8102e' stroke='%232f5bd3' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
 /* Base reset. The [hidden] rule matters: tabs are shown and hidden with the hidden attribute. */
@@ -105,7 +111,7 @@ main { padding-block: 28px 64px; }
 .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px; }
 .head h1 { font-family: var(--display); font-weight: 400; font-size: clamp(28px, 4vw, 38px); line-height: 1.08; margin: 0; text-wrap: balance; }
 .head p { margin: 6px 0 0; color: var(--muted); max-width: 62ch; }
-.eyebrow { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 8px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 8px; }
 h2.sec { font-family: var(--display); font-weight: 400; font-size: 22px; margin: 6px 0 0; }
 
 .btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; padding: 9px 16px; min-height: 40px; border: 1px solid var(--line-strong); background: var(--surface); font-weight: 500; font-size: 14px; }
@@ -157,7 +163,7 @@ h2.sec { font-family: var(--display); font-weight: 400; font-size: 22px; margin:
 
 .tablewrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--raise); }
+th { text-align: left; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--raise); }
 td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
 tr:last-child td { border-bottom: 0; }
 tbody tr.click { cursor: pointer; }
@@ -169,7 +175,7 @@ td.dim { color: var(--muted); font-size: 13px; }
 .empty h3 { margin: 0; color: var(--fg); font-family: var(--display); font-weight: 400; font-size: 22px; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.fchip { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 99px; padding: 6px 13px; font-size: 13px; color: var(--muted); min-height: 34px; }
+.fchip { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 99px; padding: 7px 14px; font-size: 13.5px; color: var(--muted); min-height: 40px; }
 .fchip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 14px; }
@@ -179,6 +185,9 @@ td.dim { color: var(--muted); font-size: 13px; }
 .story p { margin: 0; font-size: 14px; color: var(--muted); }
 .story a, .src { font-size: 13px; color: var(--muted); margin-top: auto; text-decoration: none; border-bottom: 1px solid var(--line-strong); align-self: flex-start; }
 .story a:hover, .src:hover { color: var(--fg); }
+/* Bigger touch area for small text links, without moving anything. */
+.story a, .src, .g-act button { position: relative; }
+.story a::after, .src::after, .g-act button::after { content: ""; position: absolute; inset: -11px -8px; }
 
 .idea { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
 .idea.pick { border: 2px solid var(--accent); padding: 17px; }
@@ -301,8 +310,9 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .mgrid dd { margin: 0; font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .mgrid dd small { display: block; font-size: 12px; font-weight: 400; color: var(--faint); }
 .idea .fine { font-size: 13px; color: var(--muted); }
-.idea details { border-top: 1px solid var(--line); padding-top: 10px; }
-.idea summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.idea details { border-top: 1px solid var(--line); }
+.idea summary { cursor: pointer; font-weight: 600; font-size: 14.5px; padding-block: 12px; margin-bottom: -2px; }
+.idea details:not([open]) { margin-bottom: -10px; }
 .idea details > * + * { margin-top: 8px; }
 .idea details ol, .idea details ul { margin-bottom: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; }
 .idea details .k { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--muted); }
@@ -337,7 +347,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 @media (max-width: 560px) { .hero { padding: 20px 18px; } .hero .ask { grid-template-columns: 1fr; } }
 .opp { border: 1px solid var(--ok); background: var(--surface); border-radius: var(--r); padding: 14px 18px; display: grid; gap: 4px; text-align: left; width: 100%; }
 .opp:hover { box-shadow: var(--shadow); }
-.opp .k { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ok); font-weight: 700; }
+.opp .k { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ok); font-weight: 700; }
 #start-opp { display: grid; gap: 14px; }
 #start-opp:empty { display: none; }
 .opp.week { border-color: var(--st-exploring); }
@@ -353,7 +363,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .sector .num b { font-size: 18px; font-variant-numeric: tabular-nums; }
 .sector .num span { font-size: 12px; color: var(--faint); }
 .sector details { border-top: 1px solid var(--line); padding-top: 10px; }
-.sector summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.sector summary { cursor: pointer; font-weight: 600; font-size: 14.5px; padding-block: 12px; }
 .sector details > * + * { margin-top: 8px; }
 .sector ol, .sector ul { margin-bottom: 0; padding-left: 20px; font-size: 14px; display: grid; gap: 4px; }
 .sector .k2 { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
@@ -383,6 +393,18 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .toast { position: fixed; z-index: 50; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100% - 32px); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
 .update-pill { position: fixed; z-index: 60; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--accent); color: #fff; border: 0; border-radius: 99px; padding: 11px 18px; font-size: 14px; font-weight: 600; box-shadow: var(--shadow); max-width: calc(100% - 32px); }
+.to-top { position: fixed; z-index: 15; right: max(14px, env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--surface); color: var(--fg); box-shadow: var(--shadow); display: grid; place-items: center; }
+.to-top svg { width: 20px; height: 20px; }
+.menu-foot { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 16px; margin-top: -4px; }
+.menu-foot button { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 8px 16px; border-radius: 99px; border: 1px solid rgba(255,255,255,.28); background: transparent; color: var(--bar-fg); font-size: 14px; font-weight: 600; }
+.menu-foot svg { width: 16px; height: 16px; }
+.menu-foot .hint { flex-basis: 100%; font-size: 12.5px; color: var(--bar-muted); }
+@media (max-width: 560px) {
+  .tiles { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tile { padding: 12px 14px; min-width: 0; }
+  .tile .v { font-size: 24px; overflow-wrap: anywhere; }
+  .tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
 .banner { background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; font-size: 13px; }
 
 @media (max-width: 760px) {
@@ -407,7 +429,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
         <svg width="26" height="32" viewBox="0 0 26 32" aria-hidden="true"><path d="M2 1 L24 14 H9 L24 30 H2 Z" fill="#c8102e" stroke="#2f5bd3" stroke-width="2" stroke-linejoin="round"/></svg>
         <div style="min-width:0">
           <div class="brand-name">Nepal in 1</div>
-          <div class="brand-sub">News, markets, money and the economy in one place</div>
+          <div class="brand-sub">All of Nepal in one place</div>
         </div>
       </div>
       <div class="when" id="when"><b id="when-date">Today</b><span id="when-fy">Fiscal year</span><span class="upd" id="when-upd"></span></div>
@@ -427,7 +449,9 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="menu-panel"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>Menu</button>
     </div>
   </div>
-  <div class="menu" id="menu-panel" hidden><div class="wrap"><div class="menu-grid" id="menu-grid"></div></div></div>
+  <div class="menu" id="menu-panel" hidden><div class="wrap"><div class="menu-grid" id="menu-grid"></div>
+    <div class="menu-foot"><button type="button" id="share-btn"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V2M8 2 5 5M8 2l3 3M3 8v5h10V8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Share Nepal in 1</button><span class="hint" id="install-hint"></span></div>
+  </div></div>
 </header>
 
 <main class="wrap">
@@ -696,6 +720,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
   </section>
 </main>
 <footer class="wrap" style="padding-block: 0 32px">
+  <p style="margin:0 0 14px"><button class="btn" type="button" id="share-foot"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V2M8 2 5 5M8 2l3 3M3 8v5h10V8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Share Nepal in 1</button></p>
   <p class="foot">Visits are counted anonymously with GoatCounter: no cookies and no names. Builds you add stay on your own device and are never sent anywhere. Nothing here is investment or financial advice.</p>
 </footer>
 
@@ -705,6 +730,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
   <div class="sheet-b" id="sheet-b"></div>
   <div class="sheet-f" id="sheet-f"></div>
 </aside>
+<button class="to-top" type="button" id="to-top" aria-label="Back to top" hidden><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 16V4M10 4 5 9M10 4l5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -1985,6 +2011,30 @@ setInterval(header, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) header(); });
 S.tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
 show(S.tab, false);
+
+/* Back to top, on long pages. */
+const toTop = $('to-top');
+let topTick = false;
+window.addEventListener('scroll', () => { if (topTick) return; topTick = true; requestAnimationFrame(() => { topTick = false; toTop.hidden = window.scrollY < window.innerHeight * 1.2 || !!S.open; }); }, { passive: true });
+toTop.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); });
+
+/* Share: the phone's own share sheet where there is one, otherwise copy the link. */
+function shareSite() {
+  const url = location.origin + location.pathname + (S.tab && S.tab !== 'start' ? '#' + S.tab : '');
+  const data = { title: 'Nepal in 1', text: 'Nepal in 1: business ideas, opportunities, news, NEPSE and more in one place. Free.', url };
+  closeMenu();
+  if (navigator.share) { navigator.share(data).catch(() => {}); return; }
+  const done = () => toast('Link copied. Paste it anywhere to share.');
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, () => toast(url)); else toast(url);
+}
+$('share-btn').addEventListener('click', shareSite);
+$('share-foot').addEventListener('click', shareSite);
+(() => {
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  if (standalone) return;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  $('install-hint').textContent = ios ? 'Keep it on this phone: tap the Share icon in Safari, then \u201cAdd to Home Screen\u201d.' : 'Keep it on this phone: open the browser menu (\u22ee), then \u201cAdd to Home screen\u201d.';
+})();
 
 /* Always the newest version. The deploy stamps BUILD below and writes version.json. If this page is an older
    cached copy, it reloads itself once on opening; if a new version arrives while the page is open, it offers a refresh. */

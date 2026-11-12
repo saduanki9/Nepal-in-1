@@ -18,6 +18,11 @@ if (data) {
     if (data[key] && typeof data[key] === 'object') ok('data.json has "' + key + '"');
     else fail('data.json is missing the "' + key + '" section');
   }
+  // Business opportunities (optional): each needs a type, a title and an https source; deadlines are YYYY-MM-DD or empty.
+  const opps = data.business && Array.isArray(data.business.opportunities) ? data.business.opportunities : [];
+  const badO = opps.filter((o) => !o || !o.type || !o.title || !/^https:\/\//.test(String(o.source_url || '')) || (o.deadline && !/^\d{4}-\d{2}-\d{2}$/.test(o.deadline)));
+  if (badO.length) fail('business opportunities missing a type, title, https source or valid deadline: ' + badO.map((o) => (o && o.title) || '?').join(', '));
+  else if (opps.length) ok(opps.length + ' business opportunities are complete');
   // Mentor businesses: every figure the calculator multiplies must be a real number, and every source a real link.
   if ('mentor' in data) fail('data.json should not carry the Mentor; it lives in site/mentor.json');
   let mentor = null;

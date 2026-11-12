@@ -12,7 +12,7 @@ Nepal in 1 is a public website, kept separate from any personal dashboard. Every
 | **Today in Nepal** | The day's key stories from across the country, filterable by topic, each with why it matters |
 | **My builds** | A personal project board for each visitor: add a build, move it from Idea to Launched, track tasks, notes and a target month |
 | **Mentor** | Seven businesses with published Nepal cost and profit studies (beekeeping, bananas, tunnel tomatoes, broilers, carp ponds, ginger, goats). Each opens at the smallest size the studies support, with the money it needs to start, profit a month, payback, first steps and what to watch out for. Visitors can enter any budget (optional) to size them to their money. A new Mentor's pick every Sunday. Below them: a growth table and sector guides for every part of Nepal's economy, refreshed weekly One tap adds a business to My builds with its first steps as tasks |
-| **Business** | Key indicators, company news and upcoming business dates |
+| **Business** | Business opportunities open now (loans, subsidies, grants, training, tenders, trade fairs, share issues, each with its deadline and source), key indicators, company news and upcoming business dates. The Start page shows the three closing soonest |
 | **NEPSE** | Index chart (1M / 3M / all), sector moves, top gainers, losers and most traded, a fundamentals watchlist for banks, IPOs and share issues |
 | **Invest** | A calculator comparing fixed deposits, savings bonds, NEPSE, gold and land: lump sum or monthly, low / expected / high, after tax and inflation; plus places to watch for property |
 | **Economy** | GDP paths to 2036, IMF and ADB forecasts, what the economy is made of, hydropower export progress, a growth scorecard |

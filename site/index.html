@@ -267,6 +267,12 @@ th.r, td.r { text-align: right; }
 .opt-card h3 { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .opt-card .srcs, .place-card .srcs { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: auto; }
 .sec-note { margin: -12px 0 0; color: var(--muted); max-width: 72ch; font-size: 14px; }
+.story .due { font-size: 12.5px; font-weight: 600; color: var(--fg); }
+.story .due.soon { color: var(--accent); }
+.story .who { font-size: 13px; color: var(--muted); }
+.jump { margin-top: -6px; }
+.jump .fchip { color: var(--fg); }
+.more-row { display: flex; justify-content: flex-start; }
 .place-card h3 { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .place-card .sig { color: var(--fg); }
 .place-card .k { font-size: 12px; font-weight: 600; color: var(--fg); letter-spacing: .02em; margin-top: 2px; }
@@ -422,6 +428,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     </div>
     <div id="start-opp"></div>
     <div class="grid" id="start-ideas"></div>
+    <div id="start-fresh" class="view" style="gap:14px" hidden></div>
     <ol class="steps">
       <li><b>Pick your budget</b><span>Any amount. Every business is sized to it.</span></li>
       <li><b>Compare businesses</b><span>Money to start, profit a month, payback, risk, and the study behind each figure.</span></li>
@@ -479,6 +486,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
         <p>Businesses with published cost and profit studies from Nepal. Each starts at the smallest size the studies support, so you can see what it really takes. Enter your own budget to size them to your money. A new Mentor's pick every Sunday. Add one to My builds to start tracking it.</p>
       </div>
     </div>
+    <div class="chips jump" id="mentor-jump" role="group" aria-label="Jump to"></div>
     <div class="panel calc">
       <div class="fld"><label for="mentor-budget">Your budget (Rs), optional</label><input id="mentor-budget" type="number" min="0" step="10000" inputmode="numeric" placeholder="Any amount"></div>
       <div class="fld"><span class="lbl" id="mentor-where-l">Where</span><div class="seg" role="group" aria-labelledby="mentor-where-l" id="mentor-where"><button type="button" data-where="all">Anywhere</button><button type="button" data-where="terai">Terai</button><button type="button" data-where="hills">Hills</button></div></div>
@@ -510,6 +518,10 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       </div>
     </div>
     <div class="tiles" id="biz-tiles"></div>
+    <h2 class="sec" id="opp-h" hidden>Business opportunities now</h2>
+    <p class="sec-note" id="opp-note" hidden>Loans, subsidies, grants, training, tenders, trade fairs and share issues that are open or opening soon, from official notices and the news. Always check the source before applying.</p>
+    <div class="grid narrow" id="biz-opp"></div>
+    <h2 class="sec">Business news</h2>
     <div class="split">
       <div class="view" style="gap:14px">
         <div class="chips" id="biz-chips" role="group" aria-label="Filter business news"></div>
@@ -1197,6 +1209,37 @@ function renderProjects() {
 /* ---------- Business ---------- */
 const crore = (rs) => 'Rs ' + (Number(rs) / 1e7).toLocaleString('en', { maximumFractionDigits: Number(rs) >= 1e9 ? 0 : 1 }) + ' Cr';
 const signed = (n, d) => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(Number(n)).toLocaleString('en', { minimumFractionDigits: d, maximumFractionDigits: d });
+/* Business opportunities: the daily update's list plus share issues open now. Expired ones drop off by date. */
+function opportunities() {
+  const t = today(), out = [];
+  for (const o of (S.biz && Array.isArray(S.biz.opportunities) ? S.biz.opportunities : [])) {
+    if (o && o.title && (!o.deadline || String(o.deadline).slice(0, 10) >= t)) out.push(o);
+  }
+  for (const i of (S.nepse && Array.isArray(S.nepse.issues) ? S.nepse.issues : [])) {
+    if (!i || i.status !== 'Open' || (i.close && String(i.close).slice(0, 10) < t)) continue;
+    if (out.some((o) => o.title && i.company && o.title.includes(i.company))) continue;
+    out.push({ type: 'Share issue', title: i.company + (i.type ? ': ' + i.type : ''), who: '', deadline: i.close || '', detail: i.units ? Number(i.units).toLocaleString('en') + ' units on offer. Apply through a bank or the MeroShare app.' : 'Apply through a bank or the MeroShare app.', source_name: 'ShareSansar', source_url: i.source_url });
+  }
+  return out.sort((a, b) => (a.deadline ? 0 : 1) - (b.deadline ? 0 : 1) || String(a.deadline).localeCompare(String(b.deadline)));
+}
+function oppCard(o) {
+  const c = el('article', 'story');
+  const m = el('div', 'meta'); m.append(el('span', 'chip', o.type || 'Opportunity'));
+  const t = today(), dl = o.deadline ? String(o.deadline).slice(0, 10) : '';
+  const days = dl ? Math.round((new Date(dl + 'T00:00:00Z') - new Date(t + 'T00:00:00Z')) / 864e5) : null;
+  m.append(el('span', 'due' + (days !== null && days <= 7 ? ' soon' : ''), dl ? (days === 0 ? 'Closes today' : 'Apply by ' + niceDate(dl)) : 'Open now'));
+  c.append(m, el('h3', null, o.title));
+  if (o.detail) c.append(el('p', null, o.detail));
+  if (o.who) c.append(el('span', 'who', 'Who can apply: ' + o.who));
+  const u = safeUrl(o.source_url); if (u) { const a = el('a', null, (o.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; c.append(a); }
+  return c;
+}
+function mentorUpdated() {
+  const d = S.mentor; if (!d) return '';
+  return [d.as_of, d.growth && d.growth.as_of, d.sectors && d.sectors.as_of].filter((x) => x && !isNaN(new Date(x))).sort().pop() || '';
+}
+function jumpTo(tab, id) { show(tab, true); requestAnimationFrame(() => { const h = $(id); if (h) h.scrollIntoView({ block: 'start' }); }); }
+
 function renderBusiness() {
   const b = S.biz;
   $('biz-eyebrow').textContent = b && b.updated_at ? 'Updated ' + stamp(b.updated_at) : 'Nepal business';
@@ -1204,6 +1247,10 @@ function renderBusiness() {
   const body = $('biz-body'); body.replaceChildren();
   const evs = $('biz-events'); evs.replaceChildren();
   const chips = $('biz-chips'); chips.replaceChildren();
+  const ob = $('biz-opp'); ob.replaceChildren();
+  const opps = S.loaded ? opportunities() : [];
+  $('opp-h').hidden = $('opp-note').hidden = ob.hidden = !opps.length;
+  for (const o of opps) ob.append(oppCard(o));
   if (!S.loaded) { const e = el('div', 'empty'); e.append(el('h3', null, 'Loading business news')); body.append(e); return; }
   if (!b) { const e = el('div', 'empty'); e.append(el('h3', null, 'No business brief yet'), el('p', null, liveNote('The morning update fills this page every day.'))); body.append(e); return; }
   for (const t of (b.indicators || [])) {
@@ -1639,7 +1686,17 @@ function renderMentor() {
   const bi = $('mentor-budget'); if (document.activeElement !== bi) bi.value = hasBudget() ? String(MEN.budget) : '';
   $('mentor-sort').value = MEN.sort;
   document.querySelectorAll('#mentor-where [data-where]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.where === MEN.where)));
-  $('mentor-eyebrow').textContent = d && d.as_of ? 'Business mentor · figures gathered ' + niceDate(d.as_of) : 'Business mentor';
+  const upd = mentorUpdated();
+  $('mentor-eyebrow').textContent = upd ? 'Business mentor · updated ' + niceDate(upd) : 'Business mentor';
+  const jump = $('mentor-jump'); jump.replaceChildren();
+  const jb = (label, fn) => { const b = el('button', 'fchip', label); b.type = 'button'; b.addEventListener('click', fn); jump.append(b); };
+  const nG = d && d.growth && Array.isArray(d.growth.items) ? d.growth.items.length : 0;
+  const nS = d && d.sectors && Array.isArray(d.sectors.items) ? d.sectors.items.length : 0;
+  const nO = S.loaded ? opportunities().length : 0;
+  if (nG) jb('Where the growth is · ' + nG, () => jumpTo('mentor', 'growth-h'));
+  if (nS) jb('Sector guides · ' + nS, () => jumpTo('mentor', 'sectors-h'));
+  if (nO) jb('Opportunities now · ' + nO, () => jumpTo('business', 'opp-h'));
+  jump.hidden = !jump.children.length;
   const ideas = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
   if (!ideas.length) { const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No businesses listed yet' : 'Loading the mentor')); body.append(e); return; }
   const budget = hasBudget() ? MEN.budget : null;
@@ -1801,6 +1858,14 @@ function renderStart() {
       box.append(c);
     }
   }
+  const fresh = $('start-fresh'); fresh.replaceChildren();
+  const opps = S.loaded ? opportunities() : [];
+  if (opps.length) {
+    fresh.append(el('h2', 'sec', 'Business opportunities now'), el('p', 'sec-note', 'Loans, subsidies, training, tenders and share issues open now, from official notices and the news. Updated every day.'));
+    const g = el('div', 'grid narrow'); for (const o of opps.slice(0, 3)) g.append(oppCard(o)); fresh.append(g);
+    if (opps.length > 3) { const r = el('div', 'more-row'), b = el('button', 'btn', 'See all ' + opps.length + ' opportunities'); b.type = 'button'; b.addEventListener('click', () => jumpTo('business', 'opp-h')); r.append(b); fresh.append(r); }
+  }
+  fresh.hidden = !fresh.children.length;
   const links = $('start-links'); links.replaceChildren();
   const ql = (k, text, tab) => { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', k), el('b', null, text)); b.addEventListener('click', () => show(tab, true)); links.append(b); };
   const news = S.feed && Array.isArray(S.feed.news) ? S.feed.news.slice().sort((a, b) => String(b.date).localeCompare(String(a.date))) : [];
@@ -1810,8 +1875,8 @@ function renderStart() {
   ql('Invest', 'Compare fixed deposits, bonds, NEPSE, gold and land for your money', 'invest');
   const nSec = S.mentor && S.mentor.sectors && Array.isArray(S.mentor.sectors.items) ? S.mentor.sectors.items.length : 0;
   const nG = S.mentor && S.mentor.growth && Array.isArray(S.mentor.growth.items) ? S.mentor.growth.items.filter((x) => x.level === 'strong').length : 0;
-  if (nG) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Where the growth is'), el('b', null, nG + ' sectors with the strongest growth signals, from remittance services to IT and energy')); b.addEventListener('click', () => { show('mentor', true); requestAnimationFrame(() => { const h = $('growth-h'); if (h) h.scrollIntoView({ block: 'start' }); }); }); links.append(b); }
-  if (nSec) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Sector guides'), el('b', null, nSec + ' sectors from trade and IT to tourism and hydropower: how to start, and the key numbers')); b.addEventListener('click', () => { show('mentor', true); requestAnimationFrame(() => { const h = $('sectors-h'); if (h) h.scrollIntoView({ block: 'start' }); }); }); links.append(b); }
+  if (nG) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Where the growth is' + (S.mentor.growth.as_of ? ' · updated ' + niceDate(S.mentor.growth.as_of) : '')), el('b', null, nG + ' sectors with the strongest growth signals, from remittance services to IT and energy')); b.addEventListener('click', () => jumpTo('mentor', 'growth-h')); links.append(b); }
+  if (nSec) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Sector guides' + (S.mentor.sectors.as_of ? ' · updated ' + niceDate(S.mentor.sectors.as_of) : '')), el('b', null, nSec + ' sectors from trade, IT and health to tourism, media and hydropower: how to start, and the key numbers')); b.addEventListener('click', () => jumpTo('mentor', 'sectors-h')); links.append(b); }
 }
 $('start-budget').addEventListener('input', (e) => { MEN.budget = budgetFrom(e.target.value); saveMen(); renderStart(); });
 document.querySelectorAll('#start-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderStart(); }));

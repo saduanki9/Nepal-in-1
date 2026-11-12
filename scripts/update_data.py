@@ -94,9 +94,10 @@ def main():
 
     flagged = []
     for section, items in (("feed.news", news), ("business.news", out["business"].get("news") or []),
-                           ("business.events", out["business"].get("events") or [])):
+                           ("business.events", out["business"].get("events") or []),
+                           ("business.opportunities", out["business"].get("opportunities") or [])):
         for i, item in enumerate(items):
-            text = " ".join(str(item.get(f, "")) for f in ("headline", "why_it_matters", "title"))
+            text = " ".join(str(item.get(f, "")) for f in ("headline", "why_it_matters", "title", "detail"))
             if SECOND_PERSON.search(text):
                 flagged.append("%s[%d]: %s" % (section, i, text[:160]))
     if flagged:

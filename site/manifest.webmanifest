@@ -1,0 +1,16 @@
+{
+  "name": "Nepal in 1",
+  "short_name": "Nepal in 1",
+  "description": "All of Nepal in one place: business ideas, opportunities, news, NEPSE, investing, the economy and national projects.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#13203f",
+  "theme_color": "#13203f",
+  "lang": "en",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

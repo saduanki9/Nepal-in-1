@@ -20,6 +20,8 @@ Nepal in 1 is a public website, kept separate from any personal dashboard. Every
 
 On phones and tablets, where the tab row doesn't fit, a **Menu** button stays on screen and lists every feature. The Start page also lists them all under "Everything on Nepal in 1".
 
+**Made for phones.** Tiles sit two to a row, buttons and "show more" rows are sized for thumbs, long pages have a Back to top button, and the Menu has a Share button (the phone's own share sheet, or a copied link). The site can be kept on the home screen like an app (`site/manifest.webmanifest` and the `icon-*.png` files). The browser check fails if a control is too small to tap or a long page has no way back to the top.
+
 Light and dark mode follow the device setting.
 
 **Visitor counting:** [GoatCounter](https://www.goatcounter.com) counts visits and tab views anonymously, with no cookies and no names. The numbers are at https://nepalin1.goatcounter.com (sign in with the owner's account).

@@ -17,7 +17,7 @@ let chromium;
 try { ({ chromium } = require('playwright')); } catch { ({ chromium } = require('playwright-core')); }
 
 const ROOT = resolve('site');
-const TYPES = { '.html': 'text/html; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml', '.js': 'text/javascript', '.css': 'text/css' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.svg': 'image/svg+xml', '.js': 'text/javascript', '.css': 'text/css' };
 const server = createServer(async (req, res) => {
   let path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname));
   if (path.endsWith('/')) path += 'index.html';
@@ -110,6 +110,25 @@ for (const size of SIZES) {
     await checkView(t, 'from its tab');
     const shown = await page.evaluate((id) => { const r = document.getElementById('tab-' + id).getBoundingClientRect(), n = document.getElementById('tabs').getBoundingClientRect(); return r.left >= n.left - 2 && r.right <= n.right + 2; }, t);
     if (!shown) fail('the "' + t + '" tab is not scrolled into view when it is the open page');
+  }
+
+  // 2b. On touch screens: controls are big enough to tap, and long pages have a way back to the top.
+  if (size.width < 900) {
+    for (const t of tabs) {
+      await page.evaluate((id) => document.getElementById('tab-' + id).click(), t);
+      await page.waitForTimeout(150);
+      const small = await page.evaluate((id) => [...document.querySelectorAll('#v-' + id + ' button, #v-' + id + ' summary, #v-' + id + ' select, #v-' + id + ' input:not([type=checkbox]):not([type=radio])')]
+        .filter((e) => e.offsetParent && !e.closest('.g-act') && !e.closest('table')).filter((e) => e.getBoundingClientRect().height < 38)
+        .map((e) => (e.className || e.tagName).toString().split(' ')[0] + ' ' + Math.round(e.getBoundingClientRect().height) + 'px'), t);
+      if (small.length) fail('"' + t + '" has controls too small to tap: ' + [...new Set(small)].slice(0, 5).join(', '));
+      const long = await page.evaluate(() => document.documentElement.scrollHeight > innerHeight * 3);
+      if (long) {
+        await page.evaluate(() => window.scrollTo(0, innerHeight * 2));
+        await page.waitForTimeout(250);
+        if (!(await page.locator('#to-top').isVisible())) fail('"' + t + '" is long but shows no Back to top button');
+        else { await page.click('#to-top'); await page.waitForFunction(() => scrollY < 5, null, { timeout: 4000 }).catch(() => fail('Back to top did not return to the top on "' + t + '"')); }
+      }
+    }
   }
 
   // 3. A link straight to a feature (…/#mentor) opens it.

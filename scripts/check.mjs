@@ -63,6 +63,14 @@ for (const t of tabs) {
   else fail('tab "' + t + '" has no matching section id="v-' + t + '"');
 }
 
+// 2b. Every tab is in the Menu's list, the Menu button exists, and the version stamp is in place.
+if (html.includes('id="menu-btn"') && html.includes('id="menu-panel"')) ok('Menu button and panel are present'); else fail('the Menu button or panel is missing, so phone visitors cannot reach every feature');
+const descBlock = (html.match(/const FEATURE_DESC = \{([\s\S]*?)\};/) || [])[1] || '';
+const noDesc = tabs.filter((t) => !new RegExp('\\b' + t + ':').test(descBlock));
+if (noDesc.length) fail('these tabs have no Menu description in FEATURE_DESC: ' + noDesc.join(', ')); else ok('every tab has a Menu description');
+const stamps = html.split('__BUILD__').length - 1;
+if (stamps === 1) ok('version stamp placeholder is in place'); else fail('index.html must contain the version placeholder exactly once (found ' + stamps + ')');
+
 // 3. Inline JavaScript parses.
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
 const dir = mkdtempSync(join(tmpdir(), 'nd-check-'));

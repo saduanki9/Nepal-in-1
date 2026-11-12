@@ -26,8 +26,23 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: Check the site before publishing
         run: node scripts/check.mjs
+      # Opens the site at phone, tablet and desktop size. If any feature can't be reached, nothing is published.
+      - name: Check every feature in a real browser
+        run: |
+          npm install --no-save --no-audit --no-fund playwright-core@1.48.2
+          node scripts/browser-check.mjs || node scripts/browser-check.mjs
+      # The page compares its own version with version.json and reloads itself if a phone is holding an older copy.
+      - name: Stamp the version
+        run: |
+          BUILD="${GITHUB_SHA::10}"
+          sed -i "s/__BUILD__/$BUILD/" site/index.html
+          printf '{"build":"%s"}\n' "$BUILD" > site/version.json
+          grep -q "const BUILD = '$BUILD'" site/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

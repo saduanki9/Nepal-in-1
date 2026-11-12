@@ -382,6 +382,7 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
 .toast { position: fixed; z-index: 50; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100% - 32px); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
+.update-pill { position: fixed; z-index: 60; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--accent); color: #fff; border: 0; border-radius: 99px; padding: 11px 18px; font-size: 14px; font-weight: 600; box-shadow: var(--shadow); max-width: calc(100% - 32px); }
 .banner { background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; font-size: 13px; }
 
 @media (max-width: 760px) {
@@ -1934,22 +1935,24 @@ function show(tab, push) {
 }
 
 /* Menu: every feature in one list, for screens where the tab row doesn't fit. */
-const FEATURES = [
-  ['start', 'Start here', 'Businesses to start, sized to any budget'],
-  ['today', 'Today in Nepal', 'The day\u2019s news and why it matters'],
-  ['mentor', 'Mentor', 'Costs, profits, growing sectors and sector guides'],
-  ['business', 'Business', 'Opportunities open now, prices and company news'],
-  ['nepse', 'NEPSE', 'Index, top movers, IPOs and a bank watchlist'],
-  ['invest', 'Invest', 'Compare deposits, bonds, shares, gold and land'],
-  ['economy', 'Economy', 'Growth, forecasts and hydropower exports'],
-  ['projects', 'National projects', 'Progress of Nepal\u2019s biggest projects'],
-  ['builds', 'My builds', 'Track a plan from idea to launch'],
-];
+/* The list is built from the tab row itself, so a new tab can never be missing from the menu. */
+const FEATURE_DESC = {
+  start: 'Businesses to start, sized to any budget',
+  today: 'The day\u2019s news and why it matters',
+  builds: 'Track a plan from idea to launch',
+  mentor: 'Costs, profits, growing sectors and sector guides',
+  business: 'Opportunities open now, prices and company news',
+  nepse: 'Index, top movers, IPOs and a bank watchlist',
+  invest: 'Compare deposits, bonds, shares, gold and land',
+  economy: 'Growth, forecasts and hydropower exports',
+  projects: 'Progress of Nepal\u2019s biggest projects',
+};
+const features = () => [...document.querySelectorAll('.tab[data-tab]')].map((t) => [t.dataset.tab, (t.firstChild && t.firstChild.textContent || t.textContent).trim(), FEATURE_DESC[t.dataset.tab] || '']);
 function closeMenu() { $('menu-panel').hidden = true; $('menu-btn').setAttribute('aria-expanded', 'false'); }
 function openMenu() {
   const g = $('menu-grid'); g.replaceChildren();
-  for (const [tab, name, desc] of FEATURES) {
-    const b = el('button', 'menu-item'); b.type = 'button'; b.append(el('b', null, name), el('span', null, desc));
+  for (const [tab, name, desc] of features()) {
+    const b = el('button', 'menu-item'); b.type = 'button'; b.dataset.go = tab; b.append(el('b', null, name)); if (desc) b.append(el('span', null, desc));
     if (tab === S.tab) b.setAttribute('aria-current', 'page');
     b.addEventListener('click', () => show(tab, true)); g.append(b);
   }
@@ -1982,6 +1985,25 @@ setInterval(header, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) header(); });
 S.tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'start';
 show(S.tab, false);
+
+/* Always the newest version. The deploy stamps BUILD below and writes version.json. If this page is an older
+   cached copy, it reloads itself once on opening; if a new version arrives while the page is open, it offers a refresh. */
+const BUILD = '__BUILD__';
+function checkVersion(onOpen) {
+  if (BUILD.startsWith('__')) return;
+  const q = new URLSearchParams(location.search);
+  if (q.get('v') === BUILD) { q.delete('v'); const qs = q.toString(); history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); }
+  fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then((r) => r.ok ? r.json() : null).then((v) => {
+    const latest = v && typeof v.build === 'string' ? v.build : '';
+    if (!latest || latest === BUILD || q.get('v') === latest) return;
+    const go = () => { q.set('v', latest); location.replace(location.pathname + '?' + q.toString() + location.hash); };
+    if (onOpen && !S.open) return go();
+    if ($('update-pill')) return;
+    const b = el('button', 'update-pill', 'New version available \u00b7 Refresh'); b.type = 'button'; b.id = 'update-pill'; b.addEventListener('click', go); document.body.append(b);
+  }).catch(() => {});
+}
+checkVersion(true);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkVersion(false); });
 
 loadData();
 })();

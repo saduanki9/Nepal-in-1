@@ -418,10 +418,20 @@
      "url": "https://kathmandupost.com/money/2015/06/29/homestay-boosts-incomes-living-standards-in-bardia"
     }
    ]
+  },
+  {
+   "name": "Cucumber",
+   "finding": "A 2026 study of 105 Kathmandu Valley growers reports a profit of about Rs 20,700 a ropani. But its sales figure works out to Rs 56 a kilo for its average yield of 740 kg, while the same study says wholesalers paid Rs 45, and its abstract gives the profit as Rs 2,070. Because the sums do not match, we have left the numbers out.",
+   "sources": [
+    {
+     "name": "Nepalese Journal of Agricultural Sciences 2026",
+     "url": "https://www.nepjol.info/index.php/nepjas/article/download/89048/67895"
+    }
+   ]
   }
  ],
  "sectors": {
-  "as_of": "2026-11-10",
+  "as_of": "2026-11-12",
   "note": "Sector guides show what it takes to start and the key public numbers. They give no profit estimate, because profit depends on the exact product, place and owner. Registration steps are summarised from official offices and advisers' guides; check the current rules and fees with the office before you apply.",
   "items": [
    {
@@ -436,6 +446,20 @@
       "note": "Agriculture, FY 2082/83 estimate (Economic Survey)",
       "source_name": "Kantipur",
       "source_url": "https://ekantipur.com/business/2026/05/27/en/economic-survey-08283-economy-expected-to-expand-by-385-percent-32-21.html"
+     },
+     {
+      "label": "Farm growth, FY 2025/26",
+      "value": "1.6%",
+      "note": "Real growth of agriculture, forestry and fishing, against 3.9% for the whole economy (National Statistics Office)",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "label": "Bank loans to farming",
+      "value": "Down 2.2%",
+      "note": "Change in the first two months of FY 2083/84, while most other sectors borrowed more",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -451,7 +475,16 @@
     ],
     "tab": "mentor",
     "tab_label": "See the sized farm businesses",
-    "sources": []
+    "sources": [
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+     }
+    ]
    },
    {
     "id": "trade",
@@ -460,18 +493,18 @@
     "summary": "Nepal imports far more than it exports, so there is room both for importers and for anyone who can grow exports or make at home what is now imported.",
     "numbers": [
      {
-      "label": "Imports, FY 2082/83",
-      "value": "Rs 2,096 arba",
-      "note": "Exports were Rs 315 arba, a gap of Rs 1,781 arba",
-      "source_name": "Ratopati",
-      "source_url": "https://english.ratopati.com/story/71521/nepals-total-foreign-trade-exceeded-24-trillion-in-one-year"
+      "label": "Imports, first two months of FY 2083/84",
+      "value": "Rs 401.52 arba",
+      "note": "Up 31.6%; exports were Rs 76.59 arba, up 61.9%, leaving a gap of Rs 324.93 arba",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      },
      {
       "label": "Biggest import",
       "value": "Petroleum",
-      "note": "Rs 297 arba in the first 11 months; exports of soybean oil, cardamom and noodles were growing",
-      "source_name": "Ratopati",
-      "source_url": "https://english.ratopati.com/story/56954/trade-deficit-increased-by-11-percent-in-eight-months"
+      "note": "Rs 349.84 arba in FY 2025/26, about 17% of all imports; soybean oil, yarn and palm oil led export growth in the new year",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
     ],
     "start": [
@@ -494,6 +527,14 @@
      {
       "name": "EXIM code process (ICT Frame)",
       "url": "https://ictframe.com/nepals-exim-code-registration-and-renewal-process"
+     },
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+     },
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
     ]
    },
@@ -509,6 +550,20 @@
       "note": "Household and government spending, FY 2025/26",
       "source_name": "Himal Press: Economic Survey 2025/26 highlights",
       "source_url": "https://en.himalpress.com/major-highlights-of-economic-survey-2025-26/"
+     },
+     {
+      "label": "Wholesale and retail trade",
+      "value": "About 14% of GDP",
+      "note": "Rs 816 arba in FY 2025/26, growing 4.5% in real terms (National Statistics Office)",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "label": "Consumer inflation",
+      "value": "6.34%",
+      "note": "Mid-September 2026, up from 1.87% a year earlier; food and drink 7.54%, ghee and oil 16.68%",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -531,6 +586,14 @@
      {
       "name": "VAT thresholds 2082/83 (Law Alpine)",
       "url": "https://lawalpine.com/blog/vat-in-nepal-rates-and-thresholds-2082-83"
+     },
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      }
     ]
    },
@@ -542,10 +605,17 @@
     "numbers": [
      {
       "label": "IT and telecom service exports",
-      "value": "Rs 22.33 arba",
-      "note": "FY 2024/25, 9.4% of all service exports",
-      "source_name": "Kathmandu Post",
-      "source_url": "https://kathmandupost.com/money/2026/07/20/foreign-study-costs-outpace-growth-in-nepal-s-service-exports"
+      "value": "Rs 24.86 arba",
+      "note": "FY 2025/26, up 11.3% from Rs 22.33 arba; much freelance income is still counted as remittance",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "label": "Computer services exports",
+      "value": "Rs 20.20 arba",
+      "note": "FY 2025/26, up 22.9% on the year before",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
     ],
     "start": [
@@ -563,6 +633,10 @@
      {
       "name": "Nepal Rastra Bank",
       "url": "https://www.nrb.org.np/"
+     },
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
     ]
    },
@@ -573,11 +647,18 @@
     "summary": "Homestays, guiding, trekking agencies, hotels and restaurants. Arrivals are back above one million a year, but the season and a few big markets decide the year.",
     "numbers": [
      {
-      "label": "Foreign tourists, 2025",
-      "value": "11,58,459",
-      "note": "Up about 1% on 2024; India the largest market (Nepal Tourism Board)",
-      "source_name": "Kantipur",
-      "source_url": "https://ekantipur.com/news/2026/01/02/en/more-than-1158-million-tourists-entered-nepal-in-2025-58-19.html"
+      "label": "Foreign tourists, January to October 2026",
+      "value": "9,98,734",
+      "note": "Our sum of the monthly Nepal Tourism Board counts; October was the busiest month at 1,32,814, up 3.4%",
+      "source_name": "Rising Nepal: October 2026 tourist arrivals (Nepal Tourism Board)",
+      "source_url": "https://risingnepaldaily.com/news/88375"
+     },
+     {
+      "label": "Tourism income, first two months of FY 2083/84",
+      "value": "Rs 14.94 arba",
+      "note": "Travel income, up 28.6% on a year earlier",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -595,6 +676,14 @@
      {
       "name": "Department of Tourism",
       "url": "https://tourism.gov.np/"
+     },
+     {
+      "name": "Rising Nepal: October 2026 tourist arrivals (Nepal Tourism Board)",
+      "url": "https://risingnepaldaily.com/news/88375"
+     },
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      }
     ]
    },
@@ -606,10 +695,17 @@
     "numbers": [
      {
       "label": "Industry's share of GDP",
-      "value": "About 13%",
-      "note": "FY 2081/82 projection, against 62% for services",
-      "source_name": "Loksewa Tayari summary",
-      "source_url": "https://loksewatayariapp.com/blog/nepal-in-2082-bs-a-comprehensive-socio-economic-and-policy-update"
+      "value": "About 14%",
+      "note": "FY 2025/26: mining, manufacturing, electricity, water and construction together; manufacturing alone is 5.7% (National Statistics Office)",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "label": "Manufacturing growth, FY 2025/26",
+      "value": "2.8%",
+      "note": "Real growth, after 2.3% the year before",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
     ],
     "start": [
@@ -627,6 +723,10 @@
      {
       "name": "Department of Cottage and Small Industries",
       "url": "https://dcsi.gov.np/"
+     },
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
     ]
    },
@@ -642,6 +742,20 @@
       "note": "Expected; construction and manufacturing were under pressure",
       "source_name": "Kantipur",
       "source_url": "https://ekantipur.com/business/2026/05/27/en/economic-survey-08283-economy-expected-to-expand-by-385-percent-32-21.html"
+     },
+     {
+      "label": "Construction growth, FY 2025/26",
+      "value": "2.2%",
+      "note": "Real growth, after 1.0% the year before (National Statistics Office)",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "label": "Construction material prices",
+      "value": "Up 5.08%",
+      "note": "Wholesale prices, mid-September 2026 against a year earlier",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -657,7 +771,16 @@
     ],
     "tab": "invest",
     "tab_label": "Places to watch for property",
-    "sources": []
+    "sources": [
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+     }
+    ]
    },
    {
     "id": "transport",
@@ -666,11 +789,18 @@
     "summary": "Moving goods and people: trucks, buses, delivery, warehousing and customs clearing. Every imported item has to be moved, so steady demand follows trade.",
     "numbers": [
      {
-      "label": "Goods traded, FY 2082/83",
-      "value": "Rs 2,412 arba",
-      "note": "Imports and exports together, up 15.9%",
-      "source_name": "Sharehub Nepal",
-      "source_url": "https://sharehubnepal.com/news/168872-corporatekhabarcom-foreign-trade-exceeds-npr-24-trillion-in-last-fiscal-year-trade-deficit-at-npr-1781-trillion"
+      "label": "Goods traded, first two months of FY 2083/84",
+      "value": "Rs 478.11 arba",
+      "note": "Imports and exports together, up about 36% on a year earlier",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+     },
+     {
+      "label": "Transport fares and fuel",
+      "value": "Up 12.77%",
+      "note": "Transport prices in mid-September 2026 against a year earlier; Brent crude was $127.84 a barrel",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -685,7 +815,12 @@
      "Road closures in the monsoon",
      "Route syndicates and permit delays"
     ],
-    "sources": []
+    "sources": [
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+     }
+    ]
    },
    {
     "id": "education",
@@ -699,6 +834,13 @@
       "note": "Against 25,623 community schools (Economic Survey 2025/26)",
       "source_name": "Kathmandu Post",
       "source_url": "https://kathmandupost.com/national/2026/06/02/community-schools-shrink-as-private-education-expands-in-nepal"
+     },
+     {
+      "label": "Paid abroad for study, FY 2025/26",
+      "value": "Rs 141.92 arba",
+      "note": "Up 2.5%; in the first two months of FY 2083/84 it fell 9.8% to Rs 29.55 arba",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
     ],
     "start": [
@@ -712,14 +854,34 @@
      "Staff turnover",
      "Reputation spreads by word of mouth, both ways"
     ],
-    "sources": []
+    "sources": [
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     }
+    ]
    },
    {
     "id": "health",
     "name": "Health and pharmacy",
     "tag": "Services",
     "summary": "Pharmacies, clinics, labs and care services. Demand is steady everywhere, but this sector is the most tightly licensed.",
-    "numbers": [],
+    "numbers": [
+     {
+      "label": "Medicine imports, FY 2025/26",
+      "value": "Rs 47.44 arba",
+      "note": "Up 2.3% from Rs 46.36 arba (Department of Customs data)",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "label": "Health and social work",
+      "value": "Rs 102.87 arba",
+      "note": "Value added in FY 2025/26, about 1.8% of GDP, growing 4.0% in real terms (National Statistics Office)",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     }
+    ],
     "start": [
      "A pharmacy needs a licence from the Department of Drug Administration under the Drug Act, and a registered pharmacist or assistant pharmacist",
      "Clinics and labs need approval from the health authorities; confirm the current rules with the Ministry of Health and Population or your province",
@@ -735,6 +897,10 @@
      {
       "name": "Department of Drug Administration",
       "url": "https://www.dda.gov.np/"
+     },
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
     ]
    },
@@ -745,18 +911,18 @@
     "summary": "Nepal's biggest long-term bet. Small businesses can install solar and electrical systems; savers mostly take part by buying hydropower shares.",
     "numbers": [
      {
-      "label": "Installed capacity",
-      "value": "4,296 MW",
-      "note": "May 2026; aim of 28,500 MW by 2035",
-      "source_name": "Ceotab",
-      "source_url": "https://ceotab.com/nepals-power-generation-capacity-nears-4500-mw/"
+      "label": "NEA installed capacity",
+      "value": "3,739 MW",
+      "note": "October 2026, as given by NEA; 320 MW more expected by mid-December, while about 430 MW was cut off by floods",
+      "source_name": "Rising Nepal: NEA dry-season supply plan",
+      "source_url": "https://risingnepaldaily.com/news/87148"
      },
      {
-      "label": "Electricity exports, FY 2025/26",
-      "value": "Rs 29.3 arba",
-      "note": "3.88 billion units sold to India and Bangladesh; a net electricity trade surplus of Rs 18.76 arba",
-      "source_name": "Kathmandu Post",
-      "source_url": "https://kathmandupost.com/money/2026/07/24/nepal-records-rs18-76-billion-electricity-trade-surplus-in-fiscal-2025-26"
+      "label": "Electricity exports, first three months of FY 2083/84",
+      "value": "Rs 16.15 arba",
+      "note": "Rs 5.93 arba in Ashoj alone, up from Rs 4.96 arba a year earlier; FY 2025/26 was a record Rs 29.3 arba",
+      "source_name": "Rising Nepal: electricity exports in Ashoj (NEA)",
+      "source_url": "https://risingnepaldaily.com/news/88042"
      }
     ],
     "start": [
@@ -771,7 +937,16 @@
     ],
     "tab": "nepse",
     "tab_label": "Open the NEPSE tab",
-    "sources": []
+    "sources": [
+     {
+      "name": "Rising Nepal: NEA dry-season supply plan",
+      "url": "https://risingnepaldaily.com/news/87148"
+     },
+     {
+      "name": "Rising Nepal: electricity exports in Ashoj (NEA)",
+      "url": "https://risingnepaldaily.com/news/88042"
+     }
+    ]
    },
    {
     "id": "finance",
@@ -785,6 +960,13 @@
       "note": "Owed to about 76,000 depositors in 2026; refunds are slow",
       "source_name": "Nepse Trading",
       "source_url": "https://nepsetrading.com/news/around-npr-46-billion-still-pending-82-more-depositors-receive-refunds"
+     },
+     {
+      "label": "Bank lending rate",
+      "value": "6.38%",
+      "note": "Commercial banks, mid-September 2026, down from 7.66% a year earlier; deposits earned 3.11%",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -799,7 +981,12 @@
     ],
     "tab": "invest",
     "tab_label": "Compare savings options",
-    "sources": []
+    "sources": [
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+     }
+    ]
    },
    {
     "id": "investing",
@@ -807,6 +994,13 @@
     "tag": "Investing",
     "summary": "Owning part of Nepali companies through NEPSE: banks, hydropower, insurance, microfinance, manufacturing and more. Returns swing from year to year.",
     "numbers": [
+     {
+      "label": "NEPSE, FY 2083/84 so far",
+      "value": "Up 2.2%",
+      "note": "2,655.22 on 6 November 2026, from 2,597.80 at the start of the fiscal year",
+      "source_name": "Kathmandu Post: NEPSE week of 2 to 6 November 2026",
+      "source_url": "https://kathmandupost.com/money/2026/11/07/nepse-retreats-as-profit-taking-slows-post-dashain-rally"
+     },
      {
       "label": "NEPSE, FY 2082/83",
       "value": "Down 7.05%",
@@ -827,69 +1021,113 @@
     ],
     "tab": "nepse",
     "tab_label": "Open the NEPSE tab",
-    "sources": []
+    "sources": [
+     {
+      "name": "Kathmandu Post: NEPSE week of 2 to 6 November 2026",
+      "url": "https://kathmandupost.com/money/2026/11/07/nepse-retreats-as-profit-taking-slows-post-dashain-rally"
+     }
+    ]
+   },
+   {
+    "id": "media",
+    "name": "Media, film and creative work",
+    "tag": "Services",
+    "summary": "Video, film, music, design and online content, for Nepali clients and audiences abroad. Sales abroad are growing fast, but from a small base.",
+    "numbers": [
+     {
+      "label": "Film, video and music exports, FY 2025/26",
+      "value": "Rs 4.86 arba",
+      "note": "Audiovisual services sold abroad, up 37.7% from Rs 3.53 arba",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "label": "Cultural and recreational services exports",
+      "value": "Rs 5.01 arba",
+      "note": "FY 2025/26, including audiovisual work, up 31.2%",
+      "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     }
+    ],
+    "start": [
+     "Register the business: a sole firm or partnership with the Department of Commerce or your municipality, or a company online with the Office of the Company Registrar",
+     "Get a PAN from the Inland Revenue Department and take payments from abroad through a Nepali bank, so the income is on record",
+     "Filming in public places and broadcasting need separate permission; check the current rules with the Film Development Board and the Ministry of Communication and Information Technology",
+     "Build a small portfolio, starting with local businesses that need video, photos and design"
+    ],
+    "risks": [
+     "Platform income swings with views and with each platform's rules",
+     "Copying is common and copyright is hard to enforce",
+     "Equipment is costly and most of it is imported"
+    ],
+    "sources": [
+     {
+      "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+      "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     }
+    ]
    }
   ]
  },
  "growth": {
-  "as_of": "2026-11-10",
+  "as_of": "2026-11-12",
   "note": "Ranked by how strongly the latest official figures point to growth. These are directions to explore, not profit estimates.",
   "items": [
    {
     "level": "strong",
     "sector": null,
     "name": "Services for migrant families",
-    "value": "Rs 2,363 arba",
-    "label": "Remittances in FY 2082/83, up 37% (from NRB annual data)",
+    "value": "Rs 436 arba",
+    "label": "Remittances in the first two months of FY 2083/84, up 23.9% on a year earlier",
     "ideas": [
      "Pre-departure skills and language classes",
      "Savings guidance for remittance families",
      "Help for returnees starting a business"
     ],
-    "source_name": "Ratopati",
-    "source_url": "https://english.ratopati.com/story/76530/235-trillion-remittances-entered-in-one-year-371-percent-more-than-last-year"
+    "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+    "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
    },
    {
     "level": "strong",
     "sector": "it",
     "name": "IT and online services",
-    "value": "Rs 22.33 arba",
-    "label": "IT and telecom service exports, FY 2024/25, against a Rs 300 arba goal",
+    "value": "Rs 24.86 arba",
+    "label": "IT and telecom service exports, FY 2025/26, up 11.3% (computer services up 22.9%); the goal is Rs 300 arba",
     "ideas": [
      "Outsourcing for foreign clients",
      "Digital marketing for Nepali businesses",
      "Coding and design training"
     ],
-    "source_name": "Kathmandu Post",
-    "source_url": "https://kathmandupost.com/money/2026/07/20/foreign-study-costs-outpace-growth-in-nepal-s-service-exports"
+    "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+    "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
    },
    {
     "level": "strong",
     "sector": "energy",
     "name": "Energy and the electric switch",
-    "value": "Rs 29.3 arba",
-    "label": "Record electricity exports, FY 2025/26, with 4,296 MW installed",
+    "value": "Rs 16.15 arba",
+    "label": "Electricity exports in the first three months of FY 2083/84, despite flood damage; about 1,179 MW approved for export to India",
     "ideas": [
      "Solar installation",
      "Electrical contracting",
      "Electric cooking and appliance sales"
     ],
-    "source_name": "Kathmandu Post",
-    "source_url": "https://kathmandupost.com/money/2026/07/24/nepal-records-rs18-76-billion-electricity-trade-surplus-in-fiscal-2025-26"
+    "source_name": "Rising Nepal: electricity exports in Ashoj (NEA)",
+    "source_url": "https://risingnepaldaily.com/news/88042"
    },
    {
     "level": "strong",
     "sector": "manufacturing",
     "name": "Making what Nepal imports",
-    "value": "Rs 1,781 arba",
-    "label": "Trade gap in FY 2082/83; noodle and soybean oil exports are growing",
+    "value": "Rs 325 arba",
+    "label": "Trade gap in the first two months of FY 2083/84, up 26%; exports rose 61.9%, led by soybean oil, yarn and palm oil",
     "ideas": [
      "Food processing",
      "Animal feed",
      "Packaging and local brands"
     ],
-    "source_name": "Ratopati",
-    "source_url": "https://english.ratopati.com/story/71521/nepals-total-foreign-trade-exceeded-24-trillion-in-one-year"
+    "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
+    "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
    },
    {
     "level": "strong",
@@ -909,14 +1147,14 @@
     "level": "moderate",
     "sector": "tourism",
     "name": "Tourism",
-    "value": "11.58 lakh",
-    "label": "Foreign tourists in 2025, up 1%; 2026 is Nepal's ASEAN tourism year",
+    "value": "1,32,814",
+    "label": "Foreign tourists in October 2026, up 3.4% on a year earlier; the US overtook India as the largest market",
     "ideas": [
      "Homestays",
      "Guiding for Southeast Asian visitors"
     ],
-    "source_name": "Kantipur",
-    "source_url": "https://ekantipur.com/news/2026/01/02/en/more-than-1158-million-tourists-entered-nepal-in-2025-58-19.html"
+    "source_name": "Rising Nepal: October 2026 tourist arrivals (Nepal Tourism Board)",
+    "source_url": "https://risingnepaldaily.com/news/88375"
    },
    {
     "level": "moderate",
@@ -931,6 +1169,20 @@
     ],
     "source_name": "Kantipur",
     "source_url": "https://ekantipur.com/business/2026/05/27/en/economic-survey-08283-economy-expected-to-expand-by-385-percent-32-21.html"
+   },
+   {
+    "level": "moderate",
+    "sector": "media",
+    "name": "Media and creative work",
+    "value": "Rs 4.86 arba",
+    "label": "Film, video and music services sold abroad, FY 2025/26, up 37.7% from a small base",
+    "ideas": [
+     "Video production for businesses",
+     "Subtitling and dubbing",
+     "Music and content for online platforms"
+    ],
+    "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
+    "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
    },
    {
     "level": "caution",
@@ -948,13 +1200,13 @@
     "level": "caution",
     "sector": "energy",
     "name": "Electric vehicle services",
-    "value": "−6%",
-    "label": "EV imports in the first 7 months of FY 2082/83 against a year earlier (5,894 vehicles)",
+    "value": "−24%",
+    "label": "EV imports in FY 2082/83 against the year before (13,004 EVs), as northern border closures and higher duties bit",
     "ideas": [
      "Grow EV servicing step by step"
     ],
-    "source_name": "Ratopati",
-    "source_url": "https://english.ratopati.com/story/49567/ev-imports-worth-rs-14-billion-in-7-months"
+    "source_name": "Kathmandu Post: EV imports in FY 2025/26 (Department of Customs)",
+    "source_url": "https://kathmandupost.com/money/2026/08/04/northern-border-disruptions-and-higher-duties-slow-nepal-s-ev-boom"
    },
    {
     "level": "caution",
@@ -972,13 +1224,13 @@
     "level": "caution",
     "sector": "investing",
     "name": "Shares",
-    "value": "−7.05%",
-    "label": "NEPSE in FY 2082/83, after +24.74% the year before",
+    "value": "+2.2%",
+    "label": "NEPSE so far in FY 2083/84 (2,655.22 on 6 November), after −7.05% in FY 2082/83",
     "ideas": [
      "Treat shares as long-term saving"
     ],
-    "source_name": "ShareSansar",
-    "source_url": "https://www.sharesansar.com/newsdetail/nepse-yearly-performance-highlights-falls-705-in-fy-208283-ending-at-259780-2026-07-16"
+    "source_name": "Kathmandu Post: NEPSE week of 2 to 6 November 2026",
+    "source_url": "https://kathmandupost.com/money/2026/11/07/nepse-retreats-as-profit-taking-slows-post-dashain-rally"
    }
   ]
  }

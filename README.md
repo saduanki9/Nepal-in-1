@@ -18,6 +18,8 @@ Nepal in 1 is a public website, kept separate from any personal dashboard. Every
 | **Economy** | GDP paths to 2036, IMF and ADB forecasts, what the economy is made of, hydropower export progress, a growth scorecard |
 | **National projects** | Progress, cost and status of 25 national pride and major projects, by sector |
 
+On phones and tablets, where the tab row doesn't fit, a **Menu** button stays on screen and lists every feature. The Start page also lists them all under "Everything on Nepal in 1".
+
 Light and dark mode follow the device setting.
 
 **Visitor counting:** [GoatCounter](https://www.goatcounter.com) counts visits and tab views anonymously, with no cookies and no names. The numbers are at https://nepalin1.goatcounter.com (sign in with the owner's account).

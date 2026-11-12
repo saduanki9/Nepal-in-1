@@ -85,6 +85,19 @@ button { cursor: pointer; }
 .tab { border: 0; background: transparent; color: var(--bar-muted); padding: 10px 14px 12px; font-size: 14px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; }
 .tab:hover { color: var(--bar-fg); }
 .tab[aria-selected="true"] { color: var(--bar-fg); border-bottom-color: var(--accent); }
+.tabrow { display: flex; align-items: center; }
+.tabrow .tabs { flex: 1; min-width: 0; }
+.menu-btn { flex: none; position: relative; display: inline-flex; align-items: center; gap: 7px; margin: 0 0 6px 6px; padding: 7px 13px; min-height: 36px; border: 1px solid rgba(255,255,255,.28); border-radius: 99px; background: var(--bar); color: var(--bar-fg); font-size: 13px; font-weight: 600; }
+.menu-btn::before { content: ""; position: absolute; right: calc(100% + 7px); top: -4px; bottom: -4px; width: 30px; background: linear-gradient(90deg, transparent, var(--bar)); pointer-events: none; }
+.menu-btn[aria-expanded="true"] { background: var(--bar-fg); color: var(--bar); border-color: var(--bar-fg); }
+.menu-btn svg { width: 15px; height: 15px; }
+.menu { position: absolute; left: 0; right: 0; top: 100%; background: var(--bar); color: var(--bar-fg); border-top: 1px solid rgba(255,255,255,.12); box-shadow: 0 18px 30px rgba(0,0,0,.35); max-height: calc(100vh - 120px); overflow-y: auto; }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 132px), 1fr)); gap: 8px; padding-block: 12px 16px; }
+.menu-item { text-align: left; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; background: rgba(255,255,255,.05); padding: 10px 12px; display: grid; gap: 2px; align-content: start; color: inherit; }
+.menu-item b { font-size: 14.5px; font-weight: 600; }
+.menu-item span { font-size: 12px; line-height: 1.35; color: var(--bar-muted); }
+.menu-item[aria-current="page"] { border-color: var(--accent); background: rgba(255,255,255,.1); }
+@media (min-width: 1040px) { .menu-btn, .menu { display: none; } }
 .tab .n { margin-left: 6px; font-size: 11px; padding: 1px 7px; border-radius: 99px; background: rgba(255,255,255,.12); color: var(--bar-fg); font-variant-numeric: tabular-nums; }
 
 main { padding-block: 28px 64px; }
@@ -398,7 +411,8 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       </div>
       <div class="when" id="when"><b id="when-date">Today</b><span id="when-fy">Fiscal year</span><span class="upd" id="when-upd"></span></div>
     </div>
-    <nav class="tabs" role="tablist" aria-label="Sections">
+    <div class="tabrow">
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" id="tab-start" data-tab="start" aria-selected="false">Start here</button>
       <button class="tab" role="tab" id="tab-today" data-tab="today" aria-selected="false">Today in Nepal<span class="n" id="n-today">0</span></button>
       <button class="tab" role="tab" id="tab-builds" data-tab="builds" aria-selected="false">My builds<span class="n" id="n-builds">0</span></button>
@@ -409,7 +423,10 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
       <button class="tab" role="tab" id="tab-economy" data-tab="economy" aria-selected="false">Economy</button>
       <button class="tab" role="tab" id="tab-projects" data-tab="projects" aria-selected="false">National projects</button>
     </nav>
+    <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="menu-panel"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>Menu</button>
+    </div>
   </div>
+  <div class="menu" id="menu-panel" hidden><div class="wrap"><div class="menu-grid" id="menu-grid"></div></div></div>
 </header>
 
 <main class="wrap">
@@ -428,14 +445,14 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     </div>
     <div id="start-opp"></div>
     <div class="grid" id="start-ideas"></div>
+    <h2 class="sec" id="all-h">Everything on Nepal in 1</h2>
+    <div class="links3" id="start-links"></div>
     <div id="start-fresh" class="view" style="gap:14px" hidden></div>
     <ol class="steps">
       <li><b>Pick your budget</b><span>Any amount. Every business is sized to it.</span></li>
       <li><b>Compare businesses</b><span>Money to start, profit a month, payback, risk, and the study behind each figure.</span></li>
       <li><b>Track your plan</b><span>Add one to My builds. Its first steps become your task list, saved privately on your phone.</span></li>
     </ol>
-    <h2 class="sec">Also on Nepal in 1</h2>
-    <div class="links3" id="start-links"></div>
     <p class="foot">Business figures are estimates from published studies, not promises. Check local prices before spending money.</p>
   </section>
 
@@ -1872,11 +1889,17 @@ function renderStart() {
   ql('Today in Nepal', news[0] ? news[0].headline : 'The day’s news, with why it matters', 'today');
   const ix = S.nepse && S.nepse.index;
   ql('NEPSE', ix ? 'Closed at ' + Number(ix.close).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' (' + signed(ix.pct, 2) + '%) on ' + niceDate(S.nepse.as_of) : 'Index, top movers and IPOs', 'nepse');
+  const nOpp = opps.length, bn = S.biz && Array.isArray(S.biz.news) ? S.biz.news.slice().sort((a, b) => String(b.date).localeCompare(String(a.date)))[0] : null;
+  ql('Business', nOpp ? nOpp + (nOpp === 1 ? ' opportunity' : ' opportunities') + ' open now, plus prices, company news and key dates' : (bn ? bn.headline : 'Prices, company news and the dates that matter'), 'business');
   ql('Invest', 'Compare fixed deposits, bonds, NEPSE, gold and land for your money', 'invest');
   const nSec = S.mentor && S.mentor.sectors && Array.isArray(S.mentor.sectors.items) ? S.mentor.sectors.items.length : 0;
   const nG = S.mentor && S.mentor.growth && Array.isArray(S.mentor.growth.items) ? S.mentor.growth.items.filter((x) => x.level === 'strong').length : 0;
-  if (nG) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Where the growth is' + (S.mentor.growth.as_of ? ' · updated ' + niceDate(S.mentor.growth.as_of) : '')), el('b', null, nG + ' sectors with the strongest growth signals, from remittance services to IT and energy')); b.addEventListener('click', () => jumpTo('mentor', 'growth-h')); links.append(b); }
-  if (nSec) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Sector guides' + (S.mentor.sectors.as_of ? ' · updated ' + niceDate(S.mentor.sectors.as_of) : '')), el('b', null, nSec + ' sectors from trade, IT and health to tourism, media and hydropower: how to start, and the key numbers')); b.addEventListener('click', () => jumpTo('mentor', 'sectors-h')); links.append(b); }
+  if (nG) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Mentor: where the growth is' + (S.mentor.growth.as_of ? ' · updated ' + niceDate(S.mentor.growth.as_of) : '')), el('b', null, nG + ' sectors with the strongest growth signals, from remittance services to IT and energy')); b.addEventListener('click', () => jumpTo('mentor', 'growth-h')); links.append(b); }
+  if (nSec) { const b = el('button', 'qlink'); b.type = 'button'; b.append(el('span', 'k', 'Mentor: sector guides' + (S.mentor.sectors.as_of ? ' · updated ' + niceDate(S.mentor.sectors.as_of) : '')), el('b', null, nSec + ' sectors from trade, IT and health to tourism, media and hydropower: how to start, and the key numbers')); b.addEventListener('click', () => jumpTo('mentor', 'sectors-h')); links.append(b); }
+  ql('Economy', 'Growth paths to 2036, IMF and ADB forecasts, and hydropower export progress', 'economy');
+  ql('National projects', 'Progress, cost and status of ' + PROJECTS.length + ' national pride and major projects', 'projects');
+  const nB = Array.isArray(S.builds) ? S.builds.length : 0;
+  ql('My builds', nB ? nB + (nB === 1 ? ' build' : ' builds') + ' on this phone. Open the board to keep going' : 'Track any plan from idea to launch, saved privately on this phone', 'builds');
 }
 $('start-budget').addEventListener('input', (e) => { MEN.budget = budgetFrom(e.target.value); saveMen(); renderStart(); });
 document.querySelectorAll('#start-where [data-where]').forEach((b) => b.addEventListener('click', () => { MEN.where = b.dataset.where; saveMen(); renderStart(); }));
@@ -1905,8 +1928,36 @@ function show(tab, push) {
   if (tab === 'mentor') renderMentor();
   if (tab === 'start') renderStart();
   const asof = $('asof'); asof.hidden = tab === 'builds' || tab === 'mentor' || tab === 'start' || !asof.textContent;
+  const nav = $('tabs'), at = $('tab-' + tab); nav.scrollLeft = at.offsetLeft - nav.offsetLeft - (nav.clientWidth - at.offsetWidth) / 2;
+  closeMenu();
   window.scrollTo(0, 0);
 }
+
+/* Menu: every feature in one list, for screens where the tab row doesn't fit. */
+const FEATURES = [
+  ['start', 'Start here', 'Businesses to start, sized to any budget'],
+  ['today', 'Today in Nepal', 'The day\u2019s news and why it matters'],
+  ['mentor', 'Mentor', 'Costs, profits, growing sectors and sector guides'],
+  ['business', 'Business', 'Opportunities open now, prices and company news'],
+  ['nepse', 'NEPSE', 'Index, top movers, IPOs and a bank watchlist'],
+  ['invest', 'Invest', 'Compare deposits, bonds, shares, gold and land'],
+  ['economy', 'Economy', 'Growth, forecasts and hydropower exports'],
+  ['projects', 'National projects', 'Progress of Nepal\u2019s biggest projects'],
+  ['builds', 'My builds', 'Track a plan from idea to launch'],
+];
+function closeMenu() { $('menu-panel').hidden = true; $('menu-btn').setAttribute('aria-expanded', 'false'); }
+function openMenu() {
+  const g = $('menu-grid'); g.replaceChildren();
+  for (const [tab, name, desc] of FEATURES) {
+    const b = el('button', 'menu-item'); b.type = 'button'; b.append(el('b', null, name), el('span', null, desc));
+    if (tab === S.tab) b.setAttribute('aria-current', 'page');
+    b.addEventListener('click', () => show(tab, true)); g.append(b);
+  }
+  $('menu-panel').hidden = false; $('menu-btn').setAttribute('aria-expanded', 'true');
+}
+$('menu-btn').addEventListener('click', (e) => { e.stopPropagation(); if ($('menu-panel').hidden) openMenu(); else closeMenu(); });
+document.addEventListener('click', (e) => { if (!$('menu-panel').hidden && !$('menu-panel').contains(e.target)) closeMenu(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('menu-panel').hidden) { closeMenu(); $('menu-btn').focus(); } });
 
 document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => show(b.dataset.tab, true)));
 window.addEventListener('hashchange', () => show(location.hash.slice(1), false));

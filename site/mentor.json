@@ -431,7 +431,7 @@
   }
  ],
  "sectors": {
-  "as_of": "2026-11-12",
+  "as_of": "2026-11-15",
   "note": "Sector guides show what it takes to start and the key public numbers. They give no profit estimate, because profit depends on the exact product, place and owner. Registration steps are summarised from official offices and advisers' guides; check the current rules and fees with the office before you apply.",
   "items": [
    {
@@ -493,16 +493,16 @@
     "summary": "Nepal imports far more than it exports, so there is room both for importers and for anyone who can grow exports or make at home what is now imported.",
     "numbers": [
      {
-      "label": "Imports, first two months of FY 2083/84",
-      "value": "Rs 401.52 arba",
-      "note": "Up 31.6%; exports were Rs 76.59 arba, up 61.9%, leaving a gap of Rs 324.93 arba",
-      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "label": "Imports, first quarter of FY 2083/84",
+      "value": "Rs 646.78 arba",
+      "note": "Up 38.2%; exports were Rs 114.28 arba, up 57%, leaving a gap of Rs 532.49 arba",
+      "source_name": "OnlineKhabar: first-quarter trade, FY 2083/84 (Department of Customs)",
+      "source_url": "https://english.onlinekhabar.com/nepals-exports-cross-114-billion.html"
      },
      {
       "label": "Biggest import",
       "value": "Petroleum",
-      "note": "Rs 349.84 arba in FY 2025/26, about 17% of all imports; soybean oil, yarn and palm oil led export growth in the new year",
+      "note": "Rs 349.84 arba in FY 2025/26, about 17% of all imports, and Rs 119 arba in the first quarter of FY 2083/84; soybean oil leads exports",
       "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
       "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
@@ -535,6 +535,10 @@
      {
       "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
       "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "name": "OnlineKhabar: first-quarter trade, FY 2083/84 (Department of Customs)",
+      "url": "https://english.onlinekhabar.com/nepals-exports-cross-114-billion.html"
      }
     ]
    },
@@ -789,11 +793,11 @@
     "summary": "Moving goods and people: trucks, buses, delivery, warehousing and customs clearing. Every imported item has to be moved, so steady demand follows trade.",
     "numbers": [
      {
-      "label": "Goods traded, first two months of FY 2083/84",
-      "value": "Rs 478.11 arba",
-      "note": "Imports and exports together, up about 36% on a year earlier",
-      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "label": "Goods traded, first quarter of FY 2083/84",
+      "value": "Rs 761.07 arba",
+      "note": "Imports and exports together, up 40.7% on a year earlier",
+      "source_name": "OnlineKhabar: first-quarter trade, FY 2083/84 (Department of Customs)",
+      "source_url": "https://english.onlinekhabar.com/nepals-exports-cross-114-billion.html"
      },
      {
       "label": "Transport fares and fuel",
@@ -819,6 +823,10 @@
      {
       "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
       "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+     },
+     {
+      "name": "OnlineKhabar: first-quarter trade, FY 2083/84 (Department of Customs)",
+      "url": "https://english.onlinekhabar.com/nepals-exports-cross-114-billion.html"
      }
     ]
    },
@@ -996,10 +1004,10 @@
     "numbers": [
      {
       "label": "NEPSE, FY 2083/84 so far",
-      "value": "Up 2.2%",
-      "note": "2,655.22 on 6 November 2026, from 2,597.80 at the start of the fiscal year",
-      "source_name": "Kathmandu Post: NEPSE week of 2 to 6 November 2026",
-      "source_url": "https://kathmandupost.com/money/2026/11/07/nepse-retreats-as-profit-taking-slows-post-dashain-rally"
+      "value": "Up 1.9%",
+      "note": "About 2,648 on 13 November 2026, from 2,597.80 at the start of the fiscal year",
+      "source_name": "OnlineKhabar: NEPSE on 13 November 2026",
+      "source_url": "https://english.onlinekhabar.com/nepse-falls-after-tihar.html"
      },
      {
       "label": "NEPSE, FY 2082/83",
@@ -1023,8 +1031,8 @@
     "tab_label": "Open the NEPSE tab",
     "sources": [
      {
-      "name": "Kathmandu Post: NEPSE week of 2 to 6 November 2026",
-      "url": "https://kathmandupost.com/money/2026/11/07/nepse-retreats-as-profit-taking-slows-post-dashain-rally"
+      "name": "OnlineKhabar: NEPSE on 13 November 2026",
+      "url": "https://english.onlinekhabar.com/nepse-falls-after-tihar.html"
      }
     ]
    },
@@ -1070,7 +1078,7 @@
   ]
  },
  "growth": {
-  "as_of": "2026-11-12",
+  "as_of": "2026-11-15",
   "note": "Ranked by how strongly the latest official figures point to growth. These are directions to explore, not profit estimates.",
   "items": [
    {
@@ -1119,15 +1127,15 @@
     "level": "strong",
     "sector": "manufacturing",
     "name": "Making what Nepal imports",
-    "value": "Rs 325 arba",
-    "label": "Trade gap in the first two months of FY 2083/84, up 26%; exports rose 61.9%, led by soybean oil, yarn and palm oil",
+    "value": "Rs 532 arba",
+    "label": "Trade gap in the first quarter of FY 2083/84, up 34.7%; exports rose 57%, led by soybean oil, yarn and tea, coffee and spices",
     "ideas": [
      "Food processing",
      "Animal feed",
      "Packaging and local brands"
     ],
-    "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-    "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+    "source_name": "OnlineKhabar: first-quarter trade, FY 2083/84 (Department of Customs)",
+    "source_url": "https://english.onlinekhabar.com/nepals-exports-cross-114-billion.html"
    },
    {
     "level": "strong",
@@ -1224,13 +1232,13 @@
     "level": "caution",
     "sector": "investing",
     "name": "Shares",
-    "value": "+2.2%",
-    "label": "NEPSE so far in FY 2083/84 (2,655.22 on 6 November), after −7.05% in FY 2082/83",
+    "value": "+1.9%",
+    "label": "NEPSE so far in FY 2083/84 (about 2,648 on 13 November), after −7.05% in FY 2082/83",
     "ideas": [
      "Treat shares as long-term saving"
     ],
-    "source_name": "Kathmandu Post: NEPSE week of 2 to 6 November 2026",
-    "source_url": "https://kathmandupost.com/money/2026/11/07/nepse-retreats-as-profit-taking-slows-post-dashain-rally"
+    "source_name": "OnlineKhabar: NEPSE on 13 November 2026",
+    "source_url": "https://english.onlinekhabar.com/nepse-falls-after-tihar.html"
    }
   ]
  }

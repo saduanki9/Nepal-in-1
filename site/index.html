@@ -405,6 +405,26 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
   .tile .v { font-size: 24px; overflow-wrap: anywhere; }
   .tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
+/* Links that jump down a page stop below the sticky header. */
+main [id], main [data-idea] { scroll-margin-top: 132px; }
+.sa-list { display: grid; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.sa-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; padding: 14px 18px; border-top: 1px solid var(--line); align-items: start; }
+.sa-row:first-child { border-top: 0; }
+.sa-row.fits { box-shadow: inset 3px 0 0 var(--ok); }
+.sa-row.over { opacity: .62; }
+.sa-name { font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+.sa-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 6px; }
+.sa-kind { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 99px; border: 1px solid var(--line-strong); color: var(--muted); }
+.sa-kind.study { border-color: var(--ok); color: var(--ok); } .sa-kind.rule { border-color: var(--accent); color: var(--accent); }
+.sa-cov { grid-column: 1 / -1; font-size: 13.5px; color: var(--muted); margin: 0; }
+.sa-money { text-align: right; white-space: nowrap; }
+.sa-money b { display: block; font-family: var(--display); font-size: 22px; font-weight: 400; font-variant-numeric: tabular-nums lining-nums; }
+.sa-money span { font-size: 12px; color: var(--muted); }
+.sa-links { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.sa-links button { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 99px; padding: 8px 14px; min-height: 40px; font-size: 13.5px; font-weight: 600; color: var(--fg); }
+.fine-note { margin: 0; font-size: 13px; color: var(--muted); }
+.sa-gaps { display: grid; gap: 10px; }
+.sa-gaps p { margin: 0; font-size: 13.5px; color: var(--muted); }
 .banner { background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; font-size: 13px; }
 
 @media (max-width: 760px) {
@@ -470,6 +490,14 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
     </div>
     <div id="start-opp"></div>
     <div class="grid" id="start-ideas"></div>
+    <section class="view" id="start-all" style="gap:14px" aria-labelledby="sa-h" hidden>
+      <h2 class="sec" id="sa-h">Every sector: what it takes to start</h2>
+      <p class="sec-note" id="sa-note"></p>
+      <div class="chips" id="sa-chips" role="group" aria-label="Filter by sector"></div>
+      <div class="sa-list" id="sa-list" role="list"></div>
+      <div class="banner" id="sa-loan"></div>
+      <div class="sa-gaps" id="sa-gaps"></div>
+    </section>
     <h2 class="sec" id="all-h">Everything on Nepal in 1</h2>
     <div class="links3" id="start-links"></div>
     <div id="start-fresh" class="view" style="gap:14px" hidden></div>
@@ -1674,6 +1702,7 @@ function weekBusiness(ideas) {
 }
 function mentorCard(o, c, pick) {
   const card = el('article', 'idea' + (pick ? ' pick' : ''));
+  card.dataset.idea = o.id;
   const meta = el('div', 'meta'); meta.append(el('span', 'chip', o.sector || 'Business'), riskPill(o.risk));
   if (pick) meta.append(el('span', 'pick-badge', "Mentor's pick this week"));
   if (!c.fits) meta.append(el('span', 'status bad', 'Above your budget'));
@@ -1860,6 +1889,62 @@ function renderSectors() {
 
 /* ---------- Start here ----------
    The front door: one question (budget), three sized businesses, then links to the rest. Shares MEN with the Mentor tab. */
+/* Every sector: sourced ways to start, cheapest first. Farm businesses come from the Mentor's studies at their starting size. */
+let saSector = 'all';
+function startOptions() {
+  const d = S.mentor || {}, out = [];
+  for (const o of (Array.isArray(d.ideas) ? d.ideas : [])) {
+    if (!o || !o.scale || !(Number(o.first_cycle) > 0)) continue;
+    const c = mentorCalc(o, null);
+    out.push({ id: 'idea-' + o.id, idea: o.id, sector: 'agriculture', name: o.name, min: c.minStart, covers: 'Starting size: ' + sizeText(o, o.scale.min) + '. Covers set-up and running costs until the first ' + (o.cycle === 'batch' ? 'batch is sold' : 'sales come in') + ', for about ' + about(c.month) + ' profit a month.', kind: 'Study', source_name: (o.sources && o.sources[0] && o.sources[0].name) || 'Nepal study', source_url: o.sources && o.sources[0] && o.sources[0].url });
+  }
+  for (const x of (d.start_options && Array.isArray(d.start_options.items) ? d.start_options.items : [])) if (x && x.name && isFinite(x.min)) out.push(x);
+  return out.sort((a, b) => a.min - b.min);
+}
+function renderStartAll() {
+  const box = $('start-all'), list = $('sa-list'), chips = $('sa-chips');
+  const secs = S.mentor && S.mentor.sectors && Array.isArray(S.mentor.sectors.items) ? S.mentor.sectors.items : [];
+  const all = startOptions();
+  box.hidden = !all.length; if (!all.length) return;
+  list.replaceChildren(); chips.replaceChildren();
+  const budget = hasBudget() ? MEN.budget : null;
+  const so = S.mentor.start_options || {};
+  $('sa-note').textContent = (so.note || '') + (budget ? ' Green: fits ' + rs(budget) + '.' : ' Enter a budget above to see what fits.');
+  const secName = (id) => { const s = secs.find((x) => x.id === id); return s ? s.name : id; };
+  const SHORT = { trade: 'Trade', retail: 'Retail', manufacturing: 'Manufacturing' };
+  const shortName = (id) => SHORT[id] || secName(id).split(/,| and | by /)[0];
+  const used = [...new Set(all.map((x) => x.sector))];
+  for (const id of ['all'].concat(used)) {
+    const n = id === 'all' ? all.length : all.filter((x) => x.sector === id).length;
+    const b = el('button', 'fchip', (id === 'all' ? 'All sectors' : shortName(id)) + ' · ' + n); b.type = 'button';
+    b.setAttribute('aria-pressed', String(saSector === id)); b.addEventListener('click', () => { saSector = id; renderStartAll(); }); chips.append(b);
+  }
+  for (const x of all.filter((r) => saSector === 'all' || r.sector === saSector)) {
+    const fits = budget != null && x.min <= budget;
+    const r = el('div', 'sa-row' + (fits ? ' fits' : budget != null ? ' over' : '')); r.setAttribute('role', 'listitem');
+    const left = el('div'); left.append(el('div', 'sa-name', x.name));
+    const meta = el('div', 'sa-meta'); meta.append(el('span', 'chip', shortName(x.sector)));
+    meta.append(el('span', 'sa-kind' + (x.kind === 'Study' ? ' study' : x.kind === 'Official rule' ? ' rule' : ''), x.kind === 'Study' ? 'From a study' : x.kind));
+    left.append(meta);
+    const money = el('div', 'sa-money'); money.append(el('b', null, rs(x.min)), el('span', null, x.max ? 'to ' + rs(x.max) : (fits ? 'fits your budget' : 'to start')));
+    r.append(left, money, el('p', 'sa-cov', x.covers || ''));
+    const links = el('div', 'sa-links');
+    const u = safeUrl(x.source_url); if (u) { const a = el('a', 'src', (x.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; links.append(a); }
+    const g = el('button', null, x.idea ? 'Costs, profit and first steps' : 'How to start: ' + shortName(x.sector).toLowerCase()); g.type = 'button';
+    g.addEventListener('click', () => { if (x.idea) { menFold.set(x.idea + ':advice', true); show('mentor', true); requestAnimationFrame(() => { const c = document.querySelector('[data-idea="' + x.idea + '"]'); if (c) c.scrollIntoView({ block: 'start' }); }); } else { sectorTag = 'all'; secOpen.add(x.sector); show('mentor', true); renderSectors(); requestAnimationFrame(() => { const c = $('sector-' + x.sector); if (c) c.scrollIntoView({ block: 'start' }); }); } });
+    links.append(g); r.append(links); list.append(r);
+  }
+  const loan = so.financing, lb = $('sa-loan'); lb.replaceChildren(); lb.hidden = !loan;
+  if (loan) { lb.append(el('b', null, 'Need money to start? '), document.createTextNode(loan.label + '. ' + (loan.note || '') + ' ')); const u = safeUrl(loan.source_url); if (u) { const a = el('a', 'src', (loan.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; lb.append(a); } }
+  const gaps = secs.filter((s) => !used.includes(s.id)), gp = $('sa-gaps'); gp.replaceChildren();
+  if (gaps.length) {
+    gp.append(el('p', null, 'No reliable published start-up figure yet for these sectors. Their guides show the official steps; figures are added as they are found and checked.'));
+    const row = el('div', 'chips');
+    for (const s of gaps) { const b = el('button', 'fchip', shortName(s.id)); b.type = 'button'; b.addEventListener('click', () => { sectorTag = 'all'; secOpen.add(s.id); show('mentor', true); renderSectors(); requestAnimationFrame(() => { const c = $('sector-' + s.id); if (c) c.scrollIntoView({ block: 'start' }); }); }); row.append(b); }
+    gp.append(row);
+  }
+}
+
 function renderStart() {
   const bi = $('start-budget'); if (document.activeElement !== bi) bi.value = hasBudget() ? String(MEN.budget) : '';
   document.querySelectorAll('#start-where [data-where]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.where === MEN.where)));
@@ -1902,6 +1987,7 @@ function renderStart() {
       box.append(c);
     }
   }
+  renderStartAll();
   const fresh = $('start-fresh'); fresh.replaceChildren();
   const opps = S.loaded ? opportunities() : [];
   if (opps.length) {
@@ -1989,7 +2075,7 @@ document.addEventListener('click', (e) => { if (!$('menu-panel').hidden && !$('m
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('menu-panel').hidden) { closeMenu(); $('menu-btn').focus(); } });
 
 document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => show(b.dataset.tab, true)));
-window.addEventListener('hashchange', () => show(location.hash.slice(1), false));
+window.addEventListener('hashchange', () => { const t = location.hash.slice(1); if (t !== S.tab) show(t, false); });
 $('new-build').addEventListener('click', () => openSheet(null));
 $('q').addEventListener('input', (e) => { S.q = e.target.value; renderBuilds(); });
 $('sort').addEventListener('change', (e) => { S.sort = e.target.value; renderBuilds(); });

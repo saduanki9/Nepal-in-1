@@ -48,6 +48,16 @@ if (data) {
     else if ((s.numbers || []).some((n) => !n.label || !n.value || !n.source_url)) fail('sector guide "' + s.id + '" has a number without a label, value or source');
   }
   if (secs.length) ok(secs.length + ' sector guides are complete');
+  // Ways to start: each needs a known sector, a money figure, a source type and an https source.
+  const so = data.mentor && data.mentor.start_options;
+  if (so) {
+    const items = Array.isArray(so.items) ? so.items : [];
+    const kinds = ['Study', 'Official rule', 'Market rule', 'Price list', 'News report', 'Adviser estimate'];
+    const badS = items.filter((x) => !x.id || !x.name || !secs.some((s) => s.id === x.sector) || typeof x.min !== 'number' || !(x.min > 0) || (x.max != null && !(x.max >= x.min)) || !kinds.includes(x.kind) || !x.covers || !/^https:\/\//.test(String(x.source_url || '')));
+    if (badS.length) fail('ways to start missing a sector, amount, source type, what it covers or an https source: ' + badS.map((x) => x.id || x.name || '?').join(', '));
+    else ok(items.length + ' ways to start are complete');
+    if (so.financing && !/^https:\/\//.test(String(so.financing.source_url || ''))) fail('the start-up loan note needs an https source');
+  }
   // Growth table: every row needs a level, a figure and an https source.
   const grow = data.mentor && data.mentor.growth && Array.isArray(data.mentor.growth.items) ? data.mentor.growth.items : [];
   const badG = grow.filter((x) => !['strong', 'moderate', 'caution'].includes(x.level) || !x.name || !x.value || !/^https:\/\//.test(String(x.source_url || '')) || (x.sector && !secs.some((s) => s.id === x.sector)));

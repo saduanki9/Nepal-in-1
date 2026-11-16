@@ -93,6 +93,12 @@ The page works out how many units the visitor's budget covers, then multiplies. 
 
 **Adding a business:** add an entry to `ideas` in `site/mentor.json` with figures from a Nepal study you have read in full, then run `node scripts/check.mjs`. The weekly rotation picks it up by itself.
 
+### Every sector: what it takes to start
+
+The Start page ranks every sourced way to start a business, cheapest first, with a filter by sector and a green mark for what fits the visitor's budget. The farm businesses come from the Mentor's studies at their starting size; the rest live in `start_options` in `site/mentor.json`. Each item has `id`, `sector` (a sector guide id), `name`, `min` (and `max` if there is a range), `covers` (exactly what the money pays for, and what is extra), `kind` (one of `Study`, `Official rule`, `Market rule`, `Price list`, `News report`, `Adviser estimate`), `source_name` and `source_url`. `financing` is the start-up loan note shown under the list. Sectors with no figure are listed as gaps, so nothing is padded.
+
+**For the weekly Mentor refresh:** each week, try to add one or two `start_options` for sectors listed as gaps (for example retail, IT, health, manufacturing, construction, trade, tourism, media), from an official rule, a published price or a Nepal study you read in full. Re-check that existing items' figures are still current, and drop any whose rule or price has changed without a new source.
+
 ### Where the growth is
 
 A compact table on the Mentor ranks sectors as Strong, Moderate or Careful by what the latest official figures show: remittances, IT service exports, electricity exports, the trade gap, school numbers, tourist arrivals, growth, EV imports, cooperative savings and NEPSE's year. Each row has one figure with its source, ideas to explore, and a link to the sector guide. It gives no profit estimates. Data lives in `growth` in `site/mentor.json`; `scripts/check.mjs` checks every row has a level, a figure and a source.

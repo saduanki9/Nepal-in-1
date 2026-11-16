@@ -1241,5 +1241,83 @@
     "source_url": "https://english.onlinekhabar.com/nepse-falls-after-tihar.html"
    }
   ]
+ },
+ "start_options": {
+  "as_of": "2026-11-16",
+  "note": "Ranked by money to start, from published Nepal figures only. Each says what the money covers; rent, staff and running costs are extra unless stated.",
+  "financing": {
+   "label": "Collateral-free loans of Rs 2 lakh to Rs 20 lakh at 3% interest for educated youth",
+   "note": "Announced in the FY 2025/26 budget. Eligibility depends on qualifications, business registration, a skills certificate and a workable business plan.",
+   "source_name": "myRepublica, budget 2025/26",
+   "source_url": "https://myrepublica.nagariknetwork.com/news/govt-to-provide-collateral-free-loans-of-up-to-rs-2-million-for-educated-yo-21-46.html"
+  },
+  "items": [
+   {
+    "id": "ipo",
+    "sector": "investing",
+    "name": "Apply for an IPO",
+    "min": 1000,
+    "max": null,
+    "covers": "The smallest IPO application: 10 shares, usually Rs 100 each. The money is held in a bank account until shares are allotted. Needs a bank account, demat account and MeroShare login.",
+    "kind": "Market rule",
+    "source_name": "Onlinekhabar, IPO guide",
+    "source_url": "https://english.onlinekhabar.com/nepal-ipo-initial-public-offering.html"
+   },
+   {
+    "id": "savings-bond",
+    "sector": "finance",
+    "name": "Buy a citizen savings bond",
+    "min": 10000,
+    "max": null,
+    "covers": "Minimum application, in multiples of Rs 10,000. Sold only during government issue windows; held for five years.",
+    "kind": "Official rule",
+    "source_name": "myRepublica, savings bond issue",
+    "source_url": "https://myrepublica.nagariknetwork.com/news/govt-to-issue-rs-3-billion-in-citizen-savings-bonds-and-rs-500-million-fore-96-98.html"
+   },
+   {
+    "id": "e-scooter",
+    "sector": "transport",
+    "name": "Electric scooter for delivery or ride-hailing",
+    "min": 329900,
+    "max": null,
+    "covers": "Starting price of the locally made Yatri P2 scooter. Vehicle only: registration, insurance and a ride-hailing or delivery platform account are extra.",
+    "kind": "Price list",
+    "source_name": "Onlinekhabar, Sept 2026",
+    "source_url": "https://english.onlinekhabar.com/yatri-p2-electric-scooter-price.html"
+   },
+   {
+    "id": "school-basic",
+    "sector": "education",
+    "name": "Open a basic-level private school",
+    "min": 500000,
+    "max": null,
+    "covers": "Security deposit required by the amended Education Regulations (2026). Building, land, staff and equipment are extra; approval comes from the local government.",
+    "kind": "Official rule",
+    "source_name": "The Kathmandu Post, July 2026",
+    "source_url": "https://kathmandupost.com/national/2026/07/06/nepal-bars-political-party-members-from-school-management-committees"
+   },
+   {
+    "id": "school-secondary",
+    "sector": "education",
+    "name": "Open a secondary-level private school",
+    "min": 1000000,
+    "max": null,
+    "covers": "Security deposit required by the amended Education Regulations (2026). Building, land, staff and labs are extra.",
+    "kind": "Official rule",
+    "source_name": "The Kathmandu Post, July 2026",
+    "source_url": "https://kathmandupost.com/national/2026/07/06/nepal-bars-political-party-members-from-school-management-committees"
+   },
+   {
+    "id": "edu-consultancy",
+    "sector": "education",
+    "name": "Open an educational consultancy or language institute",
+    "min": 2500000,
+    "max": null,
+    "covers": "Deposit required under the government's 2026 guidelines for educational consultancies, which also require digital payments. Office, staff and licences are extra.",
+    "kind": "Official rule",
+    "source_name": "Nepal News, July 2026",
+    "source_url": "https://english.nepalnews.com/s/nation/strict-rules-enforced-on-educational-consultancies-new-regulations-cover-cash-transactions-to-student-fraud/"
+   }
+  ]
  }
 }

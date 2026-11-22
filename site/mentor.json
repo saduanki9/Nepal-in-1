@@ -463,7 +463,7 @@
      }
     ],
     "start": [
-     "Pick a business above and read its first steps",
+     "Open \"Small farm businesses\" at the end of this page and read the first steps for one",
      "Talk to two farmers already doing it",
      "Register with your ward or municipality if you will sell regularly",
      "Ask the local agriculture office about subsidies and training"
@@ -474,7 +474,7 @@
      "Middlemen take a big share of the price"
     ],
     "tab": "mentor",
-    "tab_label": "See the sized farm businesses",
+    "tab_label": "See the small farm businesses",
     "sources": [
      {
       "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",

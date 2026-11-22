@@ -415,6 +415,19 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .sg-start.fits { box-shadow: inset 3px 0 0 var(--ok); }
 .sg-act { margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; }
 .sa-farm { margin: 0; font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.sg-card.week { border: 2px solid var(--accent); border-top-width: 4px; }
+.week-badge { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 3px 10px; border-radius: 99px; }
+#mentor-week:empty { display: none; }
+.farm { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+.farm > summary { cursor: pointer; list-style: none; display: grid; gap: 2px; padding: 16px 18px 16px 44px; position: relative; min-height: 56px; }
+.farm > summary::-webkit-details-marker { display: none; }
+.farm > summary::before { content: ""; position: absolute; left: 18px; top: 22px; width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(-45deg); transition: transform .15s; }
+.farm[open] > summary::before { transform: rotate(45deg); top: 19px; }
+.farm-t { font-family: var(--display); font-size: 20px; }
+.farm-s { font-size: 13.5px; color: var(--muted); }
+.farm[open] .farm-hint { display: none; }
+.farm-b { display: grid; gap: 18px; padding: 0 18px 18px; }
+.farm-b > .note { margin: 0; color: var(--muted); font-size: 14px; }
 /* Links that jump down a page stop below the sticky header. */
 main [id], main [data-idea] { scroll-margin-top: 132px; }
 .sa-list { display: grid; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
@@ -564,18 +577,12 @@ main [id], main [data-idea] { scroll-margin-top: 132px; }
     <div class="head">
       <div>
         <p class="eyebrow" id="mentor-eyebrow">Business mentor</p>
-        <h1>What could you build?</h1>
-        <p>Businesses with published cost and profit studies from Nepal. Each starts at the smallest size the studies support, so you can see what it really takes. Enter your own budget to size them to your money. A new Mentor's pick every Sunday. Add one to My builds to start tracking it.</p>
+        <h1>Where to build in Nepal</h1>
+        <p>The sectors where Nepal's economy is growing, ranked by the latest official figures, with a guide to starting in each: the key numbers, the official steps and the risks. Figures are refreshed every week, with a new sector of the week every Sunday.</p>
       </div>
     </div>
     <div class="chips jump" id="mentor-jump" role="group" aria-label="Jump to"></div>
-    <div class="panel calc">
-      <div class="fld"><label for="mentor-budget">Your budget (Rs), optional</label><input id="mentor-budget" type="number" min="0" step="10000" inputmode="numeric" placeholder="Any amount"></div>
-      <div class="fld"><span class="lbl" id="mentor-where-l">Where</span><div class="seg" role="group" aria-labelledby="mentor-where-l" id="mentor-where"><button type="button" data-where="all">Anywhere</button><button type="button" data-where="terai">Terai</button><button type="button" data-where="hills">Hills</button></div></div>
-      <div class="fld"><label for="mentor-sort">Show first</label><select id="mentor-sort"><option value="start">Lowest money to start</option><option value="profit">Most profit a month</option><option value="return">Best return on your money</option></select></div>
-    </div>
-    <div class="tiles" id="mentor-tiles"></div>
-    <div class="grid" id="mentor-body"></div>
+    <div id="mentor-week"></div>
     <h2 class="sec" id="growth-h">Where the growth is</h2>
     <p class="sec-note" id="growth-note"></p>
     <div class="growth" id="growth-body" role="table" aria-labelledby="growth-h"></div>
@@ -583,11 +590,24 @@ main [id], main [data-idea] { scroll-margin-top: 132px; }
     <p class="sec-note" id="sectors-note"></p>
     <div class="chips" id="sector-chips" role="group" aria-label="Filter sectors"></div>
     <div class="grid narrow" id="sector-body"></div>
-    <div class="panel" id="mentor-watch-panel" hidden>
-      <h3>Looked at, but no numbers yet</h3>
-      <p class="note">Businesses people often ask about, where the published figures are too thin to size to your budget.</p>
-      <div id="mentor-watch"></div>
-    </div>
+    <details class="farm" id="farm-panel">
+      <summary id="farm-h"><span class="farm-t">Small farm businesses</span><span class="farm-s"><span id="farm-sum"></span><span class="farm-hint"> Tap to open.</span></span></summary>
+      <div class="farm-b">
+        <p class="note">Small farm businesses with published cost and profit studies from Nepal. Each starts at the smallest size the studies support; enter a budget to size them to your money, and add one to My builds to track it.</p>
+        <div class="panel calc">
+          <div class="fld"><label for="mentor-budget">Your budget (Rs), optional</label><input id="mentor-budget" type="number" min="0" step="10000" inputmode="numeric" placeholder="Any amount"></div>
+          <div class="fld"><span class="lbl" id="mentor-where-l">Where</span><div class="seg" role="group" aria-labelledby="mentor-where-l" id="mentor-where"><button type="button" data-where="all">Anywhere</button><button type="button" data-where="terai">Terai</button><button type="button" data-where="hills">Hills</button></div></div>
+          <div class="fld"><label for="mentor-sort">Show first</label><select id="mentor-sort"><option value="start">Lowest money to start</option><option value="profit">Most profit a month</option><option value="return">Best return on your money</option></select></div>
+        </div>
+        <div class="tiles" id="mentor-tiles"></div>
+        <div class="grid" id="mentor-body"></div>
+        <div class="panel" id="mentor-watch-panel" hidden>
+          <h3>Looked at, but no numbers yet</h3>
+          <p class="note">Businesses people often ask about, where the published figures are too thin to size to a budget.</p>
+          <div id="mentor-watch"></div>
+        </div>
+      </div>
+    </details>
     <p class="foot" id="mentor-foot"></p>
   </section>
 
@@ -1781,6 +1801,11 @@ function renderMentor() {
   if (nG) jb('Where the growth is · ' + nG, () => jumpTo('mentor', 'growth-h'));
   if (nS) jb('Sector guides · ' + nS, () => jumpTo('mentor', 'sectors-h'));
   if (nO) jb('Opportunities now · ' + nO, () => jumpTo('business', 'opp-h'));
+  const weekBox = $('mentor-week'); weekBox.replaceChildren();
+  const sow = weekBusiness(growingSectors().filter((x) => x.sector));
+  if (sow) weekBox.append(growthCard(sow, true));
+  const nF = d && Array.isArray(d.ideas) ? d.ideas.length : 0;
+  if (nF) jb('Small farm businesses · ' + nF, openFarm);
   jump.hidden = !jump.children.length;
   const ideas = d && Array.isArray(d.ideas) ? d.ideas.filter((o) => o && o.profit && isFinite(o.profit.mid) && Number(o.cost_year) > 0 && Number(o.first_cycle) > 0) : [];
   if (!ideas.length) { const e = el('div', 'empty'); e.append(el('h3', null, S.loaded ? 'No businesses listed yet' : 'Loading the mentor')); body.append(e); return; }
@@ -1789,15 +1814,13 @@ function renderMentor() {
   const by = { profit: (a, b) => b.c.month - a.c.month, return: (a, b) => b.c.ret - a.c.ret, start: (a, b) => a.c.minStart - b.c.minStart }[MEN.sort] || ((a, b) => a.c.minStart - b.c.minStart);
   rows.sort((a, b) => (b.c.fits - a.c.fits) || by(a, b));
   const fit = rows.filter((x) => x.c.fits);
-  const wk = weekBusiness(ideas);
-  const pick = wk && rows.find((x) => x.o.id === wk.id);
-  if (pick) rows = [pick].concat(rows.filter((x) => x !== pick));
+  const pick = null;
+  $('farm-sum').textContent = ideas.length + ' businesses with Nepal cost and profit studies, from about ' + rs(Math.min(...ideas.map((o) => mentorCalc(o, null).minStart))) + ' to start.';
   const tile = (k, v, s) => { const x = el('div', 'tile'); x.append(el('div', 'k', k), el('div', 'v', v), el('div', 's', s)); tiles.append(x); };
   if (!budget && rows.length) {
     const cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
     tile('Cheapest to start', rs(cheap.c.minStart), cheap.o.name + ' · ' + sizeText(cheap.o, cheap.o.scale.min));
     tile('Businesses', String(rows.length), 'Each with costs and profit from Nepal studies');
-    if (wk) tile("Mentor's pick this week", wk.name, 'A new pick every Sunday');
   } else if (fit.length) {
     const top = fit.slice().sort((a, b) => b.c.month - a.c.month)[0], best = fit.slice().sort((a, b) => b.c.ret - a.c.ret)[0], cheap = rows.slice().sort((a, b) => a.c.minStart - b.c.minStart)[0];
     tile('Most profit a month', about(top.c.month), top.o.name + ' · ' + (top.o.risk || '') + ' risk');
@@ -1821,7 +1844,7 @@ function renderMentor() {
   }
   renderGrowth();
   renderSectors();
-  foot.textContent = (d.disclaimer || '') + ' Money to start is the set-up cost plus the running costs of the first batch or year. Sizes stay between a smallest sensible size and a largest size for each business.';
+  foot.textContent = (d.disclaimer || '') + ' Sector figures are official statistics, not profit estimates. For the small farm businesses, money to start is the set-up cost plus the running costs of the first batch or year.';
 }
 $('mentor-budget').addEventListener('input', (e) => { MEN.budget = budgetFrom(e.target.value); saveMen(); renderMentor(); });
 $('mentor-sort').addEventListener('change', (e) => { MEN.sort = e.target.value; saveMen(); renderMentor(); });
@@ -1892,7 +1915,7 @@ function renderSectors() {
     c.append(dt);
     if (s.tab && TABS.includes(s.tab)) {
       const b = el('button', 'btn', s.tab_label || 'Open'); b.type = 'button';
-      b.addEventListener('click', () => { if (s.tab === 'mentor') { const top = $('mentor-body'); if (top) top.scrollIntoView({ block: 'start' }); } else show(s.tab, true); });
+      b.addEventListener('click', () => { if (s.tab === 'mentor') openFarm(); else show(s.tab, true); });
       c.append(b);
     }
     body.append(c);
@@ -1946,8 +1969,8 @@ function renderStartAll() {
   const gaps = secs.filter((s) => !used.includes(s.id) && s.id !== 'agriculture'), gp = $('sa-gaps'); gp.replaceChildren();
   if (farm.length) {
     const cheapest = Math.min(...farm.map((o) => mentorCalc(o, null).minStart));
-    const fp = el('p', 'sa-farm'); fp.append('Small farm businesses (' + farm.length + ', from about ' + rs(cheapest) + ') are in the Mentor, with study-based costs and profits.');
-    const fb = el('button', 'btn', 'Open the Mentor'); fb.type = 'button'; fb.addEventListener('click', () => show('mentor', true)); fp.append(fb); gp.append(fp);
+    const fp = el('p', 'sa-farm'); fp.append('Small farm businesses (' + farm.length + ', from about ' + rs(cheapest) + ') are at the end of the Mentor, with study-based costs and profits.');
+    const fb = el('button', 'btn', 'See small farm businesses'); fb.type = 'button'; fb.addEventListener('click', openFarm); fp.append(fb); gp.append(fp);
   }
   if (gaps.length) {
     gp.append(el('p', null, 'No reliable published start-up figure yet for these sectors. Their guides show the official steps; figures are added as they are found and checked.'));
@@ -1958,33 +1981,45 @@ function renderStartAll() {
 }
 
 /* Start page lead: the growing sectors from the growth table (strong, then moderate), with ways in and money to start. Small farm businesses stay in the Mentor. */
+function growthCard(x, week) {
+  const secs = S.mentor && S.mentor.sectors && Array.isArray(S.mentor.sectors.items) ? S.mentor.sectors.items : [];
+  const opts = S.mentor && S.mentor.start_options && Array.isArray(S.mentor.start_options.items) ? S.mentor.start_options.items : [];
+  const budget = hasBudget() ? MEN.budget : null;
+  const c = el('article', 'sg-card ' + x.level + (week ? ' week' : ''));
+  const meta = el('div', 'meta');
+  if (week) meta.append(el('span', 'week-badge', 'Sector of the week'));
+  meta.append(el('span', 'g-lvl ' + x.level, G_LEVEL[x.level]));
+  const sec = secs.find((s) => s.id === x.sector); if (sec && sec.tag) meta.append(el('span', 'chip', sec.tag));
+  c.append(meta, el('h3', null, x.name));
+  const fig = el('div', 'sg-fig'); fig.append(el('b', null, x.value || ''), el('span', null, x.label || '')); c.append(fig);
+  if (week && sec && sec.summary) c.append(el('p', 'note', sec.summary));
+  if (Array.isArray(x.ideas) && x.ideas.length) { c.append(el('div', 'k', 'Ways in')); const ul = el('ul', 'sg-ways'); for (const i of x.ideas) ul.append(el('li', null, i)); c.append(ul); }
+  const mine = opts.filter((o) => o.sector === x.sector).sort((a, b) => a.min - b.min);
+  if (mine.length) {
+    const fits = budget != null && mine[0].min <= budget;
+    const st = el('div', 'sg-start' + (fits ? ' fits' : '')); st.append('To start: from ', el('b', null, rs(mine[0].min)), ' (' + mine[0].name.toLowerCase() + ')' + (mine.length > 1 ? ', and ' + (mine.length - 1) + ' more' : '') + (fits ? '. Fits your budget.' : '.'));
+    c.append(st);
+  }
+  const act = el('div', 'sg-act');
+  if (sec) { const b = el('button', 'btn' + (week ? ' primary' : ''), week ? 'Read the full guide' : 'How to start'); b.type = 'button'; b.addEventListener('click', () => openGuide(sec.id)); act.append(b); }
+  const u = safeUrl(x.source_url); if (u) { const a = el('a', 'src', (x.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; act.append(a); }
+  c.append(act);
+  return c;
+}
+function growingSectors() {
+  const g = S.mentor && S.mentor.growth;
+  const rows = g && Array.isArray(g.items) ? g.items.filter((x) => x && (x.level === 'strong' || x.level === 'moderate') && x.sector !== 'agriculture') : [];
+  return rows.slice().sort((a, b) => (a.level === b.level ? 0 : a.level === 'strong' ? -1 : 1));
+}
+function openGuide(id) { sectorTag = 'all'; secOpen.add(id); show('mentor', true); renderSectors(); requestAnimationFrame(() => { const t = $('sector-' + id); if (t) t.scrollIntoView({ block: 'start' }); }); }
+function openFarm() { show('mentor', true); const f = $('farm-panel'); f.open = true; requestAnimationFrame(() => f.scrollIntoView({ block: 'start' })); }
+/* Start page lead: the growing sectors from the growth table (strong, then moderate), with ways in and money to start. Small farm businesses sit at the end of the Mentor. */
 function renderStartGrow() {
   const box = $('start-grow'), list = $('sg-list'); list.replaceChildren();
-  const g = S.mentor && S.mentor.growth, secs = S.mentor && S.mentor.sectors && Array.isArray(S.mentor.sectors.items) ? S.mentor.sectors.items : [];
-  const rows = g && Array.isArray(g.items) ? g.items.filter((x) => x && (x.level === 'strong' || x.level === 'moderate') && x.sector !== 'agriculture') : [];
+  const g = S.mentor && S.mentor.growth, rows = growingSectors();
   box.hidden = !rows.length; if (!rows.length) return;
-  rows.sort((a, b) => (a.level === b.level ? 0 : a.level === 'strong' ? -1 : 1));
   $('sg-note').textContent = 'Ranked by what the latest official figures show' + (g.as_of ? ', checked ' + niceDate(g.as_of) : '') + '. Each card has the key number, ways in, and what it takes to start where a published figure exists. These are directions to explore, not profit estimates.';
-  const opts = S.mentor.start_options && Array.isArray(S.mentor.start_options.items) ? S.mentor.start_options.items : [];
-  const budget = hasBudget() ? MEN.budget : null;
-  for (const x of rows) {
-    const c = el('article', 'sg-card ' + x.level);
-    const meta = el('div', 'meta'); meta.append(el('span', 'g-lvl ' + x.level, G_LEVEL[x.level]));
-    const sec = secs.find((s) => s.id === x.sector); if (sec && sec.tag) meta.append(el('span', 'chip', sec.tag));
-    c.append(meta, el('h3', null, x.name));
-    const fig = el('div', 'sg-fig'); fig.append(el('b', null, x.value || ''), el('span', null, x.label || '')); c.append(fig);
-    if (Array.isArray(x.ideas) && x.ideas.length) { c.append(el('div', 'k', 'Ways in')); const ul = el('ul', 'sg-ways'); for (const i of x.ideas) ul.append(el('li', null, i)); c.append(ul); }
-    const mine = opts.filter((o) => o.sector === x.sector).sort((a, b) => a.min - b.min);
-    if (mine.length) {
-      const fits = budget != null && mine[0].min <= budget;
-      const st = el('div', 'sg-start' + (fits ? ' fits' : '')); st.append('To start: from ', el('b', null, rs(mine[0].min)), ' (' + mine[0].name.toLowerCase() + ')' + (mine.length > 1 ? ', ' + (mine.length - 1) + ' more below' : '') + (fits ? '. Fits your budget.' : '.'));
-      c.append(st);
-    }
-    const act = el('div', 'sg-act');
-    if (sec) { const b = el('button', 'btn', 'How to start'); b.type = 'button'; b.addEventListener('click', () => { sectorTag = 'all'; secOpen.add(sec.id); show('mentor', true); renderSectors(); requestAnimationFrame(() => { const t = $('sector-' + sec.id); if (t) t.scrollIntoView({ block: 'start' }); }); }); act.append(b); }
-    const u = safeUrl(x.source_url); if (u) { const a = el('a', 'src', (x.source_name || 'Source') + ' ↗'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; act.append(a); }
-    c.append(act); list.append(c);
-  }
+  for (const x of rows) list.append(growthCard(x, false));
 }
 
 function renderStart() {
@@ -2054,7 +2089,7 @@ const FEATURE_DESC = {
   start: 'Businesses to start, sized to any budget',
   today: 'The day\u2019s news and why it matters',
   builds: 'Track a plan from idea to launch',
-  mentor: 'Costs, profits, growing sectors and sector guides',
+  mentor: 'Growing sectors, sector guides and how to start',
   business: 'Opportunities open now, prices and company news',
   nepse: 'Index, top movers, IPOs and a bank watchlist',
   invest: 'Compare deposits, bonds, shares, gold and land',

@@ -431,7 +431,7 @@
   }
  ],
  "sectors": {
-  "as_of": "2026-11-15",
+  "as_of": "2026-11-22",
   "note": "Sector guides show what it takes to start and the key public numbers. They give no profit estimate, because profit depends on the exact product, place and owner. Registration steps are summarised from official offices and advisers' guides; check the current rules and fees with the office before you apply.",
   "items": [
    {
@@ -456,10 +456,10 @@
      },
      {
       "label": "Bank loans to farming",
-      "value": "Down 2.2%",
-      "note": "Change in the first two months of FY 2083/84, while most other sectors borrowed more",
-      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "value": "Down 2.5%",
+      "note": "Change in the first three months of FY 2083/84, while most other sectors borrowed more",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -481,8 +481,8 @@
       "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      },
      {
-      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ]
    },
@@ -564,10 +564,10 @@
      },
      {
       "label": "Consumer inflation",
-      "value": "6.34%",
-      "note": "Mid-September 2026, up from 1.87% a year earlier; food and drink 7.54%, ghee and oil 16.68%",
-      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "value": "6.37%",
+      "note": "Mid-October 2026, up from 1.47% a year earlier; food and drink 8.04%, ghee and oil 16.44%",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -596,8 +596,8 @@
       "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      },
      {
-      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ]
    },
@@ -658,11 +658,11 @@
       "source_url": "https://risingnepaldaily.com/news/88375"
      },
      {
-      "label": "Tourism income, first two months of FY 2083/84",
-      "value": "Rs 14.94 arba",
-      "note": "Travel income, up 28.6% on a year earlier",
-      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "label": "Tourism income, first three months of FY 2083/84",
+      "value": "Rs 25.52 arba",
+      "note": "Travel income, up 32.7% on a year earlier",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -686,8 +686,8 @@
       "url": "https://risingnepaldaily.com/news/88375"
      },
      {
-      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ]
    },
@@ -756,10 +756,10 @@
      },
      {
       "label": "Construction material prices",
-      "value": "Up 5.08%",
-      "note": "Wholesale prices, mid-September 2026 against a year earlier",
-      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "value": "Up 5.93%",
+      "note": "Wholesale prices, mid-October 2026 against a year earlier",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -781,8 +781,8 @@
       "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      },
      {
-      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ]
    },
@@ -801,10 +801,10 @@
      },
      {
       "label": "Transport fares and fuel",
-      "value": "Up 12.77%",
-      "note": "Transport prices in mid-September 2026 against a year earlier; Brent crude was $127.84 a barrel",
-      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "value": "Up 12.97%",
+      "note": "Transport prices in mid-October 2026 against a year earlier; Brent crude was $119.33 a barrel, up 95.4%",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -821,12 +821,12 @@
     ],
     "sources": [
      {
-      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
-     },
-     {
       "name": "OnlineKhabar: first-quarter trade, FY 2083/84 (Department of Customs)",
       "url": "https://english.onlinekhabar.com/nepals-exports-cross-114-billion.html"
+     },
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ]
    },
@@ -846,7 +846,7 @@
      {
       "label": "Paid abroad for study, FY 2025/26",
       "value": "Rs 141.92 arba",
-      "note": "Up 2.5%; in the first two months of FY 2083/84 it fell 9.8% to Rs 29.55 arba",
+      "note": "Up 2.5%; in the first three months of FY 2083/84 it fell 14.7% to Rs 36.65 arba (NRB)",
       "source_name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
       "source_url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
      }
@@ -866,6 +866,10 @@
      {
       "name": "Nepal Rastra Bank: Macroeconomic Indicators of Nepal, 2025/26",
       "url": "https://www.nrb.org.np/contents/uploads/2026/10/Macroeconomic-Indicators-of-Nepal-%E2%80%93-Mid-July-2025-26.pdf"
+     },
+     {
+      "name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ]
    },
@@ -971,10 +975,10 @@
      },
      {
       "label": "Bank lending rate",
-      "value": "6.38%",
-      "note": "Commercial banks, mid-September 2026, down from 7.66% a year earlier; deposits earned 3.11%",
-      "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "value": "6.31%",
+      "note": "Commercial banks, mid-October 2026, down from 7.50% a year earlier; deposits earned 3.07%",
+      "source_name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ],
     "start": [
@@ -991,8 +995,8 @@
     "tab_label": "Compare savings options",
     "sources": [
      {
-      "name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+      "name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+      "url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
      }
     ]
    },
@@ -1004,10 +1008,10 @@
     "numbers": [
      {
       "label": "NEPSE, FY 2083/84 so far",
-      "value": "Up 1.9%",
-      "note": "About 2,648 on 13 November 2026, from 2,597.80 at the start of the fiscal year",
-      "source_name": "OnlineKhabar: NEPSE on 13 November 2026",
-      "source_url": "https://english.onlinekhabar.com/nepse-falls-after-tihar.html"
+      "value": "Up 0.9%",
+      "note": "2,621.29 on 20 November 2026, from 2,597.80 at the start of the fiscal year",
+      "source_name": "Kathmandu Post: NEPSE week of 17 to 20 November 2026",
+      "source_url": "https://kathmandupost.com/money/2026/11/21/nepse-loses-ground-as-trading-slows-and-investors-favour-select-stocks"
      },
      {
       "label": "NEPSE, FY 2082/83",
@@ -1031,8 +1035,8 @@
     "tab_label": "Open the NEPSE tab",
     "sources": [
      {
-      "name": "OnlineKhabar: NEPSE on 13 November 2026",
-      "url": "https://english.onlinekhabar.com/nepse-falls-after-tihar.html"
+      "name": "Kathmandu Post: NEPSE week of 17 to 20 November 2026",
+      "url": "https://kathmandupost.com/money/2026/11/21/nepse-loses-ground-as-trading-slows-and-investors-favour-select-stocks"
      }
     ]
    },
@@ -1078,22 +1082,22 @@
   ]
  },
  "growth": {
-  "as_of": "2026-11-15",
+  "as_of": "2026-11-22",
   "note": "Ranked by how strongly the latest official figures point to growth. These are directions to explore, not profit estimates.",
   "items": [
    {
     "level": "strong",
     "sector": null,
     "name": "Services for migrant families",
-    "value": "Rs 436 arba",
-    "label": "Remittances in the first two months of FY 2083/84, up 23.9% on a year earlier",
+    "value": "Rs 704 arba",
+    "label": "Remittances in the first three months of FY 2083/84, up 27.2% on a year earlier",
     "ideas": [
      "Pre-departure skills and language classes",
      "Savings guidance for remittance families",
      "Help for returnees starting a business"
     ],
-    "source_name": "Nepal Rastra Bank: macroeconomic situation, two months of 2026/27",
-    "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-two-months-data-of-2026-27/"
+    "source_name": "Nepal Rastra Bank: macroeconomic situation, three months of 2026/27",
+    "source_url": "https://www.nrb.org.np/red/current-macroeconomic-and-financial-situation-english-based-on-three-months-data-of-2026-27/"
    },
    {
     "level": "strong",
@@ -1232,13 +1236,13 @@
     "level": "caution",
     "sector": "investing",
     "name": "Shares",
-    "value": "+1.9%",
-    "label": "NEPSE so far in FY 2083/84 (about 2,648 on 13 November), after −7.05% in FY 2082/83",
+    "value": "+0.9%",
+    "label": "NEPSE so far in FY 2083/84 (2,621.29 on 20 November), after −7.05% in FY 2082/83",
     "ideas": [
      "Treat shares as long-term saving"
     ],
-    "source_name": "OnlineKhabar: NEPSE on 13 November 2026",
-    "source_url": "https://english.onlinekhabar.com/nepse-falls-after-tihar.html"
+    "source_name": "Kathmandu Post: NEPSE week of 17 to 20 November 2026",
+    "source_url": "https://kathmandupost.com/money/2026/11/21/nepse-loses-ground-as-trading-slows-and-investors-favour-select-stocks"
    }
   ]
  },

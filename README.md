@@ -14,6 +14,7 @@ Nepal in 1 is a public website, kept separate from any personal dashboard. Every
 | **Mentor** | Where to build in Nepal: a **Sector of the week** (a new growing sector every Sunday), the growth table ranking sectors by the latest official figures, and 14 sector guides with key numbers, official steps and risks. At the end, a closed **Small farm businesses** section holds seven farm businesses with published Nepal cost and profit studies (beekeeping, bananas, tunnel tomatoes, broilers, carp ponds, ginger, goats), sized to any budget, with one tap to add one to My builds |
 | **Business** | Business opportunities open now (loans, subsidies, grants, training, tenders, trade fairs, share issues, each with its deadline and source), key indicators, company news and upcoming business dates. The Start page shows the three closing soonest |
 | **NEPSE** | Index chart (1M / 3M / all), sector moves, top gainers, losers and most traded, a fundamentals watchlist for banks, IPOs and share issues |
+| **Screener** | Every listed NEPSE share (about 280 shares plus mutual funds and promoter shares) with price, today's change, P/E, P/B, ROE, dividend yield, 52-week range, one-year return and market cap. Filter by sector, search and limits, use ready-made screens (value, dividend payers, high ROE, near 52-week low or high, large companies, today's gainers), sort any column and download the results as CSV. A filter for research, not advice |
 | **Invest** | A calculator comparing fixed deposits, savings bonds, NEPSE, gold and land: lump sum or monthly, low / expected / high, after tax and inflation; plus places to watch for property |
 | **Economy** | GDP paths to 2036, IMF and ADB forecasts, what the economy is made of, hydropower export progress, a growth scorecard |
 | **National projects** | Progress, cost and status of 25 national pride and major projects, by sector |
@@ -37,6 +38,8 @@ No framework and no build step: just two files.
 | `site/index.html` | The whole site: layout, styles and script in one file |
 | `site/data.json` | The daily data: news, business, NEPSE, investment rates, places |
 | `site/mentor.json` | The Mentor: businesses, growth table and sector guides (updated separately, so weekly suggestions never clash with the daily data) |
+| `site/screener.json` | The screener's data: every listed share with price and fundamentals (built by `scripts/update_screener.py`) |
+| `.github/workflows/screener.yml` | Refreshes the screener after each trading day (prices) and on Saturdays (prices and every company page), then republishes the site |
 | `scripts/check.mjs` | Health check: valid data, every tab wired up, script has no syntax errors |
 | `scripts/browser-check.mjs` | Opens the site in a real browser at small-phone, phone, tablet and desktop size and checks every feature can be reached and shows content |
 | `.github/workflows/check.yml` | Runs the check on GitHub every time the site changes |
@@ -106,6 +109,10 @@ A compact table on the Mentor ranks sectors as Strong, Moderate or Careful by wh
 ### Sector guides
 
 Below the sized businesses, the Mentor has 14 sector guides covering business across Nepal: farming, import and export, retail and wholesale, IT and online services, tourism, small manufacturing and food processing, construction and real estate, transport, education, health and pharmacy, energy, finance and cooperatives, investing in shares, and media, film and creative work. The weekly Mentor refresh updates their figures and can add a guide. Each gives the key public numbers with sources, the first steps (registrations and licences), and what to watch out for. They give **no profit estimate**, because profit depends on the exact product, place and owner. Data lives in `sectors` in `site/mentor.json`; `scripts/check.mjs` checks every guide has first steps and that every number has a source. Registration details summarised from advisers' guides are labelled as such on the page.
+
+### NEPSE screener data
+
+`scripts/update_screener.py` reads Merolagani's latest market page (every listed share's price and change) and, in a full run, every company page (sector, EPS, book value, dividends, 52-week range, shares, one-year return). It works out P/E, P/B, ROE and dividend yield from today's price, leaves out corporate debentures, and writes `site/screener.json`; the raw company figures are kept in `data/screener_fund.json` (not published) so the daily run needs only one page. It refuses to write if fewer than 250 shares come back or if its P/E check disagrees with the source for more than a quarter of companies, so the live screener always keeps its last good data. The GitHub Action `screener.yml` runs it on weekdays after the close and in full on Saturdays, then republishes the site. To run it by hand: `python3 scripts/update_screener.py` (full) or `--prices`.
 
 ## Hosting
 

@@ -1,0 +1,63 @@
+name: Screener data
+
+# Refreshes site/screener.json (every listed NEPSE share) and republishes the site.
+# Prices after each trading day; prices and fundamentals (every company page) on Saturdays.
+on:
+  schedule:
+    - cron: '20 10 * * 1-5'   # 4:05 pm Nepal time, Monday to Friday: prices
+    - cron: '35 2 * * 6'      # 8:20 am Nepal time, Saturday: prices and fundamentals
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Also re-read every company page (EPS, book value, dividends)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: screener
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch screener data
+        id: fetch
+        run: |
+          set +e
+          if [ "${{ github.event.schedule }}" = "35 2 * * 6" ] || [ "${{ inputs.full }}" = "true" ]; then
+            python3 scripts/update_screener.py
+          else
+            python3 scripts/update_screener.py --prices
+          fi
+          code=$?
+          set -e
+          if [ "$code" = "3" ]; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "$code" != "0" ]; then exit "$code"; fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Check the site
+        if: steps.fetch.outputs.changed == 'true'
+        run: node scripts/check.mjs
+      - name: Commit and push
+        if: steps.fetch.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/screener.json data/screener_fund.json
+          git commit -m "Screener data: prices $(python3 -c "import json;print(json.load(open('site/screener.json'))['as_of'])")"
+          for i in 1 2 3; do git pull --rebase origin main && git push origin HEAD:main && break; sleep 5; done
+      - name: Publish the site
+        if: steps.fetch.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

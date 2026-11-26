@@ -72,6 +72,7 @@ try {
   const bad = st.filter((x) => !x.s || !x.n || !x.sec || !(x.ltp > 0) || !['chg', 'pe', 'pb', 'roe', 'dy', 'hi52', 'lo52', 'yr', 'mcap', 'a120'].every((k) => isNum(x[k])));
   if (st.length < 250) fail('screener.json has only ' + st.length + ' stocks');
   else if (bad.length) fail('screener rows with a missing symbol, sector or price, or a non-number ratio: ' + bad.slice(0, 5).map((x) => x.s || '?').join(', '));
+  else if (st.some((x) => x.t && (!['Strong bullish', 'Bullish', 'Neutral', 'Bearish', 'Strong bearish'].includes(x.t.label) || !(x.t.score >= -1 && x.t.score <= 1) || !isNum(x.t.rsi) || (x.t.rsi != null && (x.t.rsi < 0 || x.t.rsi > 100))))) fail('screener technicals have an unknown rating, a score outside -1 to 1, or an RSI outside 0 to 100');
   else if (!/^\d{4}-\d{2}-\d{2}$/.test(scr.as_of || '') || !/^https:\/\//.test(scr.source_url || '')) fail('screener.json needs an as_of date and an https source');
   else ok('screener.json has ' + st.length + ' complete stocks (prices ' + scr.as_of + ')');
 } catch (e) { fail('screener.json is missing or not valid JSON: ' + e.message); }

@@ -30,6 +30,7 @@ OUT = ROOT / "site" / "screener.json"
 FUND = ROOT / "data" / "screener_fund.json"  # raw company-page figures, kept for --prices runs; not published
 SKIP_SECTORS = {"Corporate Debenture"}  # bonds, not shares
 MARKET = "https://merolagani.com/latestmarket.aspx"
+HISTORY = "https://merolagani.com/handlers/TechnicalChartHandler.ashx?type=get_advanced_chart&resolution=1D&isAdjust=1&currencyCode=NPR&symbol="
 COMPANY = "https://merolagani.com/CompanyDetail.aspx?symbol="
 UA = "Mozilla/5.0 (compatible; NepalIn1-screener/1.0; public market data)"
 MIN_STOCKS = 250
@@ -139,11 +140,106 @@ def company(symbol):
     }
 
 
+def history(symbol):
+    """About 13 months of daily bars, adjusted for bonus and right shares: (closes, volumes), oldest first."""
+    now = int(time.time())
+    try:
+        d = json.loads(get(HISTORY + symbol + "&rangeStartDate=%d&rangeEndDate=%d" % (now - 420 * 86400, now)))
+    except Exception:
+        return symbol, None
+    if d.get("s") != "ok" or not d.get("c"):
+        return symbol, None
+    bars = [b for b in sorted(zip(d["t"], d["c"], d.get("v") or [0] * len(d["c"]))) if b[1]]
+    # Nepal date of each bar (UTC+5:45), so today's close can be matched to the market page's date
+    days = [datetime.fromtimestamp(t + 20700, timezone.utc).strftime("%Y-%m-%d") for t, _, _ in bars]
+    return symbol, (days, [float(c) for _, c, _ in bars], [float(v or 0) for _, _, v in bars])
+
+
+def sma(xs, n):
+    return sum(xs[-n:]) / n if len(xs) >= n else None
+
+
+def ema_series(xs, n):
+    k, out, e = 2 / (n + 1), [], None
+    for x in xs:
+        e = x if e is None else x * k + e * (1 - k)
+        out.append(e)
+    return out
+
+
+def rsi(xs, n=14):
+    """Wilder's RSI."""
+    if len(xs) <= n:
+        return None
+    gains = [max(0, xs[i] - xs[i - 1]) for i in range(1, len(xs))]
+    losses = [max(0, xs[i - 1] - xs[i]) for i in range(1, len(xs))]
+    ag, al = sum(gains[:n]) / n, sum(losses[:n]) / n
+    for g, l in zip(gains[n:], losses[n:]):
+        ag, al = (ag * (n - 1) + g) / n, (al * (n - 1) + l) / n
+    return 100.0 if al == 0 else 100 - 100 / (1 + ag / al)
+
+
+def technicals(days, closes, vols, ltp, as_of):
+    """Standard trading indicators and a vote-based technical rating from -1 (all bearish) to +1 (all bullish)."""
+    if not closes or len(closes) < 35:
+        return None
+    c, vols = closes[:], vols[:]
+    if days[-1] == as_of:   # today's bar is there: use the market page's last price for it
+        c[-1] = ltp
+    elif days[-1] < as_of:  # history ends earlier: add today's price as the latest bar
+        c.append(ltp)
+        vols.append(0.0)
+    s20, s50, s200 = sma(c, 20), sma(c, 50), sma(c, 200)
+    e12, e26 = ema_series(c, 12), ema_series(c, 26)
+    macd = [a - b for a, b in zip(e12, e26)]
+    sig = ema_series(macd, 9)
+    hist = [m - g for m, g in zip(macd, sig)]
+    cross = 0  # MACD crossed its signal line in the last 3 sessions
+    for i in range(len(hist) - 3, len(hist)):
+        if i > 0 and hist[i - 1] <= 0 < hist[i]:
+            cross = 1
+        elif i > 0 and hist[i - 1] >= 0 > hist[i]:
+            cross = -1
+    gx = 0  # 50-day average crossed the 200-day average in the last 10 sessions
+    if len(c) >= 210:
+        for i in range(len(c) - 10, len(c)):
+            a_now, b_now = sum(c[i - 49:i + 1]) / 50, sum(c[i - 199:i + 1]) / 200
+            a_was, b_was = sum(c[i - 50:i]) / 50, sum(c[i - 200:i]) / 200
+            if a_was <= b_was and a_now > b_now:
+                gx = 1
+            elif a_was >= b_was and a_now < b_now:
+                gx = -1
+    r = rsi(c)
+    r_prev = rsi(c[:-1])
+    mom = (c[-1] / c[-11] - 1) * 100 if len(c) > 11 and c[-11] else None
+    v20 = sma(vols, 20) if vols and len(vols) >= 20 else None
+    vsurge = bool(v20 and vols[-1] >= 2 * v20)
+    votes = []
+    for avg in (s20, s50, s200):
+        if avg:
+            votes.append(1 if ltp > avg else -1)
+    if s50 and s200:
+        votes.append(1 if s50 > s200 else -1)
+    votes.append(1 if hist[-1] > 0 else -1)
+    if r is not None and r_prev is not None:
+        votes.append(1 if r < 30 and r > r_prev else -1 if r > 70 and r < r_prev else 0)
+    if mom is not None:
+        votes.append(1 if mom > 0 else -1 if mom < 0 else 0)
+    score = sum(votes) / len(votes) if votes else 0
+    label = ("Strong bullish" if score >= 0.5 else "Bullish" if score >= 0.1 else
+             "Strong bearish" if score <= -0.5 else "Bearish" if score <= -0.1 else "Neutral")
+    return {
+        "rsi": r2(r), "macd": r2(macd[-1]), "macd_sig": r2(sig[-1]), "macd_x": cross,
+        "sma20": r2(s20), "sma50": r2(s50), "sma200": r2(s200), "gx": gx,
+        "mom10": r2(mom), "vsurge": vsurge, "score": r2(score), "label": label, "bars": len(c),
+    }
+
+
 def r2(x):
     return None if x is None else round(x, 2)
 
 
-def build(prices, fund):
+def build(prices, fund, hist=None, as_of=""):
     stocks = []
     for sym, p in sorted(prices.items()):
         f = fund.get(sym)
@@ -163,6 +259,10 @@ def build(prices, fund):
             "mcap": round(f["shares"] * ltp) if f.get("shares") else (round(f["mcap"]) if f.get("mcap") else None),
             "yr": f.get("yr"), "vol30": f.get("vol30"), "a120": f.get("avg120"),
         }
+        h = (hist or {}).get(sym)
+        t = technicals(h[0], h[1], h[2], ltp, as_of) if h else None
+        if t:
+            s["t"] = t
         stocks.append(s)
     return stocks
 
@@ -197,7 +297,15 @@ def main():
         if checked and len(bad) > 0.25 * len(checked):
             fail("P/E check failed for %d of %d companies; the page layout may have changed" % (len(bad), len(checked)))
 
-    stocks = build(prices, fund)
+    wanted = [s for s in sorted(prices) if s in fund and fund[s].get("sector") not in SKIP_SECTORS]
+    hist = {}
+    with ThreadPoolExecutor(4) as ex:
+        for sym, h in ex.map(history, wanted):
+            if h:
+                hist[sym] = h
+    if len(hist) < 0.7 * len(wanted):
+        fail("price history came back for only %d of %d shares" % (len(hist), len(wanted)))
+    stocks = build(prices, fund, hist, as_of)
     if len(stocks) < MIN_STOCKS:
         fail("only %d stocks have both a price and fundamentals" % len(stocks))
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")

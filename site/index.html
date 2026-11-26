@@ -445,6 +445,12 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .scr-sym span { display: block; font-size: 12px; color: var(--muted); max-width: 190px; overflow: hidden; text-overflow: ellipsis; }
 .scr-t td.dim { white-space: normal; min-width: 110px; max-width: 150px; }
 .scr-t .up { color: var(--ok); } .scr-t .down { color: var(--bad); } .scr-t .na { color: var(--faint); }
+.scr-sig { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 1px 8px; border-radius: 99px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.scr-sig.pos { color: var(--ok); } .scr-sig.neg { color: var(--bad); } .scr-sig.neu { color: var(--muted); }
+.scr-t td.sigs { white-space: normal; min-width: 150px; max-width: 230px; padding-bottom: 6px; }
+.scr-how summary { cursor: pointer; font-weight: 600; min-height: 40px; display: flex; align-items: center; }
+.scr-how ul { margin: 8px 0 0; padding-left: 0; list-style: none; display: grid; gap: 8px; font-size: 14px; }
+.scr-how li .scr-sig { margin-right: 8px; }
 .rng { display: inline-block; width: 64px; height: 6px; border-radius: 3px; background: var(--raise); position: relative; vertical-align: middle; margin-right: 6px; }
 .rng i { position: absolute; top: -2px; width: 4px; height: 10px; border-radius: 2px; background: var(--fg); }
 /* Links that jump down a page stop below the sticky header. */
@@ -714,7 +720,7 @@ main [id], main [data-idea] { scroll-margin-top: 132px; }
       <div>
         <p class="eyebrow" id="scr-eyebrow">NEPSE screener</p>
         <h1>NEPSE screener</h1>
-        <p id="scr-lede">Filter every listed share by value, profitability, dividends, size and price trend, then sort the results. A filter for research, not advice.</p>
+        <p id="scr-lede">Filter every listed share by value, profitability, dividends, size and price trend, then sort the results. Each share carries rule-based signals that describe its figures. These are not buy or sell recommendations.</p>
       </div>
     </div>
     <div class="chips" id="scr-presets" role="group" aria-label="Ready-made screens"></div>
@@ -726,11 +732,17 @@ main [id], main [data-idea] { scroll-margin-top: 132px; }
       <div class="fld"><label for="scr-roe">Min ROE %</label><input id="scr-roe" type="number" step="1" inputmode="decimal" placeholder="Any"></div>
       <div class="fld"><label for="scr-dy">Min dividend yield %</label><input id="scr-dy" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Any"></div>
       <div class="fld"><label for="scr-mc">Min market cap, Rs arba</label><input id="scr-mc" type="number" min="0" step="1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld scr-wide"><label for="scr-sig">Signal</label><select id="scr-sig"></select></div>
       <div class="fld scr-wide"><label for="scr-sort">Sort by</label><select id="scr-sort"></select></div>
     </div>
     <div class="scr-bar"><p id="scr-count" class="note" role="status" aria-live="polite"></p><div class="scr-btns"><button class="btn" type="button" id="scr-reset">Reset</button><button class="btn" type="button" id="scr-csv">Download CSV</button></div></div>
     <div class="tablewrap scr-wrap"><table class="scr-t" aria-describedby="scr-count"><thead><tr id="scr-head"></tr></thead><tbody id="scr-body"></tbody></table></div>
     <div class="more-row" id="scr-more-row" hidden><button class="btn" type="button" id="scr-more">Show more</button></div>
+    <details class="panel scr-how" id="scr-how">
+      <summary>How the signals work</summary>
+      <p class="note">Signals describe what the published figures show for each share, using fixed rules that are the same for every company. They are not buy or sell recommendations: a share can look cheap for good reasons, and figures change every quarter. Check the company's reports, and talk to a licensed adviser before investing.</p>
+      <ul id="scr-how-list"></ul>
+    </details>
     <p class="foot" id="scr-foot"></p>
   </section>
 
@@ -2103,7 +2115,7 @@ $('start-go').addEventListener('click', () => { const h = $('sa-h'); if (h && !$
 
 /* ---------- NEPSE screener: every listed share, filtered and sorted in the browser. Data: screener.json ---------- */
 const SCR_KEY = 'n1-scr';
-const SCR_DEF = { q: '', sec: 'shares', pe: '', pb: '', roe: '', dy: '', mc: '', sort: 'mcap', dir: -1, preset: 'all' };
+const SCR_DEF = { q: '', sec: 'shares', sig: '', pe: '', pb: '', roe: '', dy: '', mc: '', sort: 'mcap', dir: -1, preset: 'all' };
 let SCR = Object.assign({}, SCR_DEF), scrData = null, scrLoading = false, scrShown = 50;
 try { Object.assign(SCR, JSON.parse(localStorage.getItem(SCR_KEY) || '{}')); } catch (e) {}
 const scrSave = () => { try { localStorage.setItem(SCR_KEY, JSON.stringify(SCR)); } catch (e) {} };
@@ -2112,6 +2124,7 @@ const SCR_COLS = [
   { k: 'sec', h: 'Sector', d: 1, cls: 'hide-sm' },
   { k: 'ltp', h: 'Price', d: -1, r: 1 },
   { k: 'chg', h: 'Today', d: -1, r: 1 },
+  { k: 'sig', h: 'Signals', d: 1, nosort: 1 },
   { k: 'pe', h: 'P/E', d: 1, r: 1 },
   { k: 'pb', h: 'P/B', d: 1, r: 1 },
   { k: 'roe', h: 'ROE', d: -1, r: 1 },
@@ -2131,12 +2144,49 @@ const SCR_PRESETS = [
   ['big', 'Large: Rs 20 arba+', { mc: 20, sort: 'mcap' }],
   ['gain', "Today's gainers", { sort: 'chg', gain: 1 }],
 ];
+const SIGNALS = [
+  ['cheap', 'Cheaper than sector', 'pos', 'P/E is positive and below the median P/E of its sector (sectors with at least five profitable companies).'],
+  ['roe', 'Strong ROE', 'pos', 'ROE is 15% or more and book value is at least Rs 50 a share.'],
+  ['div', 'Pays 3%+ dividend', 'pos', 'The last declared cash dividend is 3% or more of today’s price.'],
+  ['up', 'Above 120-day average', 'pos', 'Today’s price is more than 2% above its 120-day average price.'],
+  ['dear', 'Pricier than sector', 'neg', 'P/E is more than one and a half times the median P/E of its sector.'],
+  ['loss', 'Loss-making', 'neg', 'The latest annualised EPS is zero or negative.'],
+  ['thin', 'Thin book value', 'neg', 'Book value is below Rs 50 a share, often after past losses; ROE and P/B look extreme on a small base.'],
+  ['down', 'Below 120-day average', 'neg', 'Today’s price is more than 2% below its 120-day average price.'],
+  ['low', 'Near 52-week low', 'neu', 'The price is in the bottom 15% of its 52-week range.'],
+  ['high', 'Near 52-week high', 'neu', 'The price is in the top 10% of its 52-week range.'],
+];
+function scrSignals(stocks) {
+  const isShare = (x) => x.sec !== 'Mutual Fund' && x.sec !== 'Promotor Share';
+  const med = {};
+  const bySec = {};
+  for (const x of stocks) if (isShare(x) && x.pe > 0) (bySec[x.sec] = bySec[x.sec] || []).push(x.pe);
+  for (const [k, v] of Object.entries(bySec)) if (v.length >= 5) { v.sort((a, b) => a - b); med[k] = v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2; }
+  for (const x of stocks) {
+    const g = [];
+    if (isShare(x)) {
+      const m = med[x.sec];
+      if (m && x.pe > 0 && x.pe < m) g.push('cheap');
+      if (x.roe >= 15 && x.bvps >= 50) g.push('roe');
+      if (x.dy >= 3) g.push('div');
+      if (x.a120 && x.ltp > x.a120 * 1.02) g.push('up');
+      if (m && x.pe > 1.5 * m) g.push('dear');
+      if (x.eps != null && x.eps <= 0) g.push('loss');
+      if (x.bvps != null && x.bvps < 50) g.push('thin');
+      if (x.a120 && x.ltp < x.a120 * 0.98) g.push('down');
+    }
+    if (x.pos != null && x.pos <= 0.15) g.push('low');
+    if (x.pos != null && x.pos >= 0.9) g.push('high');
+    x.sig = g; x.secMed = med[x.sec] || null;
+  }
+}
 const pos52 = (x) => (x.hi52 && x.lo52 && x.hi52 > x.lo52) ? (x.ltp - x.lo52) / (x.hi52 - x.lo52) : null;
 function loadScreener() {
   if (scrData || scrLoading) return; scrLoading = true;
   fetch('screener.json?t=' + Date.now(), { cache: 'no-store' }).then((r) => r.ok ? r.json() : null).catch(() => null).then((d) => {
     scrLoading = false; scrData = d && Array.isArray(d.stocks) ? d : { stocks: [], failed: true };
     for (const x of scrData.stocks) x.pos = pos52(x);
+    scrSignals(scrData.stocks);
     if (S.tab === 'screener') renderScreener();
   });
 }
@@ -2156,6 +2206,7 @@ function scrRows() {
     if (extra.near === 'high' && !(x.pos != null && x.pos >= 0.9)) return false;
     if (extra.gain && !(x.chg > 0)) return false;
     if (extra.bvmin && !(x.bvps != null && x.bvps >= extra.bvmin)) return false;
+    if (SCR.sig && !(x.sig || []).includes(SCR.sig)) return false;
     return true;
   });
   const k = SCR.sort, dir = SCR.dir;
@@ -2176,7 +2227,7 @@ function renderScreener() {
   const pr = $('scr-presets'); pr.replaceChildren();
   for (const [id, label, set] of SCR_PRESETS) {
     const b = el('button', 'fchip', label); b.type = 'button'; b.setAttribute('aria-pressed', String(SCR.preset === id));
-    b.addEventListener('click', () => { Object.assign(SCR, SCR_DEF, { q: SCR.q, sec: SCR.sec }, { pe: set.pe ?? '', pb: set.pb ?? '', roe: set.roe ?? '', dy: set.dy ?? '', mc: set.mc ?? '', sort: set.sort || 'mcap', preset: id }); SCR.dir = (SCR_COLS.find((c) => c.k === SCR.sort) || { d: -1 }).d * (SCR.sort === 'pos' && set.near === 'high' ? -1 : 1); scrShown = 50; scrSave(); renderScreener(); });
+    b.addEventListener('click', () => { Object.assign(SCR, SCR_DEF, { q: SCR.q, sec: SCR.sec, sig: SCR.sig }, { pe: set.pe ?? '', pb: set.pb ?? '', roe: set.roe ?? '', dy: set.dy ?? '', mc: set.mc ?? '', sort: set.sort || 'mcap', preset: id }); SCR.dir = (SCR_COLS.find((c) => c.k === SCR.sort) || { d: -1 }).d * (SCR.sort === 'pos' && set.near === 'high' ? -1 : 1); scrShown = 50; scrSave(); renderScreener(); });
     pr.append(b);
   }
   // sector list with counts
@@ -2189,11 +2240,16 @@ function renderScreener() {
   for (const k of Object.keys(counts).sort()) opt(k, k + ' (' + counts[k] + ')');
   sel.value = SCR.sec;
   const so = $('scr-sort'); so.replaceChildren(); for (const [v, t] of SCR_SORTS) { const o = el('option', null, t); o.value = v; so.append(o); } so.value = SCR.sort;
+  const sg = $('scr-sig'); sg.replaceChildren(); { const o = el('option', null, 'Any signal'); o.value = ''; sg.append(o); }
+  for (const [id, label] of SIGNALS) { const n = scrData.stocks.filter((x) => (x.sig || []).includes(id)).length; const o = el('option', null, label + ' (' + n + ')'); o.value = id; sg.append(o); }
+  sg.value = SCR.sig || '';
+  const hl = $('scr-how-list'); if (!hl.children.length) for (const [, label, tone, why] of SIGNALS) { const li = el('li'); li.append(el('span', 'scr-sig ' + tone, label), document.createTextNode(why)); hl.append(li); }
   for (const id of ['q', 'pe', 'pb', 'roe', 'dy', 'mc']) { const i = $('scr-' + id); if (document.activeElement !== i) i.value = SCR[id]; }
   // table head
   for (const c of SCR_COLS) {
     const th = el('th', (c.r ? 'r ' : '') + (c.cls || '')); th.setAttribute('scope', 'col');
     if (SCR.sort === c.k) th.setAttribute('aria-sort', SCR.dir > 0 ? 'ascending' : 'descending');
+    if (c.nosort) { th.textContent = c.h; head.append(th); continue; }
     const b = el('button', null, c.h); b.type = 'button';
     b.addEventListener('click', () => { if (SCR.sort === c.k) SCR.dir = -SCR.dir; else { SCR.sort = c.k; SCR.dir = c.d; } scrSave(); renderScreener(); });
     th.append(b); head.append(th);
@@ -2208,6 +2264,7 @@ function renderScreener() {
     tr.append(cell(x.sec, 'dim hide-sm'));
     tr.append(cell(Number(x.ltp).toLocaleString('en', { maximumFractionDigits: 2 }), 'r'));
     tr.append(cell(signed(x.chg, 2) + '%', 'r ' + (x.chg > 0 ? 'up' : x.chg < 0 ? 'down' : '')));
+    const sc = el('td', 'sigs'); for (const id of (x.sig || [])) { const d = SIGNALS.find((z) => z[0] === id); const t = el('span', 'scr-sig ' + d[2], d[1]); t.title = d[3]; sc.append(t); } if (!sc.children.length) { sc.classList.add('na'); sc.textContent = '–'; } tr.append(sc);
     tr.append(cell(f2(x.pe), 'r')); tr.append(cell(f2(x.pb), 'r'));
     tr.append(cell(f2(x.roe, '%'), 'r')); tr.append(cell(f2(x.dy, '%'), 'r'));
     const rg = el('td'); if (x.pos == null) { rg.className = 'na'; rg.textContent = '–'; } else { const bar = el('span', 'rng'); const i = el('i'); i.style.left = 'calc(' + Math.round(Math.max(0, Math.min(1, x.pos)) * 100) + '% - 2px)'; bar.append(i); bar.setAttribute('aria-hidden', 'true'); rg.append(bar, document.createTextNode(Math.round(x.lo52).toLocaleString('en') + '–' + Math.round(x.hi52).toLocaleString('en'))); rg.title = Math.round(x.pos * 100) + '% of the way from the 52-week low to the high'; } tr.append(rg);
@@ -2223,14 +2280,16 @@ function renderScreener() {
 }
 for (const id of ['q', 'pe', 'pb', 'roe', 'dy', 'mc']) $('scr-' + id).addEventListener('input', (e) => { SCR[id] = e.target.value; if (id !== 'q') SCR.preset = 'custom'; scrShown = 50; scrSave(); renderScreener(); });
 $('scr-sec').addEventListener('change', (e) => { SCR.sec = e.target.value; scrShown = 50; scrSave(); renderScreener(); });
+$('scr-sig').addEventListener('change', (e) => { SCR.sig = e.target.value; scrShown = 50; scrSave(); renderScreener(); });
 $('scr-sort').addEventListener('change', (e) => { SCR.sort = e.target.value; SCR.dir = (SCR_COLS.find((c) => c.k === SCR.sort) || { d: -1 }).d; scrSave(); renderScreener(); });
 $('scr-reset').addEventListener('click', () => { SCR = Object.assign({}, SCR_DEF); scrShown = 50; scrSave(); renderScreener(); });
 $('scr-more').addEventListener('click', () => { scrShown += 50; renderScreener(); });
 $('scr-csv').addEventListener('click', () => {
   if (!scrData) return;
-  const cols = ['s', 'n', 'sec', 'ltp', 'chg', 'eps', 'bvps', 'pe', 'pb', 'roe', 'cash', 'bonus', 'dy', 'lo52', 'hi52', 'yr', 'mcap'];
+  const cols = ['s', 'n', 'sec', 'ltp', 'chg', 'eps', 'bvps', 'pe', 'pb', 'roe', 'cash', 'bonus', 'dy', 'lo52', 'hi52', 'yr', 'mcap', 'sigtxt'];
+  for (const x of scrData.stocks) x.sigtxt = (x.sig || []).map((id) => SIGNALS.find((z) => z[0] === id)[1]).join('; ');
   const esc = (v) => v == null ? '' : /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v);
-  const lines = [['symbol', 'company', 'sector', 'price', 'change_pct', 'eps', 'book_value', 'pe', 'pb', 'roe_pct', 'cash_dividend_pct', 'bonus_pct', 'dividend_yield_pct', 'low_52w', 'high_52w', 'return_1y_pct', 'market_cap_rs'].join(',')];
+  const lines = [['symbol', 'company', 'sector', 'price', 'change_pct', 'eps', 'book_value', 'pe', 'pb', 'roe_pct', 'cash_dividend_pct', 'bonus_pct', 'dividend_yield_pct', 'low_52w', 'high_52w', 'return_1y_pct', 'market_cap_rs', 'signals'].join(',')];
   for (const x of scrRows()) lines.push(cols.map((c) => esc(x[c])).join(','));
   const blob = new Blob([lines.join('\n')], { type: 'text/csv' }), a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = 'nepse-screener-' + scrData.as_of + '.csv'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);

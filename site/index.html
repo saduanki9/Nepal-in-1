@@ -428,9 +428,9 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .farm[open] .farm-hint { display: none; }
 .farm-b { display: grid; gap: 18px; padding: 0 18px 18px; }
 .farm-b > .note { margin: 0; color: var(--muted); font-size: 14px; }
-.scr-f { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr)); gap: 12px 14px; padding: 16px; }
+.scr-f { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr)); gap: 10px 12px; padding: 14px; align-items: end; }
 .scr-f .scr-q { grid-column: span 2; }
-@media (max-width: 420px) { .scr-f .scr-q { grid-column: 1 / -1; } }
+@media (max-width: 420px) { .scr-f .scr-q, .scr-f .scr-wide { grid-column: 1 / -1; } }
 .scr-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 .scr-bar .note { margin: 0; font-weight: 600; color: var(--fg); }
 .scr-btns { display: flex; gap: 8px; }
@@ -720,13 +720,13 @@ main [id], main [data-idea] { scroll-margin-top: 132px; }
     <div class="chips" id="scr-presets" role="group" aria-label="Ready-made screens"></div>
     <div class="panel scr-f">
       <div class="fld scr-q"><label for="scr-q">Search</label><input id="scr-q" type="search" placeholder="Symbol or company name" autocomplete="off"></div>
-      <div class="fld"><label for="scr-sec">Sector</label><select id="scr-sec"></select></div>
-      <div class="fld"><label for="scr-pe">P/E at most</label><input id="scr-pe" type="number" min="0" step="1" inputmode="decimal" placeholder="Any"></div>
-      <div class="fld"><label for="scr-pb">P/B at most</label><input id="scr-pb" type="number" min="0" step="0.1" inputmode="decimal" placeholder="Any"></div>
-      <div class="fld"><label for="scr-roe">ROE at least (%)</label><input id="scr-roe" type="number" step="1" inputmode="decimal" placeholder="Any"></div>
-      <div class="fld"><label for="scr-dy">Dividend yield at least (%)</label><input id="scr-dy" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Any"></div>
-      <div class="fld"><label for="scr-mc">Market cap at least (Rs arba)</label><input id="scr-mc" type="number" min="0" step="1" inputmode="decimal" placeholder="Any"></div>
-      <div class="fld"><label for="scr-sort">Sort by</label><select id="scr-sort"></select></div>
+      <div class="fld scr-wide"><label for="scr-sec">Sector</label><select id="scr-sec"></select></div>
+      <div class="fld"><label for="scr-pe">Max P/E</label><input id="scr-pe" type="number" min="0" step="1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-pb">Max P/B</label><input id="scr-pb" type="number" min="0" step="0.1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-roe">Min ROE %</label><input id="scr-roe" type="number" step="1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-dy">Min dividend yield %</label><input id="scr-dy" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-mc">Min market cap, Rs arba</label><input id="scr-mc" type="number" min="0" step="1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld scr-wide"><label for="scr-sort">Sort by</label><select id="scr-sort"></select></div>
     </div>
     <div class="scr-bar"><p id="scr-count" class="note" role="status" aria-live="polite"></p><div class="scr-btns"><button class="btn" type="button" id="scr-reset">Reset</button><button class="btn" type="button" id="scr-csv">Download CSV</button></div></div>
     <div class="tablewrap scr-wrap"><table class="scr-t" aria-describedby="scr-count"><thead><tr id="scr-head"></tr></thead><tbody id="scr-body"></tbody></table></div>

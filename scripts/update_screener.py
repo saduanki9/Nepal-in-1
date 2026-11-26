@@ -161,7 +161,7 @@ def build(prices, fund):
             "dy": r2(cash_rs / ltp * 100) if cash_rs else None,
             "hi52": f.get("hi52"), "lo52": f.get("lo52"),
             "mcap": round(f["shares"] * ltp) if f.get("shares") else (round(f["mcap"]) if f.get("mcap") else None),
-            "yr": f.get("yr"), "vol30": f.get("vol30"),
+            "yr": f.get("yr"), "vol30": f.get("vol30"), "a120": f.get("avg120"),
         }
         stocks.append(s)
     return stocks

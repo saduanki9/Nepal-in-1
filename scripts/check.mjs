@@ -69,7 +69,7 @@ try {
   const scr = JSON.parse(readFileSync('site/screener.json', 'utf8'));
   const st = Array.isArray(scr.stocks) ? scr.stocks : [];
   const isNum = (v) => v === null || v === undefined || (typeof v === 'number' && isFinite(v));
-  const bad = st.filter((x) => !x.s || !x.n || !x.sec || !(x.ltp > 0) || !['chg', 'pe', 'pb', 'roe', 'dy', 'hi52', 'lo52', 'yr', 'mcap'].every((k) => isNum(x[k])));
+  const bad = st.filter((x) => !x.s || !x.n || !x.sec || !(x.ltp > 0) || !['chg', 'pe', 'pb', 'roe', 'dy', 'hi52', 'lo52', 'yr', 'mcap', 'a120'].every((k) => isNum(x[k])));
   if (st.length < 250) fail('screener.json has only ' + st.length + ' stocks');
   else if (bad.length) fail('screener rows with a missing symbol, sector or price, or a non-number ratio: ' + bad.slice(0, 5).map((x) => x.s || '?').join(', '));
   else if (!/^\d{4}-\d{2}-\d{2}$/.test(scr.as_of || '') || !/^https:\/\//.test(scr.source_url || '')) fail('screener.json needs an as_of date and an https source');

@@ -428,6 +428,25 @@ tfoot td { font-weight: 600; border-top: 1px solid var(--line-strong); border-bo
 .farm[open] .farm-hint { display: none; }
 .farm-b { display: grid; gap: 18px; padding: 0 18px 18px; }
 .farm-b > .note { margin: 0; color: var(--muted); font-size: 14px; }
+.scr-f { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr)); gap: 12px 14px; padding: 16px; }
+.scr-f .scr-q { grid-column: span 2; }
+@media (max-width: 420px) { .scr-f .scr-q { grid-column: 1 / -1; } }
+.scr-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.scr-bar .note { margin: 0; font-weight: 600; color: var(--fg); }
+.scr-btns { display: flex; gap: 8px; }
+.scr-t { font-size: 13.5px; }
+.scr-t th, .scr-t td { padding: 10px 12px; white-space: nowrap; }
+.scr-t th button { border: 0; background: transparent; padding: 0; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; cursor: pointer; }
+.scr-t th[aria-sort="ascending"] button::after { content: " \2191"; } .scr-t th[aria-sort="descending"] button::after { content: " \2193"; }
+.scr-t td:first-child, .scr-t th:first-child { position: sticky; left: 0; background: var(--surface); z-index: 1; box-shadow: 1px 0 0 var(--line); }
+.scr-t th:first-child { background: var(--raise); }
+.scr-t td.r, .scr-t th.r { text-align: right; font-variant-numeric: tabular-nums; }
+.scr-sym a { font-weight: 700; color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+.scr-sym span { display: block; font-size: 12px; color: var(--muted); max-width: 190px; overflow: hidden; text-overflow: ellipsis; }
+.scr-t td.dim { white-space: normal; min-width: 110px; max-width: 150px; }
+.scr-t .up { color: var(--ok); } .scr-t .down { color: var(--bad); } .scr-t .na { color: var(--faint); }
+.rng { display: inline-block; width: 64px; height: 6px; border-radius: 3px; background: var(--raise); position: relative; vertical-align: middle; margin-right: 6px; }
+.rng i { position: absolute; top: -2px; width: 4px; height: 10px; border-radius: 2px; background: var(--fg); }
 /* Links that jump down a page stop below the sticky header. */
 main [id], main [data-idea] { scroll-margin-top: 132px; }
 .sa-list { display: grid; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: hidden; }
@@ -485,6 +504,7 @@ main [id], main [data-idea] { scroll-margin-top: 132px; }
       <button class="tab" role="tab" id="tab-mentor" data-tab="mentor" aria-selected="false">Mentor</button>
       <button class="tab" role="tab" id="tab-business" data-tab="business" aria-selected="false">Business</button>
       <button class="tab" role="tab" id="tab-nepse" data-tab="nepse" aria-selected="false">NEPSE<span class="n" id="n-nepse">–</span></button>
+      <button class="tab" role="tab" id="tab-screener" data-tab="screener" aria-selected="false">Screener</button>
       <button class="tab" role="tab" id="tab-invest" data-tab="invest" aria-selected="false">Invest</button>
       <button class="tab" role="tab" id="tab-economy" data-tab="economy" aria-selected="false">Economy</button>
       <button class="tab" role="tab" id="tab-projects" data-tab="projects" aria-selected="false">National projects</button>
@@ -689,6 +709,31 @@ main [id], main [data-idea] { scroll-margin-top: 132px; }
     <p class="foot" id="nepse-foot"></p>
   </section>
 
+  <section class="view" id="v-screener" aria-labelledby="tab-screener" hidden>
+    <div class="head">
+      <div>
+        <p class="eyebrow" id="scr-eyebrow">NEPSE screener</p>
+        <h1>NEPSE screener</h1>
+        <p id="scr-lede">Filter every listed share by value, profitability, dividends, size and price trend, then sort the results. A filter for research, not advice.</p>
+      </div>
+    </div>
+    <div class="chips" id="scr-presets" role="group" aria-label="Ready-made screens"></div>
+    <div class="panel scr-f">
+      <div class="fld scr-q"><label for="scr-q">Search</label><input id="scr-q" type="search" placeholder="Symbol or company name" autocomplete="off"></div>
+      <div class="fld"><label for="scr-sec">Sector</label><select id="scr-sec"></select></div>
+      <div class="fld"><label for="scr-pe">P/E at most</label><input id="scr-pe" type="number" min="0" step="1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-pb">P/B at most</label><input id="scr-pb" type="number" min="0" step="0.1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-roe">ROE at least (%)</label><input id="scr-roe" type="number" step="1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-dy">Dividend yield at least (%)</label><input id="scr-dy" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-mc">Market cap at least (Rs arba)</label><input id="scr-mc" type="number" min="0" step="1" inputmode="decimal" placeholder="Any"></div>
+      <div class="fld"><label for="scr-sort">Sort by</label><select id="scr-sort"></select></div>
+    </div>
+    <div class="scr-bar"><p id="scr-count" class="note" role="status" aria-live="polite"></p><div class="scr-btns"><button class="btn" type="button" id="scr-reset">Reset</button><button class="btn" type="button" id="scr-csv">Download CSV</button></div></div>
+    <div class="tablewrap scr-wrap"><table class="scr-t" aria-describedby="scr-count"><thead><tr id="scr-head"></tr></thead><tbody id="scr-body"></tbody></table></div>
+    <div class="more-row" id="scr-more-row" hidden><button class="btn" type="button" id="scr-more">Show more</button></div>
+    <p class="foot" id="scr-foot"></p>
+  </section>
+
   <section class="view" id="v-invest" aria-labelledby="tab-invest" hidden>
     <div class="head">
       <div>
@@ -873,7 +918,7 @@ function header() {
   $('when-fy').textContent = fiscalYear(t);
   const r = lastRefresh();
   $('when-upd').textContent = r ? 'Updated ' + stamp(r) : '';
-  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = S.tab === 'builds' || S.tab === 'mentor' || S.tab === 'start'; }
+  const b = $('asof'); if (r) { b.textContent = 'Figures as of ' + stamp(r) + ' (Nepal time). Sources are linked on every story and table.'; b.hidden = S.tab === 'builds' || S.tab === 'mentor' || S.tab === 'start' || S.tab === 'screener'; }
 }
 
 let toastT;
@@ -2040,6 +2085,7 @@ function renderStart() {
   ql('Today in Nepal', news[0] ? news[0].headline : 'The day’s news, with why it matters', 'today');
   const ix = S.nepse && S.nepse.index;
   ql('NEPSE', ix ? 'Closed at ' + Number(ix.close).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' (' + signed(ix.pct, 2) + '%) on ' + niceDate(S.nepse.as_of) : 'Index, top movers and IPOs', 'nepse');
+  ql('NEPSE screener', 'Filter every listed share by P/E, P/B, ROE, dividend yield, size and 52-week range', 'screener');
   const nOpp = opps.length, bn = S.biz && Array.isArray(S.biz.news) ? S.biz.news.slice().sort((a, b) => String(b.date).localeCompare(String(a.date)))[0] : null;
   ql('Business', nOpp ? nOpp + (nOpp === 1 ? ' opportunity' : ' opportunities') + ' open now, plus prices, company news and key dates' : (bn ? bn.headline : 'Prices, company news and the dates that matter'), 'business');
   ql('Invest', 'Compare fixed deposits, bonds, NEPSE, gold and land for your money', 'invest');
@@ -2055,8 +2101,144 @@ function renderStart() {
 $('start-budget').addEventListener('input', (e) => { MEN.budget = budgetFrom(e.target.value); saveMen(); renderStart(); });
 $('start-go').addEventListener('click', () => { const h = $('sa-h'); if (h && !$('start-all').hidden) h.scrollIntoView({ block: 'start' }); else show('mentor', true); });
 
+/* ---------- NEPSE screener: every listed share, filtered and sorted in the browser. Data: screener.json ---------- */
+const SCR_KEY = 'n1-scr';
+const SCR_DEF = { q: '', sec: 'shares', pe: '', pb: '', roe: '', dy: '', mc: '', sort: 'mcap', dir: -1, preset: 'all' };
+let SCR = Object.assign({}, SCR_DEF), scrData = null, scrLoading = false, scrShown = 50;
+try { Object.assign(SCR, JSON.parse(localStorage.getItem(SCR_KEY) || '{}')); } catch (e) {}
+const scrSave = () => { try { localStorage.setItem(SCR_KEY, JSON.stringify(SCR)); } catch (e) {} };
+const SCR_COLS = [
+  { k: 's', h: 'Stock', d: 1 },
+  { k: 'sec', h: 'Sector', d: 1, cls: 'hide-sm' },
+  { k: 'ltp', h: 'Price', d: -1, r: 1 },
+  { k: 'chg', h: 'Today', d: -1, r: 1 },
+  { k: 'pe', h: 'P/E', d: 1, r: 1 },
+  { k: 'pb', h: 'P/B', d: 1, r: 1 },
+  { k: 'roe', h: 'ROE', d: -1, r: 1 },
+  { k: 'dy', h: 'Div. yield', d: -1, r: 1 },
+  { k: 'pos', h: '52-week range', d: 1 },
+  { k: 'yr', h: '1 year', d: -1, r: 1 },
+  { k: 'mcap', h: 'Mkt cap (arba)', d: -1, r: 1 },
+];
+const SCR_SORTS = [['mcap', 'Market cap, largest first'], ['pe', 'P/E, lowest first'], ['pb', 'P/B, lowest first'], ['roe', 'ROE, highest first'], ['dy', 'Dividend yield, highest first'], ['chg', "Today's change, highest first"], ['yr', '1-year return, highest first'], ['pos', 'Closest to 52-week low first'], ['s', 'Symbol, A to Z']];
+const SCR_PRESETS = [
+  ['all', 'All shares', {}],
+  ['value', 'Value: P/E ≤ 15, P/B ≤ 2', { pe: 15, pb: 2, sort: 'pe' }],
+  ['div', 'Dividend payers: yield ≥ 3%', { dy: 3, sort: 'dy' }],
+  ['roe', 'High ROE: ≥ 15%', { roe: 15, sort: 'roe', bvmin: 50 }],
+  ['low', 'Near 52-week low', { sort: 'pos', near: 'low' }],
+  ['high', 'Near 52-week high', { sort: 'pos', near: 'high' }],
+  ['big', 'Large: Rs 20 arba+', { mc: 20, sort: 'mcap' }],
+  ['gain', "Today's gainers", { sort: 'chg', gain: 1 }],
+];
+const pos52 = (x) => (x.hi52 && x.lo52 && x.hi52 > x.lo52) ? (x.ltp - x.lo52) / (x.hi52 - x.lo52) : null;
+function loadScreener() {
+  if (scrData || scrLoading) return; scrLoading = true;
+  fetch('screener.json?t=' + Date.now(), { cache: 'no-store' }).then((r) => r.ok ? r.json() : null).catch(() => null).then((d) => {
+    scrLoading = false; scrData = d && Array.isArray(d.stocks) ? d : { stocks: [], failed: true };
+    for (const x of scrData.stocks) x.pos = pos52(x);
+    if (S.tab === 'screener') renderScreener();
+  });
+}
+function scrRows() {
+  const p = SCR_PRESETS.find((x) => x[0] === SCR.preset) || SCR_PRESETS[0], extra = p[2];
+  const n = (v) => (v === '' || v == null || isNaN(Number(v))) ? null : Number(v);
+  const pe = n(SCR.pe), pb = n(SCR.pb), roe = n(SCR.roe), dy = n(SCR.dy), mc = n(SCR.mc), q = SCR.q.trim().toLowerCase();
+  let rows = scrData.stocks.filter((x) => {
+    if (SCR.sec === 'shares' ? (x.sec === 'Mutual Fund' || x.sec === 'Promotor Share') : (SCR.sec !== 'all' && x.sec !== SCR.sec)) return false;
+    if (q && !x.s.toLowerCase().includes(q) && !x.n.toLowerCase().includes(q)) return false;
+    if (pe != null && !(x.pe != null && x.pe <= pe)) return false;
+    if (pb != null && !(x.pb != null && x.pb <= pb)) return false;
+    if (roe != null && !(x.roe != null && x.roe >= roe)) return false;
+    if (dy != null && !(x.dy != null && x.dy >= dy)) return false;
+    if (mc != null && !(x.mcap != null && x.mcap >= mc * 1e9)) return false;
+    if (extra.near === 'low' && !(x.pos != null && x.pos <= 0.15)) return false;
+    if (extra.near === 'high' && !(x.pos != null && x.pos >= 0.9)) return false;
+    if (extra.gain && !(x.chg > 0)) return false;
+    if (extra.bvmin && !(x.bvps != null && x.bvps >= extra.bvmin)) return false;
+    return true;
+  });
+  const k = SCR.sort, dir = SCR.dir;
+  rows.sort((a, b) => {
+    const va = a[k], vb = b[k];
+    if (va == null && vb == null) return 0; if (va == null) return 1; if (vb == null) return -1;
+    return (typeof va === 'string' ? va.localeCompare(vb) : va - vb) * dir;
+  });
+  return rows;
+}
+function renderScreener() {
+  loadScreener();
+  const body = $('scr-body'), head = $('scr-head'); body.replaceChildren(); head.replaceChildren();
+  if (!scrData) { $('scr-count').textContent = 'Loading every listed share…'; return; }
+  if (scrData.failed || !scrData.stocks.length) { $('scr-count').textContent = 'The screener data could not be loaded. Try again in a minute.'; return; }
+  $('scr-eyebrow').textContent = 'NEPSE screener · prices ' + niceDate(scrData.as_of) + ' · fundamentals ' + niceDate(scrData.fund_as_of);
+  // presets
+  const pr = $('scr-presets'); pr.replaceChildren();
+  for (const [id, label, set] of SCR_PRESETS) {
+    const b = el('button', 'fchip', label); b.type = 'button'; b.setAttribute('aria-pressed', String(SCR.preset === id));
+    b.addEventListener('click', () => { Object.assign(SCR, SCR_DEF, { q: SCR.q, sec: SCR.sec }, { pe: set.pe ?? '', pb: set.pb ?? '', roe: set.roe ?? '', dy: set.dy ?? '', mc: set.mc ?? '', sort: set.sort || 'mcap', preset: id }); SCR.dir = (SCR_COLS.find((c) => c.k === SCR.sort) || { d: -1 }).d * (SCR.sort === 'pos' && set.near === 'high' ? -1 : 1); scrShown = 50; scrSave(); renderScreener(); });
+    pr.append(b);
+  }
+  // sector list with counts
+  const sel = $('scr-sec'), counts = {};
+  for (const x of scrData.stocks) counts[x.sec] = (counts[x.sec] || 0) + 1;
+  const nShares = scrData.stocks.filter((x) => x.sec !== 'Mutual Fund' && x.sec !== 'Promotor Share').length;
+  sel.replaceChildren();
+  const opt = (v, t) => { const o = el('option', null, t); o.value = v; sel.append(o); };
+  opt('shares', 'All shares (' + nShares + ')'); opt('all', 'Everything listed (' + scrData.stocks.length + ')');
+  for (const k of Object.keys(counts).sort()) opt(k, k + ' (' + counts[k] + ')');
+  sel.value = SCR.sec;
+  const so = $('scr-sort'); so.replaceChildren(); for (const [v, t] of SCR_SORTS) { const o = el('option', null, t); o.value = v; so.append(o); } so.value = SCR.sort;
+  for (const id of ['q', 'pe', 'pb', 'roe', 'dy', 'mc']) { const i = $('scr-' + id); if (document.activeElement !== i) i.value = SCR[id]; }
+  // table head
+  for (const c of SCR_COLS) {
+    const th = el('th', (c.r ? 'r ' : '') + (c.cls || '')); th.setAttribute('scope', 'col');
+    if (SCR.sort === c.k) th.setAttribute('aria-sort', SCR.dir > 0 ? 'ascending' : 'descending');
+    const b = el('button', null, c.h); b.type = 'button';
+    b.addEventListener('click', () => { if (SCR.sort === c.k) SCR.dir = -SCR.dir; else { SCR.sort = c.k; SCR.dir = c.d; } scrSave(); renderScreener(); });
+    th.append(b); head.append(th);
+  }
+  const rows = scrRows();
+  $('scr-count').textContent = rows.length + ' of ' + (SCR.sec === 'all' ? scrData.stocks.length : SCR.sec === 'shares' ? nShares : counts[SCR.sec] || 0) + ' match';
+  const f2 = (v, suf) => v == null ? null : (v < 0 ? '−' : '') + Math.abs(Number(v)).toLocaleString('en', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + (suf || '');
+  const cell = (txt, cls) => { const td = el('td', cls || ''); if (txt == null) { td.classList.add('na'); td.textContent = '–'; } else td.textContent = txt; return td; };
+  for (const x of rows.slice(0, scrShown)) {
+    const tr = el('tr');
+    const s = el('td', 'scr-sym'); const a = el('a', null, x.s); const u = safeUrl((scrData.company_url || '') + encodeURIComponent(x.s)); if (u) { a.href = u; a.target = '_blank'; a.rel = 'noopener'; } s.append(a, el('span', null, x.n)); tr.append(s);
+    tr.append(cell(x.sec, 'dim hide-sm'));
+    tr.append(cell(Number(x.ltp).toLocaleString('en', { maximumFractionDigits: 2 }), 'r'));
+    tr.append(cell(signed(x.chg, 2) + '%', 'r ' + (x.chg > 0 ? 'up' : x.chg < 0 ? 'down' : '')));
+    tr.append(cell(f2(x.pe), 'r')); tr.append(cell(f2(x.pb), 'r'));
+    tr.append(cell(f2(x.roe, '%'), 'r')); tr.append(cell(f2(x.dy, '%'), 'r'));
+    const rg = el('td'); if (x.pos == null) { rg.className = 'na'; rg.textContent = '–'; } else { const bar = el('span', 'rng'); const i = el('i'); i.style.left = 'calc(' + Math.round(Math.max(0, Math.min(1, x.pos)) * 100) + '% - 2px)'; bar.append(i); bar.setAttribute('aria-hidden', 'true'); rg.append(bar, document.createTextNode(Math.round(x.lo52).toLocaleString('en') + '–' + Math.round(x.hi52).toLocaleString('en'))); rg.title = Math.round(x.pos * 100) + '% of the way from the 52-week low to the high'; } tr.append(rg);
+    tr.append(cell(x.yr == null ? null : signed(x.yr, 1) + '%', 'r ' + (x.yr > 0 ? 'up' : x.yr < 0 ? 'down' : '')));
+    tr.append(cell(x.mcap ? (x.mcap / 1e9).toLocaleString('en', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : null, 'r'));
+    body.append(tr);
+  }
+  if (!rows.length) { const tr = el('tr'), td = el('td', 'na', 'No share matches these filters. Loosen one, or press Reset.'); td.colSpan = SCR_COLS.length; tr.append(td); body.append(tr); }
+  $('scr-more-row').hidden = rows.length <= scrShown; $('scr-more').textContent = 'Show ' + Math.min(50, rows.length - scrShown) + ' more (' + (rows.length - scrShown) + ' left)';
+  const foot = $('scr-foot'); foot.replaceChildren(document.createTextNode((scrData.note || '') + ' ROE is EPS divided by book value per share; where book value is very small, often after past losses, ROE and P/B look extreme, so the High ROE screen only includes shares with a book value of at least Rs 50. Data: '));
+  const su = safeUrl(scrData.source_url); if (su) { const a = el('a', 'src', (scrData.source_name || 'Source') + ' ↗'); a.href = su; a.target = '_blank'; a.rel = 'noopener'; foot.append(a); }
+  foot.append(document.createTextNode('. Tap a symbol for its company page. Not investment advice.'));
+}
+for (const id of ['q', 'pe', 'pb', 'roe', 'dy', 'mc']) $('scr-' + id).addEventListener('input', (e) => { SCR[id] = e.target.value; if (id !== 'q') SCR.preset = 'custom'; scrShown = 50; scrSave(); renderScreener(); });
+$('scr-sec').addEventListener('change', (e) => { SCR.sec = e.target.value; scrShown = 50; scrSave(); renderScreener(); });
+$('scr-sort').addEventListener('change', (e) => { SCR.sort = e.target.value; SCR.dir = (SCR_COLS.find((c) => c.k === SCR.sort) || { d: -1 }).d; scrSave(); renderScreener(); });
+$('scr-reset').addEventListener('click', () => { SCR = Object.assign({}, SCR_DEF); scrShown = 50; scrSave(); renderScreener(); });
+$('scr-more').addEventListener('click', () => { scrShown += 50; renderScreener(); });
+$('scr-csv').addEventListener('click', () => {
+  if (!scrData) return;
+  const cols = ['s', 'n', 'sec', 'ltp', 'chg', 'eps', 'bvps', 'pe', 'pb', 'roe', 'cash', 'bonus', 'dy', 'lo52', 'hi52', 'yr', 'mcap'];
+  const esc = (v) => v == null ? '' : /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v);
+  const lines = [['symbol', 'company', 'sector', 'price', 'change_pct', 'eps', 'book_value', 'pe', 'pb', 'roe_pct', 'cash_dividend_pct', 'bonus_pct', 'dividend_yield_pct', 'low_52w', 'high_52w', 'return_1y_pct', 'market_cap_rs'].join(',')];
+  for (const x of scrRows()) lines.push(cols.map((c) => esc(x[c])).join(','));
+  const blob = new Blob([lines.join('\n')], { type: 'text/csv' }), a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'nepse-screener-' + scrData.as_of + '.csv'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('Saved ' + (lines.length - 1) + ' rows as a CSV file.');
+});
+
 /* ---------- Routing ---------- */
-const TABS = ['start', 'today', 'builds', 'mentor', 'business', 'nepse', 'invest', 'economy', 'projects'];
+const TABS = ['start', 'today', 'builds', 'mentor', 'business', 'nepse', 'screener', 'invest', 'economy', 'projects'];
 /* Anonymous visit counting (GoatCounter). Page loads count by themselves; tab switches are counted here.
    Does nothing if the counter is blocked or not loaded. */
 function countView(tab) {
@@ -2073,11 +2255,12 @@ function show(tab, push) {
   if (tab === 'today') renderToday();
   if (tab === 'business') renderBusiness();
   if (tab === 'nepse') renderNepse();
+  if (tab === 'screener') renderScreener();
   if (tab === 'invest') renderInvest();
   if (tab === 'builds') renderBuilds();
   if (tab === 'mentor') renderMentor();
   if (tab === 'start') renderStart();
-  const asof = $('asof'); asof.hidden = tab === 'builds' || tab === 'mentor' || tab === 'start' || !asof.textContent;
+  const asof = $('asof'); asof.hidden = tab === 'builds' || tab === 'mentor' || tab === 'start' || tab === 'screener' || !asof.textContent;
   const nav = $('tabs'), at = $('tab-' + tab); nav.scrollLeft = at.offsetLeft - nav.offsetLeft - (nav.clientWidth - at.offsetWidth) / 2;
   closeMenu();
   window.scrollTo(0, 0);
@@ -2092,6 +2275,7 @@ const FEATURE_DESC = {
   mentor: 'Growing sectors, sector guides and how to start',
   business: 'Opportunities open now, prices and company news',
   nepse: 'Index, top movers, IPOs and a bank watchlist',
+  screener: 'Filter every listed share by P/E, ROE, dividend and more',
   invest: 'Compare deposits, bonds, shares, gold and land',
   economy: 'Growth, forecasts and hydropower exports',
   projects: 'Progress of Nepal\u2019s biggest projects',
